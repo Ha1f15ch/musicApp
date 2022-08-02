@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    
+    div(class='container-fluid')
+      div(class='row justify-content-md-center')
+        div(class='col col-lg-2')
+          block sidebar 
+            ul(class='sidebar-nav list-group' id="list-tab" role="tablist")
+              li
+                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/main/Home' role="tab" aria-controls="main") Главная 
+        div(class='col-md-8')
+              block content 
+              block Profile 
+        div(class='col-lg-2')
+            ul(class='sidebar-nav')
+              a(href='/main/myprofile') Мой профиль 
+  //script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"") 
+    
