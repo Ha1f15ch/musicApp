@@ -15,7 +15,7 @@ generateJWT = (id, role) => {
     return jwt.sign(payload, secret, {
         expiresIn: "5h"
     })
-}
+};
 
 //Регистрация GET
 exports.reg_GET = function (req, res, next) {
