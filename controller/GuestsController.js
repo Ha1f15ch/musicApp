@@ -1,6 +1,7 @@
 var Guest = require('../models/authGuest')
 var Role = require('../models/role')
 var UserProfile = require('../models/profileUser')
+var UserToken = require('../models/tokensUser')
 const validator = require('express-validator');
 const bcrypt = require('bcryptjs')
 const {validationResult} = require('express-validator')
@@ -41,7 +42,6 @@ exports.reg_POST = [
 
    async (req, res, next) => {
         const errors = validationResult(req)
-        ////////////////////////////////////////////
 
         if (!errors.isEmpty()) {
             res.render('registration', {
@@ -122,20 +122,15 @@ exports.reg_POST = [
 
 //Авторизация GET
 exports.login_GET = function (req, res, next) {
-    res.send('fijgskfjdhfgfkdjv')
+    res.render('authorization', {title: 'Авторизация'})
 }
 
 //Aвторизация POST
 exports.login_POST = async function (req, res) {
     //res.send('Войти_post - не реализовано')
     try {
-        const {
-            login,
-            pass
-        } = req.body
-        const user = await Guest.findOne({
-            login
-        })
+        const {login, pass} = req.body
+        const user = await Guest.findOne({login})
         if (!user) {
             return res.status(400).json({
                 message: `Пользователь с тиким именем - ${login} не найден`
@@ -148,7 +143,20 @@ exports.login_POST = async function (req, res) {
             })
         }
         const token = generateJWT(user._id, user.role)
-        return res.json(token)
+
+        var UTOKEN = new UserToken({
+            idUser: user._id,
+            token: token
+        });
+
+        UTOKEN.save(function(err) {
+            if(err) {
+                return next(err)
+            }
+            res.cookie('token', token)
+            res.redirect('/main/Home')
+        })
+        console.log(`DATA ${UTOKEN}`)
     } catch (e) {
         console.log(e)
         res.status(400).json({
