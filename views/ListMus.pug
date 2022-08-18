@@ -1,0 +1,11 @@
+extends layout 
+
+block MusickList
+
+    div(class='text-center')
+        h1= title 
+        p(class='text-center') Страница с отображением всех треков
+
+        ul(class='text-left')
+            each trak in data 
+                li #[strong Название: ]#{(trak)}

@@ -8,15 +8,17 @@ module.exports = function(req, res, next) {
 
     try {
         const token = req.headers.cookie.split('=')[2]
-        console.log(`Запись о JSONWEB tokenme ${token}`)/* req.headers.authorization.split(' ')[1] */
+        //console.log(`Запись о JSONWEB tokenme ${token}`)/* req.headers.authorization.split(' ')[1] */
         if(!token) {
-            return res.status(403).json({message: "Пользователь не авторизован"})
+            res.status(403).redirect('/login/in')/* .json({message: "Пользователь не авторизован"}) */
         }
         const decodedData = jwt.verify(token, secret)
         req.user = decodedData
         next()
     } catch(e) {
-        console.log(e)
-        return res.status(403).json({message: "Пользователь не авторизован"})
+        console.log(e);
+        const token = req.headers.cookie.split('=')[2]
+        console.log(`TOKEN - ${token} POL'ZOVATELYA USTAREL ILI NE NAIDEN`)
+        res.status(403).redirect('/login/in')/* .json({message: "Пользователь не авторизован"}) */
     }
 }

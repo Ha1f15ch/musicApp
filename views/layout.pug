@@ -17,9 +17,12 @@ html
             ul(class='sidebar-nav list-group' id="list-tab" role="tablist")
               li
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/main/Home' role="tab" aria-controls="main") Главная 
+              li 
+                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/main/test' role="tab" aria-controls="main") Треклист
         div(class='col-md-8')
               block content 
               block Profile 
+              block MusickList
         div(class='col-lg-2')
             ul(class='sidebar-nav')
               a(href='/main/myprofile') Мой профиль 

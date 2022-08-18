@@ -14,7 +14,7 @@ generateJWT = (id, role) => {
         role
     }
     return jwt.sign(payload, secret, {
-        expiresIn: "5h"
+        expiresIn: "24h"
     })
 };
 
