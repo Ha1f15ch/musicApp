@@ -1,11 +1,20 @@
-extends layout 
-
+extends layout
 block MusickList
+
+    <audio src='file:///D:/music/1999-Live_Aus_Berlin_Limited_Editition/CD1_1999/01-Spiel_Mit_Mir.mp3' ></audio>
 
     div(class='text-center')
         h1= title 
         p(class='text-center') Страница с отображением всех треков
+        
+        p This demo shows how to create a simple APIs-powered audio player. In particular this page uses the Proximity API, the Battery Status API, the Vibration API, the Web Notifications API, and the Ambient Light API.
 
         ul(class='text-left')
             each trak in data 
-                li #[strong Название: ]#{(trak)}
+                //- li #[strong Название: ] #{(trak)}
+                //- | 
+                <audio src=#{trak} controls></audio>
+        
+        
+    div(class='next-values')
+    //https://ru.stackoverflow.com/questions/707406/%D0%BE%D1%82%D0%B4%D0%B0%D1%82%D1%8C-%D1%81-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0node-js-mp3-%D1%82%D1%80%D0%B5%D0%BA-%D0%B8-%D0%B2%D0%BE%D1%81%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%B5%D1%81%D1%82%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D1%83-%D0%BD%D0%B0-web-audio-api ВОЗМОЖН ОТВЕТ

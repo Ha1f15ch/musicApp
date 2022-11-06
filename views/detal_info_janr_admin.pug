@@ -1,0 +1,24 @@
+extends adminPage 
+block detal_info_janr_admin
+    h1 Страница жанра - #{janr.janrName}
+    h4 ID: #{janr._id}
+
+    div(class='main_janr')
+        div(class='janr')
+            p Подробное описание:
+                br
+                p #{janr.janrDescriptions}
+
+        div(class='janr_delete_query')
+            a(href="/admin_mod/catalog"+janr.aboutJanr+"/delete") Удалить этот жанр. 
+
+        div(class='janr_update_query')
+            a(href="/admin_mod/catalog"+janr.aboutJanr+"/update") Изменить этот жанр. 
+
+    div(class='footer')
+        block delete_janr_by_id
+        hr
+        br
+        label()
+        span  
+        block update_janr_by_id

@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+const roleMidleware = require('./middleware/roleMidleware')
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
 mongoose.connect(mongoConectURL)
@@ -14,8 +15,9 @@ db.on('error', console.error.bind(console, 'Ошибка при подключе
 //var indexRouter = require('./routes/index'); - нужно добавить остальное, потом...
 var authorization = require('./routes/auth');
 var login = require('./routes/log_In');
-var mainPage = require('./routes/MainPage')
-var indexJS = require('./routes/index')
+var mainPage = require('./routes/MainPage');
+var storage_katalog = require('./routes/Storage_katalog');
+var indexJS = require('./routes/index');
 
 var app = express();
 
@@ -29,9 +31,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', authorization);
+app.use('/', login);
 app.use('/main', mainPage);
-app.use('/login', login);
+// app.use('/login', login);
+app.use('/auth', authorization);
+app.use('/admin_mod', roleMidleware(['ADMIN']), storage_katalog); //Доступ для изменения составляющего и настройки всех таблиц
 //app.use('/auth', AuthRouts); после нуждно додумать остальные роуты
 // пока что выводится только регистрация
 

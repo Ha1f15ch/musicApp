@@ -1,0 +1,10 @@
+extends detal_info_janr_admin 
+
+block delete_janr_by_id
+
+    p Точно хотите удалить этот жанр?
+
+    form(method='POST' action="") 
+        div.form-group
+           input#janrid.form-control(type='hidden', name='janrid', required='true', value=janr._id)
+        button.btn.btn-primary(type="submit") Удалить жанр 

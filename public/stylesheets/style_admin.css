@@ -1,0 +1,22 @@
+table, th, td{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+table {
+    margin: 5px auto;
+    width: 70%;
+    border-radius: 10px;
+}
+
+th, td {
+    padding: 5px;
+}
+
+.sidebar-nav {
+    list-style: none;
+}
+
+.td_1Kol {
+    width: 50%;
+}

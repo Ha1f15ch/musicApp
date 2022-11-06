@@ -1,0 +1,19 @@
+extends adminPage 
+block update_janr_by_id
+    h3 ID: #{janr_data._id}
+    h1 Страница для изменений жанра #{janr_data.janrName}
+    form(method='POST' action='') 
+        div.form-group
+            label(for="janrName") Жанр:
+            input#janrName.form-control(type='textarea', placeholder='Джаз' name='janrName' value=(undefined===janr_data ? '' : janr_data.janrName) required='true')
+        div.form-group
+            label(for="janrDescriptions") Описание жанра:
+            input#janrDescriptions.form-control(type='textarea', name='janrDescriptions' value=(undefined===janr_data ? '' : janr_data.janrDescriptions) required='true')
+        button.btn.btn-primary(type='submit') Подтвердить    
+
+    if errors 
+        ul
+        for error in errors
+            li!= error.msg           
+                    
+    

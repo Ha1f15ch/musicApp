@@ -5,15 +5,15 @@ var GuestController = require('../controller/GuestsController');
 const authMidleware = require('../middleware/authMidleware')
 const roleMidleware = require('../middleware/roleMidleware')
 
-router.get('/', function(req, res, next) {
-    res.redirect('/registration')
-})
+// router.get('/', function(req, res, next) {
+//     res.redirect('auth/registration')
+// }) 
 
 //Регистрация метод GET
-router.get('/registration', GuestController.reg_GET)
+router.get('/', GuestController.reg_GET)
 
 //Регистрация метод POST
-router.post('/registration', GuestController.reg_POST)
+router.post('/', GuestController.reg_POST)
 // [
 //     check('login', "логин не может быть пустым").notEmpty(),
 //     check('pass', "пароль не может быть короче 4 и длинее 10 символов").isLength({min:4, max: 10})

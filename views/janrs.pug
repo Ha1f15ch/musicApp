@@ -1,0 +1,28 @@
+extends adminPage 
+
+block janrs
+
+    div(class='text-center')
+        h1=tite 
+
+        div(class='btn') 
+            form(method='GET' action='/admin_mod/catalog/janr/addNew')
+                button.btn.btn-primary(type='submit') Добавить
+
+        //- block delete_janr_by_id
+
+        div(class='textArray')
+            ul 
+                each janr_value in janrs_list
+                    table 
+                        tr 
+                            td(class='td_1Kol') 
+                                a(href="/admin_mod/catalog"+janr_value.aboutJanr) #{janr_value.janrName} 
+                            td(class='') 
+                                form(action="/admin_mod/catalog"+janr_value.aboutJanr) 
+                                    button(type="submit") Изменить жанр
+                            td(class='') 
+                                form(action="/admin_mod/catalog"+janr_value.aboutJanr)
+                                    button(type="submit") Удалить жанр
+                else 
+                    p Нет жанров. 

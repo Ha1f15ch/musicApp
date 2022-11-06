@@ -19,4 +19,4 @@ janrMusicShema
     return '/janrs/' + this._id
 })
 
-module.exports = mongoose.model('Janrs', janrMusicShema)
+module.exports = mongoose.model('Janrs', janrMusicShema);

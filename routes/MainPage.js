@@ -6,10 +6,10 @@ var authMidleware = require('../middleware/authMidleware')
 var roleMiddlevare = require('../middleware/roleMidleware')
 
 
-router.get('/home',authMidleware, MainPageController.showAll);
+router.get('/home', authMidleware, MainPageController.showAll);
 
 router.get('/myprofile', authMidleware, MainPageController.myProfileLoad_GET);
 
-router.get('/test', /* roleMiddlevare, */ testConstoller.AllMusik_GET);
+router.get('/catalog', /* roleMiddlevare, */ );
 
 module.exports = router

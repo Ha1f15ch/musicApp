@@ -156,7 +156,7 @@ exports.login_POST = async function (req, res) {
             res.cookie('token', token)
             res.redirect('/main/Home')
         })
-        console.log(`DATA ${UTOKEN}`)
+        console.log(`DATA ${UTOKEN.token}`)
     } catch (e) {
         console.log(e)
         res.status(400).json({

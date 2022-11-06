@@ -1,0 +1,30 @@
+extends adminPage 
+
+block janrs_add
+
+    div(class='text-center')
+        h1=tite 
+
+        div(class='btn1') 
+            form(method='GET' action='/admin_mod/janr/addNew')
+                button.btn.btn-primary(type='submit') Добавить
+            form(method='POST' action="")
+                div.form-group
+                    label(for="janrName") Жанр:
+                    input#name.form-control(type='text', placeholder='Джаз' name='janrName' value=(undefined===janrs_list ? '' : janrs_list.janrName))
+                    label(for="janrDescriptions") Описание жанра:
+                    input#name.form-control(type='text', name='janrDescriptions' value=(undefined===janrs_list ? '' : janrs_list.janrDescriptions))
+                    button.btn.btn-primary(type='submit') Подтвердить
+
+            if errors 
+                ul 
+                    for error in errors 
+                        li!=error.msg 
+
+        div(class='textArray')
+            ul 
+                each janr in janrs_list
+                    li 
+                        a(href=janr.aboutJanr) #{janr.janrName} 
+                else 
+                    p Нет жанров. 
