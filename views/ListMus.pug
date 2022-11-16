@@ -1,18 +1,16 @@
 extends layout
 block MusickList
 
-    <audio src='file:///D:/music/1999-Live_Aus_Berlin_Limited_Editition/CD1_1999/01-Spiel_Mit_Mir.mp3' ></audio>
-
     div(class='text-center')
         h1= title 
         p(class='text-center') Страница с отображением всех треков
         
         p This demo shows how to create a simple APIs-powered audio player. In particular this page uses the Proximity API, the Battery Status API, the Vibration API, the Web Notifications API, and the Ambient Light API.
-
+        //- <audio src='/music/02.Z eit.mp3' controls></audio>
         ul(class='text-left')
             each trak in data 
-                //- li #[strong Название: ] #{(trak)}
-                //- | 
+                li #[strong Название: ] #{(trak)}
+                | 
                 <audio src=#{trak} controls></audio>
         
         
