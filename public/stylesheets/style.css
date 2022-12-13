@@ -1,7 +1,7 @@
-/* body {
+body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-} */
+}
 
 a {
   color: #00B7FF;
@@ -34,4 +34,14 @@ p{
 .p{
   width:100%;
   text-align:justify;
+}
+
+#stolbecTracks{
+  text-align: center;
+  background-color: rgb(179, 222, 236)
+}
+
+.textArray{
+  text-align: center;
+  background-color: rgb(9, 65, 83)
 }

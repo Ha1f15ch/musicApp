@@ -1,12 +1,30 @@
-table, th, td{
+/* table, th, td{
     border-collapse: collapse;
     border: 1px solid black;
-}
+} */
 
-table {
+#tableJanrsAdminPannel {
     margin: 5px auto;
     width: 70%;
+    border-collapse: collapse;
+    border: 1px solid black;
     border-radius: 10px;
+}
+
+#tableTracks {
+    margin: 5px auto;
+    width: 70%;
+    border-collapse: collapse;
+}
+
+#tableTracks_td_1{
+    margin: 5px auto;
+    width: 50%;
+}
+
+#tableTracks_td_2{
+    margin: 5px auto;
+    width: 50%;
 }
 
 th, td {

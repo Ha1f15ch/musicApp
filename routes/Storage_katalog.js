@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var janrController = require('../controller/janrController')
 var trackController = require('../controller/trackController')
+const multer = require('multer')
 const authMidleware = require('../middleware/authMidleware')
 const roleMidleware = require('../middleware/roleMidleware')
 const {check} = require('express-validator');
-const { showAllTrack_GET } = require('../controller/trackController');
 
 //show catalog
 router.get('/', function(req, res) {
@@ -34,17 +34,17 @@ router.get('/catalog/janrs/:id/delete', janrController.deleteJanr_GET);
 router.post('/catalog/janrs/:id/delete', janrController.deleteJanr_POST);
 
 //show musick lost ALL data
-router.get('/catalog/tracks', trackController.showAllTrack_GET)
+router.get('/catalog/tracks', trackController.showAllTrack_GET);
 
 //load ALL DATA TRACKS
-router.get('/catalog/tracks/loadByDir', trackController.loadMusFromDir_GET)
-
-//Detal info aboit mus
-router.get('/catalog/tracks/:id', trackController.detailInfoMus_GET)
+router.get('/catalog/tracks/allNotes', trackController.allTrack_GET);
 
 //Add new track (only one, by user 'for exemple')
 router.get('/catalog/tracks/addNew', trackController.AddNewTrack_GET)
 router.post('/catalog/tracks/addNew', trackController.AddNewTrack_POST)
+
+//Detal info aboit mus
+router.get('/catalog/tracks/:id', trackController.detailInfoMus_GET);
 
 //Edit track
 router.get('/catalog/tracks/:id/update', trackController.EditMus_GET)

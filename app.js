@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var fileUpload = require('express-fileupload')
+var bodyParser = require('body-parser')
+const multer = require('multer')
 const roleMidleware = require('./middleware/roleMidleware')
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
@@ -28,7 +31,9 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'D:/music')));
 

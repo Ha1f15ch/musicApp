@@ -1,0 +1,31 @@
+extends adminPage 
+
+block Note_list 
+    
+    div(class='text-center')
+        h1=tite 
+
+    h1 Здесь отображаются все треки
+
+    div(class='btn')
+        h4 Хочешь добавить трек? Добавь!
+        form(method='GET' action='/admin_mod/catalog/tracks/addNew')
+            button.btn.btn-primary(type='submit') Добавить
+
+    div(class='textArray')
+ 
+        if(note.length!=0)
+            
+            each val in note
+                table(id="tableTracks") 
+                    tr(id="tableTracks_tr")
+                        td(id="tableTracks_td_1")
+                            a(href=val.url) #{val.name} 
+                        td(id="tableTracks_td_2")
+                            <audio src=#{val.rout} controls></audio> 
+        else 
+            p Треки не найдены!
+            //- ul 
+            //-     for error in errors 
+            //-         li!= error.msg
+
