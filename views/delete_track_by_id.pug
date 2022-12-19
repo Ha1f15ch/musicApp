@@ -1,0 +1,16 @@
+extends adminPage 
+
+block delete_track_by_id
+
+    div(class='DeleteTrackData')
+        h1=title 
+
+         div(style="margin-left:20px")
+            p #[Strong Удаляем трек: ] 
+                a(href=trackData.url) #{trackData.name}
+                    <audio src=#{trackData.rout} controls></audio> 
+
+            form(method='POST' action="")
+                div.form-group 
+                    input#id.form-control(type="hidden", name='id', require='true', value=trackData._id)
+                button.btn.btn-primary(type='submit') Удалить

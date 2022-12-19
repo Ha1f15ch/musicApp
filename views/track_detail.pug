@@ -2,18 +2,25 @@ extends adminPage
 
 block track_detail
 
-    div(class='text-center')
-        h1=tite 
+    div(class='row')
+        div(class='text-center')
+            h1=tite 
         
-        p kfsdklfsdkfjsdflsdfl;sdkfl;sdkf
+            p здесь можно вывести ссылку на профиль пользователя, создавшего данный трек
 
-        h2 Заглавие: #{track.name}
-        <audio src=#{track.rout} controls></audio>  
+            h2 Заглавие: #{track.name}
+            <audio src=#{track.rout} controls></audio>  
 
-        p #[Strong Жанры:]
-            each val, index in track.janrs_track
-                a(href=val.url) #{val.janrName} 
-                if index < track.name.length - 1
-                    |,
-
+            p #[Strong Жанры:]
+                each val, index in track.janrs_track
+                    a(href=val.url) #{val.janrName} 
+                    if index < track.name.length - 1
+                        |,
+            p #[Strong Описание: ] #{track.description}
                     //- http://localhost:3000/admin_mod/catalog/tracks/6393a979bb13e5be3e899345
+        div(class='deleteSection')
+            form( method="GET" action=`/admin_mod/catalog/tracks/${track._id}/delete`) 
+                button(type="submit") Удалить
+        div(class="updateSection")
+            form(method="GET" action=`/admin_mod/catalog/tracks/${track._id}/update`) 
+                button(type="submit") Обновить даныне
