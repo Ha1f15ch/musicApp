@@ -1,5 +1,4 @@
-var Guest = require('../models/authGuest')
-var Role = require('../models/role')
+var Guest = require('../models/user.model')
 var UserProfile = require('../models/profileUser')
 
 exports.showAll = function(req, res, next) {
