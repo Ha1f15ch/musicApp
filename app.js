@@ -41,6 +41,8 @@ app.use(express.static(path.join(__dirname, 'D:/music')));
 //app.use('', ) -------------------------------------------------------------------
 app.use('/main', mainPage);
 app.use('/admin_mod', storage_katalog);
+require('./routes/auth.router')(app);
+require('./routes/test.router')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
