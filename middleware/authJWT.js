@@ -3,14 +3,23 @@ const config = require('../controller/config')
 const Role = require('../models/role.model')
 const User = require('../models/user.model')
 
-verifytocen = (req, res, next) => {
+const {TokenExpiredError} = jwt;
+
+const catchError = (err, res) => {
+    if(err instanceof TokenExpiredError) {
+        return res.status(401).send({message: 'Не авторизованы!! Срок действия токена истек!!'})
+    }
+    return res.status(401).send({message: 'Не авторизованы!!'})
+}
+
+const verifytocen = (req, res, next) => {
     let token = req.headers["x-access-token"];
     if(!token) {
         return res.status(403).send({message: 'Нет данных о текене!!'})
     }
     jwt.verify(token, config.secret, (err, decoded) => {
         if(err) {
-            return res.status(401).send({message: 'Не авторизован!! Ошибка при обработке токена!'})
+            return catchError(err, res);
         }
         req.userId = decoded.id;
         next();

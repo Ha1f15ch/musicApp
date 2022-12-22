@@ -12,4 +12,5 @@ module.exports = function(app) {
 
     app.post('/auth/signup', [verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRoleExisted], AuthController.sigup);
     app.post('/auth/signin', AuthController.signin);
+    app.post('/auth/refreshToken', AuthController.refreshToken);
 }

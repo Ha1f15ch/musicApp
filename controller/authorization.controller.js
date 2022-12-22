@@ -1,6 +1,6 @@
 const config = require('./config')
-const User = require('../models/user.model')
-const Role = require('../models/role.model')
+const db = require('../models')
+const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
 var jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs')
@@ -63,7 +63,7 @@ exports.signin = (req, res) => {
         username: req.body.username
     })
     .populate("role", "-__v")
-    .exec((err, user) => {
+    .exec(async (err, user) => {
         if(err) {
             res.status(500).send({message: err})
             return
@@ -85,8 +85,10 @@ exports.signin = (req, res) => {
         }
 
         var token = jwt.sign({id: user.id}, config.secret, {
-            expiresIn: 86400
+            expiresIn: config.jwtExpiration,
         });
+
+        let refreshToken = await RefreshToken.createToken(user);
 
         var authorities = [];
 
@@ -98,7 +100,43 @@ exports.signin = (req, res) => {
             username: user.username,
             email: user.email,
             roles: authorities,
-            accessToken: token
+            accessToken: token,
+            refreshToken: refreshToken,
         });
     });
+};
+
+exports.refreshToken = async (req, res) => {
+    const {refreshToken: requestToken} = req.body;
+
+    if(requestToken == null) {
+        return res.status(403).json({message: 'Токен обновления обязателен!!'});
+    }
+
+    try {
+        let refreshToken = await RefreshToken.findOne({ token: requestToken });
+
+        if(!refreshToken) {
+            res.status(403).json({message: 'Такого токена нет в БД!!'});
+            return;
+        }
+
+        if(RefreshToken.verifyExpiration(refreshToken)) {
+            RefreshToken.findByIdAndRemove(refreshToken._id, {useFindAndModify: false}).exec();
+
+            res.status(403).json({message: 'Токен обновления устарел, перезайдите в уч запись'});
+            return;
+        }
+
+        let newAccessToken = jwt.sign({id: refreshToken.user._id}, config.secret, {
+            expiresIn: config.jwtExpiration,
+        });
+
+        return res.status(200).json({
+            accessToken: newAccessToken,
+            refreshToken: refreshToken.token,
+        });
+    } catch (err) {
+        return res.status(500).send({message: err});
+    }
 };
