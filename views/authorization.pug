@@ -14,11 +14,11 @@ html
 
     form(action="", method="POST")
         div.form-group 
-            label(for='login') Ваш логин:
-            input#login.form-control(type='text', placeholder='Login' name='login' value=(undefined===login ? '' : GUEST.login), required='true')
+            label(for='login') Login:
+            input#login.form-control(type='text', placeholder='ExampleLoginUser' name='username' value=(undefined===username ? '' : user.username), required='true')
 
-            label(for='login') Ваш пароль:
-            input#pass.form-control(type='text', placeholder='Password' name='pass' value=(undefined===pass ? '' : GUEST.pass), required='true')
+            label(for='password') Passwprd:
+            input#pass.form-control(type='text', placeholder='12345Pass' name='pass' value=(undefined===pass ? '' : user.pass), required='true')
 
             button.btn.btn-primary(type='submit') Войти
 

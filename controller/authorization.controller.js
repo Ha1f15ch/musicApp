@@ -58,6 +58,13 @@ exports.sigup = (req, res) => {
 };
 
 //authorization
+exports.signin_GET = (req, res, next) => {
+    res.render('authorization', {
+        title: 'Вход'
+    })
+}
+
+// POST
 exports.signin = (req, res) => {
     User.findOne({
         username: req.body.username
@@ -95,7 +102,10 @@ exports.signin = (req, res) => {
         for(let i = 0; i < user.role.length; i++) {
             authorities.push("ROLE_" + user.role[i].value.toUpperCase());
         }
-        res.status(200).send({
+        /* res.status(200) */
+        res.setHeader("x-access-token", token)
+        
+        .send({
             id: user._id,
             username: user.username,
             email: user.email,
@@ -110,7 +120,10 @@ exports.refreshToken = async (req, res) => {
     const {refreshToken: requestToken} = req.body;
 
     if(requestToken == null) {
-        return res.status(403).json({message: 'Токен обновления обязателен!!'});
+        return res.status(403).render('errorsToken', {
+            title: 'Ошбика верификации токена доступа!',
+            dataError: 'Токен доступа отсутствует, проверьте настройки куки, авторизуйтесь повторно на сайте'
+        });
     }
 
     try {

@@ -10,7 +10,11 @@ module.exports = function(app) {
         next();
     });
 
+
     app.post('/auth/signup', [verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRoleExisted], AuthController.sigup);
+
+    app.get('/auth/signin', AuthController.signin_GET);
     app.post('/auth/signin', AuthController.signin);
+
     app.post('/auth/refreshToken', AuthController.refreshToken);
 }
