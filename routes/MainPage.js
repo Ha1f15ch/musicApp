@@ -1,13 +1,20 @@
-var express = require('express')
-var router = express.Router()
 var MainPageController = require('../controller/MainPageController')
 const {authJWT} = require('../middleware')
 
 
-router.get('/home', [authJWT.verifytocen], MainPageController.showAll);
+module.exports = function(app) {
+    app.use(function(req, res, next) {
+        res.header(
+            "Access-Control-Allow-Headers",
+            "x-access-token, Origin, Content-Type, Accept"
+        );
+        next();
+    })
 
-router.get('/myprofile', MainPageController.myProfileLoad_GET);
+    app.get('/home', [authJWT.verifytocen], MainPageController.showAll);
 
-router.get('/catalog');
+    app.get('/myprofile', MainPageController.myProfileLoad_GET);
 
-module.exports = router
+    app.get('/catalog');
+
+}

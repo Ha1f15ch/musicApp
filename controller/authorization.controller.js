@@ -1,6 +1,7 @@
 const config = require('./config')
-const db = require('../models')
-const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const User = require('../models/user.model')
+const Role = require('../models/role.model')
+const refreshToken = require('../models/refreschToken.model')
 
 var jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs')
@@ -95,7 +96,8 @@ exports.signin = (req, res) => {
             expiresIn: config.jwtExpiration,
         });
 
-        let refreshToken = await RefreshToken.createToken(user);
+        let refreschToken = refreshToken.createToken(user);
+        console.log('REFRESCHTOKEN___ ' + refreschToken)
 
         var authorities = [];
 
@@ -103,53 +105,71 @@ exports.signin = (req, res) => {
             authorities.push("ROLE_" + user.role[i].value.toUpperCase());
         }
         /* res.status(200) */
+        res.cookie('token', token)
         res.setHeader("x-access-token", token)
         
-        .send({
+        console.log({
             id: user._id,
             username: user.username,
             email: user.email,
             roles: authorities,
             accessToken: token,
-            refreshToken: refreshToken,
-        });
+            refreshToken: refreschToken,
+        })
+        res.redirect('/home')
     });
 };
 
-exports.refreshToken = async (req, res) => {
-    const {refreshToken: requestToken} = req.body;
+//GET
+exports.refreshToken_GET = (req, res, next) => {
+    res.render('tempPageLoad', {
+        title: 'Обновляем',
+        dataError: 'Обновляем данные'
+    });
+}
 
-    if(requestToken == null) {
-        return res.status(403).render('errorsToken', {
-            title: 'Ошбика верификации токена доступа!',
-            dataError: 'Токен доступа отсутствует, проверьте настройки куки, авторизуйтесь повторно на сайте'
-        });
+//POST
+exports.refreshToken = async (req, res) => {
+
+    tempValtoken = req.headers.cookie.split('token=')[1]
+
+    console.log(tempValtoken)
+    if(tempValtoken == null) {
+        console.log('Ошбика верификации токена доступа! Токен доступа отсутствует, проверьте настройки куки, авторизуйтесь повторно на сайте')
+        return res.status(403).redirect('/auth/signin')
     }
 
     try {
-        let refreshToken = await RefreshToken.findOne({ token: requestToken });
 
-        if(!refreshToken) {
-            res.status(403).json({message: 'Такого токена нет в БД!!'});
-            return;
-        }
+        let parseTempValToken = tempValtoken.split('.')[1]
+        let decode64ParseTempValToken = parseTempValToken.replace(/-/g, '+').replace(/_/g, '/'); //base64
+        let decodedToken = JSON.parse(Buffer.from(decode64ParseTempValToken, 'base64').toString('binary'))
 
-        if(RefreshToken.verifyExpiration(refreshToken)) {
-            RefreshToken.findByIdAndRemove(refreshToken._id, {useFindAndModify: false}).exec();
+        console.log(decodedToken.id + ' - 148 строка файла сонтроллера авторизации')
 
-            res.status(403).json({message: 'Токен обновления устарел, перезайдите в уч запись'});
-            return;
-        }
+        const tokenVerifie = await refreshToken.findOne({ 'user': decodedToken.id })// ++ error //refreshToken //63a36bcd0bf1e2ce49ccb81b
+            console.log(tokenVerifie + ' - TOKEN VERIFIE')
 
-        let newAccessToken = jwt.sign({id: refreshToken.user._id}, config.secret, {
-            expiresIn: config.jwtExpiration,
-        });
+            if(!tokenVerifie) {
+                return res.status(403).redirect('/auth/signup');/* json({message: 'Такого токена нет в БД!!'}); */
+            }
 
-        return res.status(200).json({
-            accessToken: newAccessToken,
-            refreshToken: refreshToken.token,
-        });
-    } catch (err) {
-        return res.status(500).send({message: err});
+            if(refreshToken.verifyExpiration(tokenVerifie)) {
+                await refreshToken.findByIdAndRemove(tokenVerifie._id, {useFindAndModify: false}).exec();
+                console.log('Токен REFRESCH устарел!!')
+                return res.status(403).redirect('/auth/signin');
+            }
+
+            let newAccessToken = jwt.sign({id: decodedToken.id}, config.secret, {
+                expiresIn: config.jwtExpiration,
+            });
+
+            let tempHeaderBeforeAdress = req.get('Referer')
+            console.log(tempHeaderBeforeAdress + ' - прошлый адрес')
+            res.cookie('token', newAccessToken)
+            return res.status(200).redirect('/home')
+            
+    } catch(e) {
+        return res.status(500).send({message: e});
     }
 };

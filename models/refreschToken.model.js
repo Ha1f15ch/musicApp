@@ -11,7 +11,7 @@ const RefreshTokenSchema = new mongoose.Schema({
 
 RefreshTokenSchema.statics.createToken = async function(user) {
     let expiredAt = new Date();
-    expiredAt.setSeconds(expiredAt.getSeconds() + config.jwtExpiration);
+    expiredAt.setSeconds(expiredAt.getSeconds() + config.jwtRefreshExpiration);
 
     let _token = uuidv4();
 
@@ -20,7 +20,7 @@ RefreshTokenSchema.statics.createToken = async function(user) {
         user: user._id,
         expiredDate: expiredAt.getTime(),
     });
-    console.log(_object);
+    console.log('Данные из модели токенов, token - это рефреш токен из БД' + _object);
 
     let refreshToken = await _object.save();
 

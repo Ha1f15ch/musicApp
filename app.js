@@ -15,7 +15,6 @@ var db = mongoose.connection
 db.on('error', console.error.bind(console, 'Ошибка при подключении к БД: '));
 
 //var authentication = require()-------------------------------------------------------------------------------------
-var mainPage = require('./routes/MainPage');
 var storage_katalog = require('./routes/Storage_katalog');
 var startFunction = require('./routes/startFunction')
 
@@ -41,8 +40,8 @@ app.use(express.static(path.join(__dirname, 'D:/music')));
 
 //app.use('', ) -------------------------------------------------------------------
 app.use('/', startFunction);
-app.use('/main', mainPage);
 app.use('/admin_mod', storage_katalog);
+require('./routes/MainPage')(app);
 require('./routes/auth.router')(app);
 require('./routes/test.router')(app);
 

@@ -16,5 +16,6 @@ module.exports = function(app) {
     app.get('/auth/signin', AuthController.signin_GET);
     app.post('/auth/signin', AuthController.signin);
 
+    app.get('/auth/refreshToken', AuthController.refreshToken_GET);
     app.post('/auth/refreshToken', AuthController.refreshToken);
 }

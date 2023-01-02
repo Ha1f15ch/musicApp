@@ -7,16 +7,21 @@ const {TokenExpiredError} = jwt;
 
 const catchError = (err, res) => {
     if(err instanceof TokenExpiredError) {
-        return res.status(401).render('errorsToken', {
+        /* return res.status(401).render('errorsToken', {
             title: 'Ошбика верификации токена доступа!',
             dataError: 'Не авторизованы!! Срок действия токена истек!!'
-        });
+        }); */
+        res.redirect('/auth/refreshToken')
     }
-    return res.status(401).send({message: 'Не авторизованы!!'})
+    /* return res.status(401).send({message: 'Не авторизованы!!'}) */
 }
 
 const verifytocen = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+    if(req.headers.cookie === undefined) {
+        return res.status(500).redirect('/auth/signin')
+    }
+    let tempValTokenHeader = req.headers.cookie.split('token=')[1]
+    let token = tempValTokenHeader;
     if(!token) {
         return res.status(403).render('errorsToken', {
             title: 'Ошбика верификации токена доступа!',
@@ -27,7 +32,10 @@ const verifytocen = (req, res, next) => {
         if(err) {
             return catchError(err, res);
         }
+        console.log(decoded + ' authJWT данные по декоду')
+        console.log(decoded.id + ' authJWT данные по id из декода')
         req.userId = decoded.id;
+        res.setHeader("x-access-token", token)
         next();
     })
 };
