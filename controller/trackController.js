@@ -169,9 +169,11 @@ exports.AddNewTrack_POST = [
     (req, res, next) => {
         const errors = validationResult(req);
 
+        const tempMusName = req.files.track.name.replace(/\s/gi, '_')
+
         const new_note = new Tracks({
             name: req.body.name_track,
-            rout: '/music/' + req.files.track.name,
+            rout: '/music/' + tempMusName,
             janrs_track: req.body.data_janr,
             description: req.body.description_track
         });
@@ -218,7 +220,11 @@ exports.AddNewTrack_POST = [
                 return next(err);
             } else {
                 try {
-                    req.files.track.mv('public/music/' + req.files.track.name, (err) => {
+                    /* fs.rename(req.files.track.name, tempMusName, errs => {
+                        if(errs) throw errs
+                        console.log('Правки внесены успешно')
+                    }) */
+                    req.files.track.mv('public/music/' + tempMusName, (err) => {
                         if (err) {
                             console.log(err)
                         } else {

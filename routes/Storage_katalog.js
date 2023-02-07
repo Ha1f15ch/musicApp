@@ -34,7 +34,7 @@ router.get('/catalog/janrs/:id/delete', janrController.deleteJanr_GET);
 router.post('/catalog/janrs/:id/delete', janrController.deleteJanr_POST);
 
 //show musick lost ALL data
-router.get('/catalog/tracks', trackController.showAllTrack_GET);
+router.get('/catalog/tracks', trackController.showAllTrack_GET); // тестовый эндпоинт, проверяется способ преобразования файловых названий понужной форме
 
 //load ALL DATA TRACKS
 router.get('/catalog/tracks/allNotes', trackController.allTrack_GET);

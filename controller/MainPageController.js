@@ -3,7 +3,7 @@ var UserProfile = require('../models/profileUser')
 
 exports.showAll = function(req, res, next) {
 
-    Guest.find({}, 'login pass')
+    Guest.find({})
     .exec(function(err, User_data) {
         console.log(User_data)
         if(err) {return next(err)}

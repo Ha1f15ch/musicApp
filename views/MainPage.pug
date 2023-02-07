@@ -1,11 +1,10 @@
 extends layout
 
 block content 
-  div(class='text-center')
+  div(class='text-loader')
     h1= title
     p(class='text-center') Главная страница с отображением ключей - пароль/логин
 
     ul 
       each data in Udata
-        li #[strong Пароль: ]#{(data.pass)}
-        |  #[strong Логин: ]#{data.login}
+        li #[strong Пароль: ]#{(data.pass)} - #[strong Логин: ]#{(data.username)}
