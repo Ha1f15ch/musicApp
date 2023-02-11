@@ -228,7 +228,7 @@ exports.AddNewTrack_POST = [
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log('Выполнено! - ', req.files.track.name)
+                            console.log('Выполнено преобразование из - ', req.files.track.name, ' в - ', tempMusName)
                         }
                     })
                 } catch (e) {
