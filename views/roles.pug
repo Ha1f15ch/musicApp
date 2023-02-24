@@ -1,0 +1,19 @@
+extends adminPage 
+
+block roles 
+    .text-center 
+    h1=title 
+
+    .textArray 
+        ul 
+            each role in roles_list 
+                table(id="tableRoleList")
+                    tr 
+                        td 
+                            p #{role.value}
+            else 
+                p Системных ролей нет!
+
+    .btn 
+        form(action="/admin_mod/catalog/rols/add", method="GET") 
+            button.btn.btn-primary(type="submit") Добавить

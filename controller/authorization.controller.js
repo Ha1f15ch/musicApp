@@ -2,70 +2,88 @@ const config = require('./config')
 const User = require('../models/user.model')
 const Role = require('../models/role.model')
 const refreshToken = require('../models/refreschToken.model')
+const UserProfile = require('../models/profileUser')
+const {validationResult} = require('express-validator')
 
 var jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs')
 
-//registration 
-exports.sigup = (req, res) => {
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        pass: bcrypt.hashSync(req.body.pass, 8)
-    });
+//Registration GET
+exports.signup_get = function(req, res, next) {
+    res.render('registration', {title: 'Регистрация'})
+}
 
-    user.save((err, user) => {
-        if(err) {
-            res.status(500).send({message: err})
+//registration POST
+exports.sigup = [
+    
+    async (req, res, next) => {
+        const errors = validationResult(req)
+        
+        if(!errors.isEmpty()) {
+            res.render('registration', {
+                title: 'Регистрация',
+                errorsMSG: errors.array()
+            })
             return;
-        }
-        if(req.body.roles) {
-            Role.find({
-                value: {$in: req.body.roles}
-            }, (err, roles) => {
-                if(err) {
-                    res.status(500).send({message: err})
-                    return;
-                }
-
-                user.role = roles.map(role => role._id)
-                user.save(err => {
-                    if(err) {
-                        res.status(500).send({message: err})
-                        return;
-                    }
-                    //succesfull -------------------------------
-                    res.send({message: 'Пользователь успешно зарегистрирован!!'})
-                })
-            })
         } else {
-            Role.findOne({value: "USER"}, (err, role) => {
-                if(err) {
-                    res.status(500).send({message: err})
-                    return
-                }
-                user.role = [role._id];
-                user.save(err => {
-                    if(err) {
-                        res.status(500).send({message: err})
-                        return;
-                    }
-                    //succesful-------------------------------------
-                    res.send({message: 'Ползователь успешно зарегистрирован!!'})
-                })
+            const loginUser = await User.findOne({
+                username: req.body.username
             })
-        }
-    })
-};
+            const emailUser = await User.findOne({
+                email: req.body.email
+            })
+            if(loginUser) {
+                return res.render('registration', {
+                    title: 'Регистрация',
+                    message: "Пользователь с таким именем уже зарегистрирован!"
+                })
+            } else if(emailUser) {
+                return res.render('registration', {
+                    title: 'Регистрация',
+                    message: "Пользователь с таким email уже зарегистрирован!"
+                })
+            } else {
+                const userPass = bcrypt.hashSync(req.body.pass, 5)
+                const userRole = await Role.findOne({
+                    value: "ADMIN"
+                })
 
-//authorization
+                var USER = new User({
+                    username: req.body.username,
+                    email: req.body.email,
+                    pass: userPass,
+                    role: [userRole.value]
+                })
+                
+                USER.save(function(err) {
+                    if(err) {
+                        return next(err)
+                    }
+                    res.redirect('/auth/signin')
+                })
+
+                var PROFILE = new UserProfile({
+                    id_login_guest: USER._id
+                })
+
+                PROFILE.save(function(err) {
+                    if(err) {
+                        return next(err)
+                    }
+                })
+            }
+        }
+    }
+];
+
+//authorization GET
 exports.signin_GET = (req, res, next) => {
     res.render('authorization', {
         title: 'Вход'
     })
 }
 
-// POST
+//authorization POST
 exports.signin = (req, res) => {
     User.findOne({
         username: req.body.username

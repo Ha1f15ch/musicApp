@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var janrController = require('../controller/janrController')
 var trackController = require('../controller/trackController')
-const multer = require('multer')
+var userController = require('../controller/userRole.controller')
 const authMidleware = require('../middleware/authMidleware')
 const roleMidleware = require('../middleware/roleMidleware')
 const {check} = require('express-validator');
@@ -54,6 +54,22 @@ router.post('/catalog/tracks/:id/update', trackController.EditMus_POST)
 router.get('/catalog/tracks/:id/delete', trackController.DeleteMus_GET)
 router.post('/catalog/tracks/:id/delete', trackController.DeleteMus_POST)
 
+//UserRols storage - СПРАВОЧНИК
+router.get('/catalog/rols', userController.allRols_GET)
 
+//add userRols item
+router.get('/catalog/rols/add', userController.createRole_GET)
+router.post('/catalog/rols/add', userController.createRole_POST)
+
+//InfoRoles
+router.get('/catalog/rols/:id', userController.infoRole_GET)
+
+//edit UserRols item
+router.get('/catalog/rols/:id/edit', userController.editRole_GET)
+router.post('/catalog/rols/:id/edit', userController.editRole_POST)
+
+//delete UserRole item
+router.get('/catalog/rols/:id/delete', userController.deleteRole_GET)
+router.post('/catalog/rols/:id/delete', userController.deleteRole_POST)
 
 module.exports = router;

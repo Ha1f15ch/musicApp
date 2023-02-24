@@ -8,21 +8,26 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div(class='page-header')
-       h1(class='registration') Регистрация
-    div 
+    div(calass="main")
+      div(class='page-header')
+        h1(class='registration') Регистрация 
+      div
+        p=message
 
     form(action="", method="POST")
         div.form-group 
-            label(for='login') Ваш логин:
-            input#login.form-control(type='text', placeholder='Login' name='login' value=(undefined===login ? '' : GUEST.login), required='true')
+            label(for='username') Ваш username:
+            input#username.form-control(type='text', placeholder='username' name='username' value=(undefined===username ? '' : User.username), required='true')
 
-            label(for='login') Ваш пароль:
-            input#pass.form-control(type='text', placeholder='Password' name='pass' value=(undefined===pass ? '' : GUEST.pass), required='true')
+            label(for='email') Ваш email:
+            input#email.form-control(type='text', placeholder='email' name='email' value=(undefined===email ? '' : User.email), required='true')
+
+            label(for='pass') Ваш пароль:
+            input#pass.form-control(type='text', placeholder='Password' name='pass' value=(undefined===pass ? '' : User.pass), required='true')
 
             button.btn.btn-primary(type='submit') Зарегистрироваться
 
-        if errors 
+        if errorsMSG 
             ul 
-                for error in errors 
+                for error in errorsMSG 
                     li!= error.msg 

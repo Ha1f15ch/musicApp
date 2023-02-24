@@ -5,12 +5,6 @@ block janrs
     div(class='text-center')
         h1=tite 
 
-        div(class='btn') 
-            form(method='GET' action='/admin_mod/catalog/janr/addNew')
-                button.btn.btn-primary(type='submit') Добавить
-
-        //- block delete_janr_by_id
-
         div(class='textArray')
             ul 
                 each janr_value in janrs_list
@@ -26,3 +20,7 @@ block janrs
                                     button(type="submit") Удалить жанр
                 else 
                     p Нет жанров. 
+
+        div(class='btn') 
+            form(method='GET' action='/admin_mod/catalog/janr/addNew')
+                button.btn.btn-primary(type='submit') Добавить

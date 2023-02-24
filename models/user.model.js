@@ -6,7 +6,7 @@ var user = new Schema({
     username: {type: String, require: true, unique: true},
     email: {type: String, required: true, unique: true, trim: true},
     pass: {type: String, required: true, trim: true},
-    role: [{type: String, ref: 'Role'}]
+    role: [{type: String, ref: 'Role', default: 'USER'}]
 });
 
 user

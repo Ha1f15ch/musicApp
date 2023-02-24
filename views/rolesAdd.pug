@@ -1,0 +1,28 @@
+extends adminPage 
+
+block rolesAdd
+
+    div(class='text-center')
+        h1=tite 
+
+        div(class='btn1') 
+            form(method='GET' action='/admin_mod/catalog/rols/add')
+                button.btn.btn-primary(type='submit') Добавить
+            form(method='POST' action="")
+                div.form-group
+                    label(for="value") Системная роль:
+                    input#value.form-control(type='text', placeholder='ADMIN' name='value' value=(undefined===roles_list ? '' : roles_list.value))
+                    button.btn.btn-primary(type='submit') Подтвердить
+
+            if errors 
+                ul 
+                    for error in errors 
+                        li!=error.msg 
+
+        div(class='textArray')
+            ul 
+                each rol in roles_list
+                    li 
+                        p #{rol.value} 
+                else 
+                    p Нет Ролей. 

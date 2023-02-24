@@ -16,12 +16,26 @@ html
           block sidebar 
             ul(class='sidebar-nav list-group' id="list-tab" role="tablist")
               li
-                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/main/Home' role="tab" aria-controls="main") Главная 
+                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/Home' role="tab" aria-controls="main") Главная 
               li 
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/admin_mod/catalog/tracks' role="tab" aria-controls="main") Треклист
               li 
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/admin_mod/catalog/janrs' role="tab" aria-controls="main") Жанры  
         div(class='col-lg-8')
+              .text-center 
+                h1 Список разделов
+                  .table-directory 
+                    ul 
+                      table(id="table-directory")
+                        tr 
+                            td(calss="janrCollomn")
+                                a(href="/admin_mod/catalog/janrs") Жанры
+                        tr 
+                            td(class="trackColomn")
+                                a(href="/admin_mod/catalog/tracks/allNotes") Треки
+                        tr 
+                            td(class="rolsColomn")
+                                a(href="/admin_mod/catalog/rols/") Системные роли пользователей
               block janrs
               block janrs_add
               block detal_info_janr_admin
@@ -34,6 +48,8 @@ html
               block detal_info_track_admin
               block delete_track_by_id
               block update_track_by_id 
+              block roles 
+              block rolesAdd
 
 
     //- script(src="/scripts/script.js") 
