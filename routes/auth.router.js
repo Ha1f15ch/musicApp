@@ -17,8 +17,8 @@ module.exports = function(app) {
         verifySignUp.checkDuplicateUserNameOrEmail, 
         verifySignUp.checkRoleExisted,
         body('username', "Поле Username не может быть пустым, а также быть короче 4 и длиннее 20 символов")
-            .not()
-            .isLength({min: 4, max: 20}),
+            .isLength({min: 4, max: 20})
+            .not(),
         body('email', "Поле с Email не может быть пустым")
             .isEmail().withMessage('Это не Email')
             .normalizeEmail()
@@ -31,9 +31,9 @@ module.exports = function(app) {
                     }
                 })
             }),
-        body('pass', "Поле с паролем не может быть пустым, а также быть короче 6 и длиннее 12 символов")
+        body('pass')
             .trim()
-            .isLength({min: 6, max: 12})
+            .isLength({min: 6, max: 12}).withMessage("Поле с паролем не может быть пустым, а также быть короче 6 и длиннее 12 символов")
             .not()
             .isIn(['123', 'password', 'god', '123456', 'qwerty', 'qwertyu'])
             .withMessage('Не используйте простые пароли')

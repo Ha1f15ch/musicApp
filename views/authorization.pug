@@ -8,13 +8,16 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div(class='page-header')
-       h1(class='registration') Авторизация
-    div 
+    div(calass="main")
+      div(class='page-header')
+        h1(class='registration') Авторизация
+      div 
+        p=messageData
 
-    form(action="", method="POST")
+    div(calass="formSIGIN") 
+      form(action="", method="POST")
         div.form-group 
-            label(for='login') Login:
+            label(for='login') useraname:
             input#login.form-control(type='text', placeholder='ExampleLoginUser' name='username' value=(undefined===username ? '' : user.username), required='true')
 
             label(for='password') Passwprd:

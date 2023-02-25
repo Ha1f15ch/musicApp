@@ -29,18 +29,19 @@ exports.sigup = [
             const loginUser = await User.findOne({
                 username: req.body.username
             })
+            console.log(req.body.username)
             const emailUser = await User.findOne({
                 email: req.body.email
             })
             if(loginUser) {
                 return res.render('registration', {
                     title: 'Регистрация',
-                    message: "Пользователь с таким именем уже зарегистрирован!"
+                    messageData: "Пользователь с таким именем уже зарегистрирован!"
                 })
             } else if(emailUser) {
                 return res.render('registration', {
                     title: 'Регистрация',
-                    message: "Пользователь с таким email уже зарегистрирован!"
+                    messageData: "Пользователь с таким email уже зарегистрирован!"
                 })
             } else {
                 const userPass = bcrypt.hashSync(req.body.pass, 5)
@@ -84,19 +85,28 @@ exports.signin_GET = (req, res, next) => {
 }
 
 //authorization POST
-exports.signin = (req, res) => {
-    User.findOne({
+exports.signin = async (req, res, next) => {
+    const user = await User.findOne({
         username: req.body.username
     })
-    .populate("role", "-__v")
-    .exec(async (err, user) => {
-        if(err) {
-            res.status(500).send({message: err})
-            return
-        }
+    
         if(!user) {
-            return res.status(404).send({message: 'Пользователь не найден!!'})
+            return res.render('authorization', {
+                title: 'Вход',
+                messageData: 'Пользователь с таким usename не найден'
+            })
         }
+
+    const rols = await Role.findOne({
+        value: user.role[0]
+    })
+
+    if(!rols) {
+        return res.render('authorization', {
+            title: 'Вход',
+            messageData: 'Ошибка в считывании ролей уч. записи'
+        })
+    }
 
         var passwordIsValid = bcrypt.compareSync(
             req.body.pass,
@@ -104,24 +114,19 @@ exports.signin = (req, res) => {
         );
 
         if(!passwordIsValid) {
-            return res.status(401).send({
-                accessToken: null,
-                message: 'Не правильный пароль!'
-            });
+            return res.render('authorization', {
+                title: 'Вход',
+                messageData: 'Неверно указан пароль'
+            })
         }
 
-        var token = jwt.sign({id: user.id}, config.secret, {
+        var token = jwt.sign({id: user._id}, config.secret, {
             expiresIn: config.jwtExpiration,
         });
 
         let refreschToken = refreshToken.createToken(user);
         console.log('REFRESCHTOKEN___ ' + refreschToken)
 
-        var authorities = [];
-
-        for(let i = 0; i < user.role.length; i++) {
-            authorities.push("ROLE_" + user.role[i].value.toUpperCase());
-        }
         /* res.status(200) */
         res.cookie('token', token)
         res.setHeader("x-access-token", token)
@@ -130,12 +135,11 @@ exports.signin = (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
-            roles: authorities,
+            roles: user.role[0],
             accessToken: token,
             refreshToken: refreschToken,
         })
         res.redirect('/home')
-    });
 };
 
 //GET
