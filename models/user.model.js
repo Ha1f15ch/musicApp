@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 var user = new Schema({
     username: {type: String, require: true, unique: true},
     email: {type: String, required: true, unique: true, trim: true},
-    pass: {type: String, required: true, trim: true},
-    role: [{type: String, ref: 'Role', default: 'USER'}]
+    pass: {type: String, required: false, trim: true},
+    role: [{type: String, ref: 'Role'}]
 });
 
 user

@@ -21,9 +21,10 @@ html
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/admin_mod/catalog/tracks' role="tab" aria-controls="main") Треклист
               li 
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/catalog/janrs' role="tab" aria-controls="main") Жанры 
-        div(class='col-md-8')
+        div(class='col-md-8 container-fluid')
               block content 
               block Profile 
+              block UpdateProfile
               block MusickList
               block errorToken 
               block tempPageLoad

@@ -27,6 +27,9 @@ html
 
             button.btn.btn-primary(type='submit') Зарегистрироваться 
 
+        .IN 
+          a(href="/auth/signin") Войти
+
         if errorsMSG 
             ul 
                 for error in errorsMSG 

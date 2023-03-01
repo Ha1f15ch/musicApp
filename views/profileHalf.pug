@@ -2,8 +2,25 @@ extends layout
 
 block Profile
 
-    div.text-center
+    .root 
         h1=title 
             div(class='myInfo')
                 h5 Информация о пользователе
-                
+            .mainData 
+                .userPart
+                    .usernameSection
+                        h3 Username: #{user.username}
+                    .emailSection
+                        h3 Email: #{user.email}
+                .profilePart 
+                    .FirstNameSection 
+                        h3 Имя: #{userProfile.FirstName}
+                    .MidNameSection 
+                        h3 Фамилия: #{userProfile.MidName}
+                    .LastNameSection 
+                        h3 Отчество: #{userProfile.LastName}
+                    .AboutUserSection 
+                        h3 О себе: #{userProfile.AboutUser}
+            .lastData 
+                button.btn.btn-primary(type="submit" id="buttonToUpdate" onclick="window.location.href='/myprofile/update'") Изменить
+    script(defer type="module" src="/scripts/script.js")

@@ -45,3 +45,41 @@ p{
   text-align: center;
   background-color: rgb(9, 65, 83)
 }
+
+.titleDataUpdate {
+  text-align: center;
+}
+
+.userData {
+  text-align:left;
+  width:100%;
+}
+
+.usernameSection, .emailSection {
+  display: inline-block;
+  place-items:inherit;
+  width:50%;
+}
+
+.passwordSection {
+  display: inline-block;
+  place-items:inherit;
+  width:50%;
+}
+
+.userProfileData {
+  text-align:left;
+  width:100%;
+}
+
+.FirstNameSection, .MidNameSection, .LastNameSection {
+  display: inline-block;
+  place-items:inherit;
+  width:33%;
+}
+
+.AboutUserSection {
+  display: inline-block;
+  place-items:inherit;
+  width:100%;
+}

@@ -5,6 +5,9 @@ var DataPlaylistUsers = require('../models/DataPlaylistUsers.model')
 const async = require('async');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../controller/config')
+const { validationResult } = require('express-validator');
+
+var bcrypt = require('bcryptjs')
 
 exports.showAll = function(req, res, next) {
 
@@ -19,33 +22,19 @@ exports.showAll = function(req, res, next) {
 exports.myProfileLoad_GET = function(req, res, next) { //res.render('profileHalf', {title: 'Мой профиль'})
     try {
         let tempValTokenHeader = req.headers.cookie.split('token=')[1]
-        console.log('MainPageController.js__22 - ', tempValTokenHeader)
         const decodedData = jwt.verify(tempValTokenHeader, secret)
         req.user = decodedData
         console.log('IdUser - ', req.user)
+
         async.parallel({
             userProfile: function(callback) {
-                UserProfile.findById(req.user.id)
+                UserProfile.findOne({id_login_guest: req.user.id})
                     .exec(callback)
             },
             user: function(callback) {
                 User.findById(req.user.id)
                     .exec(callback)
             },
-            /* playlists: function(callback) {
-                Playlists.find({'UserID_has_Playlist': req.user.id})
-                    .exec(callback)
-            },
-            dataPlaylistUser: function(callback) {
-                DataPlaylistUsers.find({})
-                    .populate('Playlists', 'TrackList')
-                    .exec(callback)
-            } */
-            /* user from id, from token
-             by idUser found userProfile
-             by UserId found Playlist (name and other)
-             by Id User and Id Playlist found track in playlists
-             by IdUser found track List for USerProfile */
         }, function(err, results) {
             if(err) {
                 return next(err);
@@ -64,4 +53,82 @@ exports.myProfileLoad_GET = function(req, res, next) { //res.render('profileHalf
     } catch(e) {
         console.log(e)
     }
+};
+
+//Update page with profile User GET
+exports.UPDATEmyProfileLoad_GET = async (req, res, next) => {
+    
+    let tempValTokenHeader = req.headers.cookie.split('token=')[1]
+    const decodedData = jwt.verify(tempValTokenHeader, secret)
+    req.user = decodedData
+    var dataForFind = req.user.id
+    var foundDataProfile = await UserProfile.findOne({id_login_guest: dataForFind});
+    //var IdProfileUser = foundDataProfile._id
+
+    async.parallel({
+        USER: function(callback) {
+            User.findById(dataForFind).exec(callback)
+        }
+    }, (err, results) => {
+        if(err) {
+            return next(err)
+        }
+        res.render('UpdateProfile', {
+            title: 'Изменение данных профиля',
+            userProfile: foundDataProfile,
+            user: results.USER
+        })
+    })
 }
+
+//Update page with profile User POST
+exports.UPDATEmyProfileLoad_POST = [
+    
+   async (req, res, next) => {
+        const errors = validationResult(req)
+
+        let tempValTokenHeader = req.headers.cookie.split('token=')[1]
+        const decodedData = jwt.verify(tempValTokenHeader, secret)
+        req.user = decodedData
+        var dataForFind = req.user.id
+        var foundDataProfile = await UserProfile.findOne({id_login_guest: dataForFind});
+        var IdProfileUser = foundDataProfile._id
+
+        var USER = new User({
+            username: req.body.username,
+            email: req.body.email,
+            _id: dataForFind
+        })
+
+        var PROFILE = new UserProfile({
+            FirstName: typeof req.body.FirstName === "undefined" ? ' ' : req.body.FirstName,
+            MidName: typeof req.body.MidName === "undefined" ? ' ' : req.body.MidName,
+            LastName: typeof req.body.LastName === "undefined" ? ' ' : req.body.LastName,
+            AboutUser: typeof req.body.AboutUser === "undefined" ? ' ' : req.body.AboutUser,
+            _id: IdProfileUser
+        })
+
+        if(!errors.isEmpty()) {
+            res.render('UpdateProfile', {
+                title: 'Изменение данных профиля',
+                userProfile: PROFILE,
+                user: USER,
+                errors: errors.array()
+            });
+        } else {
+            User.findByIdAndUpdate(dataForFind, USER, {}, function(err) {
+                if(err) {
+                    return next(err);
+                }
+                console.log('140_USER UPDATED')
+            })
+            UserProfile.findByIdAndUpdate(IdProfileUser, PROFILE, {}, function(err) {
+                if(err) {
+                    return next(err);
+                }
+                console.log('146_USER_PROFILE_UPDATED')
+            })
+            res.redirect('/myprofile')
+        }
+    }
+]
