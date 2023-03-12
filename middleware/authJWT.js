@@ -7,13 +7,8 @@ const {TokenExpiredError} = jwt;
 
 const catchError = (err, res) => {
     if(err instanceof TokenExpiredError) {
-        /* return res.status(401).render('errorsToken', {
-            title: 'Ошбика верификации токена доступа!',
-            dataError: 'Не авторизованы!! Срок действия токена истек!!'
-        }); */
         res.redirect('/auth/refreshToken')
     }
-    /* return res.status(401).send({message: 'Не авторизованы!!'}) */
 }
 
 const verifytocen = (req, res, next) => {

@@ -1,18 +1,17 @@
 extends layout
 block MusickList
 
-    div(class='text-center')
-        h1= title 
-        p(class='text-center') Страница с отображением всех треков
-        
-        p This demo shows how to create a simple APIs-powered audio player. In particular this page uses the Proximity API, the Battery Status API, the Vibration API, the Web Notifications API, and the Ambient Light API.
-        //- <audio src='/music/02.Z eit.mp3' controls></audio>
-        ul(class='text-left')
-            each trak in data 
-                li #[strong Название: ] #{(trak)}
-                | 
-                <audio src=#{trak} controls></audio>
-        
-        
-    div(class='next-values')
-   
+    .normal-theme
+        .text-center
+            h1= title 
+            p.text-center Страница с отображением всех треков
+
+            ul.text-left
+                each trak in data 
+                    li #[strong Название: ] #{(trak)}
+                    | 
+                    <audio id="audio" src=#{trak} controls>
+                        p I'm sorry but your browser doesn't support the <code>audio</code> element, so you can't run the demo.
+                    </audio>
+        button(type="submit" onclick="window.location.href='/admin_mod/catalog/tracks/allNotes'") test redirect 
+    script(defer type="module" src="/scripts/scriptPlaylist.js")

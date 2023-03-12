@@ -3,7 +3,7 @@ var router = express.Router();
 var janrController = require('../controller/janrController')
 var trackController = require('../controller/trackController')
 var userController = require('../controller/userRole.controller')
-const authMidleware = require('../middleware/authMidleware')
+var authJWT = require('../middleware/authMidleware')
 const roleMidleware = require('../middleware/roleMidleware')
 const {check} = require('express-validator');
 

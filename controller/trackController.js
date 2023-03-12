@@ -1,27 +1,10 @@
 var Janrs = require('../models/janrs');
-var Albom = require('../models/albom');
 var Tracks = require('../models/testTracks');
 const fs = require('fs');
-const path = require('path');
 const async = require('async');
-const validator = require('express-validator');
-const {
-    ValidationHalt
-} = require('express-validator/src/base');
-const {
-    validationResult,
-    Result,
-    body
-} = require('express-validator');
-const {
-    title
-} = require('process');
-const multer = require('multer')
-const e = require('express');
-const {
-    encode
-} = require('querystring');
-const { type } = require('os');
+const {validationResult, Result, body} = require('express-validator');
+const jwt = require('jsonwebtoken');
+const { secret } = require('../controller/config')
 var dir = "G:/Musik_app/musik_app/public/music";
 
 //SHOW ALL TRACKS
@@ -169,13 +152,19 @@ exports.AddNewTrack_POST = [
     (req, res, next) => {
         const errors = validationResult(req);
 
+        let tempValTokenHeader = req.headers.cookie.split('token=')[1]
+        const decodedData = jwt.verify(tempValTokenHeader, secret)
+        req.user = decodedData
+        var dataForFind = req.user.id
+
         const tempMusName = req.files.track.name.replace(/\s/gi, '_')
 
         const new_note = new Tracks({
             name: req.body.name_track,
             rout: '/music/' + tempMusName,
             janrs_track: req.body.data_janr,
-            description: req.body.description_track
+            description: req.body.description_track,
+            userIdCreated: dataForFind
         });
 
         console.log('Данные записываемые в БД - ', new_note)

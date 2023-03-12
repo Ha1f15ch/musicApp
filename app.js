@@ -8,6 +8,8 @@ var fileUpload = require('express-fileupload')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 
+var authJWT = require('./middleware/authJWT')
+
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
 mongoose.connect(mongoConectURL)
 mongoose.Promise = global.Promise
@@ -40,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'D:/music')));
 
 //app.use('', ) -------------------------------------------------------------------
 app.use('/', startFunction);
-app.use('/admin_mod', storage_katalog);
+app.use('/admin_mod', [authJWT.verifytocen], storage_katalog);
 require('./routes/MainPage')(app);
 require('./routes/auth.router')(app);
 require('./routes/test.router')(app);

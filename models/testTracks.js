@@ -6,7 +6,8 @@ var TestMusikList = new Schema({
     name: {type: String, required: true, unique: true},
     rout: {type: String, required: true, unique: true},
     janrs_track: [{type: Schema.ObjectId, ref: "Janrs"}],
-    description: {type: String, required: false}
+    description: {type: String, required: false},
+    userIdCreated: {type: Schema.ObjectId, ref: "User"}
 })
 
 TestMusikList
