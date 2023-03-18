@@ -163,3 +163,7 @@ p{
 .playing_track {
   background-image: url(/img/pause.png);
 }
+
+.hideClass {
+  display: none;
+}

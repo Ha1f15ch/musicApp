@@ -25,7 +25,7 @@ block Note_list
         div(class="col-lg-2")
             br
         div(class="col-lg-8 footer_palyer_wrapper justify-content-center text-center shadow")
-            div(class="player")
+            div(class="player hideClass")
                 div(class="name_song") 
                 | 
                 <audio class="audio_player" src=''></audio>
@@ -33,10 +33,10 @@ block Note_list
                     div(class="progress_player")
                 div(class="buttons_player")
                     div(class="btn prev_player")
-                        img(src="/img/prev.png", alt="previos")
+                        img(class="prev_player_img" src="/img/prev.png", alt="previos")
                     div(class="btn")
                         img(class="play_player" src="/img/play.png", alt="play")
                     div(class="btn next_player")
-                        img(src="/img/next.png", alt="next")
+                        img(class="next_player_img" src="/img/next.png", alt="next")
         div(class="col-lg-2")
     script(defer type="module" src="/scripts/main_playlist.js")
