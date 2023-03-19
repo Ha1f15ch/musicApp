@@ -2,7 +2,6 @@ window.document.addEventListener('DOMContentLoaded', () => {
     const playlist = document.querySelector('.playlist')
 
     var PrevElement = document.querySelectorAll('.song_item')
-    console.log(PrevElement)
 
     const player = document.querySelector('.player')
     const name_song = document.querySelector('.name_song')
@@ -19,10 +18,20 @@ window.document.addEventListener('DOMContentLoaded', () => {
         let DataSRCSong = tempValDataSongItem.getAttribute('href')
         musArray.push(DataSRCSong)
     }
-    const longMusArray = musArray.length
-    console.log(musArray)
 
-    function playForPlayerFunction() {}
+    function progressBar(e) {
+        const {duration, currentTime} = e.srcElement
+        const progressPercent = (currentTime / duration) * 100
+        progress_player.style.width = `${progressPercent}%`
+    }
+
+    function setProgressInProgressBar(e) {
+        const width = this.clientWidth
+        const clickPositionX = e.offsetX
+        const duration = audio_player.duration
+
+        audio_player.currentTime = (clickPositionX / width) * duration
+    }
 
     function deleteClass(classValue) {
         classValue.querySelector('.button_play').classList.remove('playing_track')
@@ -33,12 +42,41 @@ window.document.addEventListener('DOMContentLoaded', () => {
             classValue.querySelector('.button_play').classList.add('playing_track')
             audio_player.classList.add('playing')
             return true
-        } else {
-            console.log('Error in load href-s song item')
         }
     }
 
-
+    function nextSong() {
+        audio_player.pause()
+        for(let i = 0; i < musArray.length; i++) {
+            if(musArray[i] == (`/music/${audio_player.src.split('/')[4]}`)) { //определяется текущий элемент
+                let nextSong = musArray[i+1]
+                if(nextSong == undefined) {
+                    audio_player.src = musArray[musArray.length - 1]
+                    for (let j = 0; j < PrevElement.length; j++) {
+                        if(PrevElement[j].querySelector('.button_play').getAttribute('href') == (`/music/${audio_player.src.split('/')[4]}`)) {
+                            name_song.innerHTML = PrevElement[j].querySelector('.button_play').getAttribute('val')
+                            deleteClass(PrevElement[j])
+                            addClass(PrevElement[j])
+                        } 
+                    }
+                    play_player.src = '/img/pause.png'
+                    audio_player.play()
+                } else {
+                    audio_player.src = nextSong
+                    for (let j = 0; j < PrevElement.length; j++) {
+                        deleteClass(PrevElement[j])
+                        if(PrevElement[j].querySelector('.button_play').getAttribute('href') == (`/music/${audio_player.src.split('/')[4]}`)) {
+                            name_song.innerHTML = PrevElement[j].querySelector('.button_play').getAttribute('val')
+                            addClass(PrevElement[j])
+                        }
+                    }
+                    play_player.src = '/img/pause.png'
+                    audio_player.play()
+                }
+                break;
+            }
+        }
+    }
 
     playlist.addEventListener('click', (elem) => {
         var song_name = elem.target.getAttribute('val')
@@ -96,11 +134,9 @@ window.document.addEventListener('DOMContentLoaded', () => {
 
     prev_player.addEventListener('click', (elem) => {
         audio_player.pause()
-        console.log(elem.target)
         for(let i = 0; i < musArray.length; i++) {
             if(musArray[i] == (`/music/${audio_player.src.split('/')[4]}`)) {
                 let prevSong = musArray[i-1]
-                console.log(musArray[i-1])
                 if(prevSong == undefined) {
                     audio_player.src = musArray[0]
                     for (let j = 0; j < PrevElement.length; j++) {
@@ -114,7 +150,6 @@ window.document.addEventListener('DOMContentLoaded', () => {
                     audio_player.play()
                 } else {
                     audio_player.src = musArray[i-1]
-                    console.log(audio_player.src, 'перед правильным условием')
                     for (let j = 0; j < PrevElement.length; j++) {
                         deleteClass(PrevElement[j])
                         if(PrevElement[j].querySelector('.button_play').getAttribute('href') == (`/music/${audio_player.src.split('/')[4]}`)) {
@@ -130,41 +165,11 @@ window.document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    next_player.addEventListener('click', (elem) => {
-        audio_player.pause()
-        console.log(elem.target)
-        for(let i = 0; i < musArray.length; i++) {
-            if(musArray[i] == (`/music/${audio_player.src.split('/')[4]}`)) { //определяется текущий элемент
-                let nextSong = musArray[i+1]
-                console.log(nextSong)
-                if(nextSong == undefined) {
-                    audio_player.src = musArray[musArray.length - 1]
-                    for (let j = 0; j < PrevElement.length; j++) {
-                        if(PrevElement[j].querySelector('.button_play').getAttribute('href') == (`/music/${audio_player.src.split('/')[4]}`)) {
-                            name_song.innerHTML = PrevElement[j].querySelector('.button_play').getAttribute('val')
-                            deleteClass(PrevElement[j])
-                            addClass(PrevElement[j])
-                        } 
-                    }
-                    play_player.src = '/img/pause.png'
-                    audio_player.play()
-                } else {
-                    audio_player.src = nextSong
-                    console.log(audio_player.src, 'перед правильным условием')
-                    for (let j = 0; j < PrevElement.length; j++) {
-                        deleteClass(PrevElement[j])
-                        if(PrevElement[j].querySelector('.button_play').getAttribute('href') == (`/music/${audio_player.src.split('/')[4]}`)) {
-                            name_song.innerHTML = PrevElement[j].querySelector('.button_play').getAttribute('val')
-                            addClass(PrevElement[j])
-                        }
-                    }
-                    play_player.src = '/img/pause.png'
-                    audio_player.play()
-                }
-                break;
-            } else {
-                console.log('МИМО')
-            }
-        }
-    })
+    next_player.addEventListener('click', nextSong)
+
+    audio_player.addEventListener('timeupdate', progressBar)
+
+    progress_container_player.addEventListener('click', setProgressInProgressBar)
+
+    audio_player.addEventListener('ended', nextSong)
 })
