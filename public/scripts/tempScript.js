@@ -5,8 +5,5 @@ document.addEventListener('DOMContentLoaded', () => {
     //     method: 'POST',
     // })
     // .then(response => console.log(response));
-
     document.getElementById('tempBTN').click();
-    console.log(document.getElementById('tempBTN'))
-
 })

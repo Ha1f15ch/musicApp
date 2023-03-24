@@ -11,6 +11,9 @@ window.document.addEventListener('DOMContentLoaded', () => {
     const next_player = document.querySelector('.next_player_img')
     const progress_container_player = document.querySelector('.progress_container_player')
     const progress_player = document.querySelector('.progress_player')
+    const volume_player = document.querySelector('.volume_player')
+    const change_size__volume = document.querySelector('.change_size__volume')
+    const size_volume = document.querySelector('.size_volume')
 
     var musArray = []
     for(let i = 0; i < PrevElement.length; i++) {
@@ -76,6 +79,26 @@ window.document.addEventListener('DOMContentLoaded', () => {
                 break;
             }
         }
+    }
+
+    function showVolumeSong() {
+        change_size__volume.classList.remove('hideClass')
+    }
+
+    function hideVolumeSong() {
+        change_size__volume.classList.add('hideClass')
+    }
+
+    function setVolumeProgress(e) {
+        const width = this.clientWidth
+        console.log(this.clientWidth)
+        const clickPositionX = e.offsetX
+        console.log(e.offsetX)
+
+        const duration = 1.0
+
+        audio_player.volume = (clickPositionX / width) * duration
+        size_volume.style.width = `${clickPositionX}px`
     }
 
     playlist.addEventListener('click', (elem) => {
@@ -172,4 +195,15 @@ window.document.addEventListener('DOMContentLoaded', () => {
     progress_container_player.addEventListener('click', setProgressInProgressBar)
 
     audio_player.addEventListener('ended', nextSong)
+
+    volume_player.addEventListener('click', () => {
+        const isHide = change_size__volume.classList.contains('hideClass')
+        if(isHide) {
+            showVolumeSong()
+        } else {
+            hideVolumeSong()
+        }
+    })
+
+    change_size__volume.addEventListener('click', setVolumeProgress)
 })

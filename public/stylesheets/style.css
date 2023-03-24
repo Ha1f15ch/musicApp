@@ -167,3 +167,28 @@ p{
 .hideClass {
   display: none;
 }
+
+.volume_player_img {
+  width: 24px;
+  height: 24px;
+}
+
+.change_size__volume {
+  background: #E4E9ED;
+  border-radius: 5px;
+  width: 100px;
+  height: 10px;
+  margin-top: 15px;
+  /* display: flex; */
+  align-items: center;
+  cursor: pointer;
+  position:absolute;
+  padding: 0px 0px 2px 2px;
+}
+
+.size_volume {
+  background: #2B3C5B;
+  border-radius: 5px;
+  height: 6px;
+  /* width: 50px; */
+}
