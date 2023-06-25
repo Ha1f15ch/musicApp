@@ -1,0 +1,17 @@
+extends layout
+
+block playlistAdd
+
+    div(class="contentSection")
+        h1=title 
+
+        div(class="formSection")
+            form(method="POST" action="/myPlaylists/add")
+                div.form-group
+                    label(for="NamePlaylist") Название плэйлиста 
+                    input#NamePlaylist.form-control(type="text" placeholder="Имя плэйлиста" name="NamePlaylist" value=(undefined===playlist_list ? '' : playlist_list.NamePlaylist))
+                    button.btn.btn-primary(type="submit") Создать
+            if  errors 
+                ul
+                    for error in errors 
+                        li!=error.msg

@@ -1,7 +1,5 @@
 var User = require('../models/user.model')
 var UserProfile = require('../models/profileUser')
-var Playlists = require('../models/PlaylistUsers.model')
-var DataPlaylistUsers = require('../models/DataPlaylistUsers.model')
 const async = require('async');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../controller/config')
@@ -82,8 +80,7 @@ exports.UPDATEmyProfileLoad_GET = async (req, res, next) => {
 }
 
 //Update page with profile User POST
-exports.UPDATEmyProfileLoad_POST = [
-    
+exports.UPDATEmyProfileLoad_POST = [  
    async (req, res, next) => {
         const errors = validationResult(req)
 

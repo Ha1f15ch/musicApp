@@ -49,7 +49,4 @@ module.exports = function(app) {
         body('AboutUser')
             .isLength({min: 0, max: 100}).withMessage('Не более 100 символов')
     ], MainPageController.UPDATEmyProfileLoad_POST)
-
-    app.get('/catalog');
-
 }

@@ -1,5 +1,7 @@
 var Janrs = require('../models/janrs');
 var Tracks = require('../models/testTracks');
+var Playlists = require('../models/PlaylistUsers.model')
+var User = require('../models/user.model')
 const fs = require('fs');
 const async = require('async');
 const {validationResult, Result, body} = require('express-validator');
@@ -52,7 +54,14 @@ exports.allTrack_GET = (req, res, next) => {
     try {
         async.parallel({
             track(callback) {
-                Tracks.find().exec(callback);
+                Tracks.find({}).
+                    populate('userIdCreated').
+                    exec(callback);
+            },
+            dataMyPlaylist: function(callback) {
+                Playlists.find({}).
+                    populate('playListMusick').
+                    exec(callback);
             },
         }, (err, results) => {
             if (err) {
@@ -60,13 +69,12 @@ exports.allTrack_GET = (req, res, next) => {
             }
             if (results.track == null) {
                 console.log(`${results.track} - не найдено ни одного трека, либо нет подходящих данных`)
-                /* const err = new Error(`Не найдено ни одного трека, либо нет подходящих данных`)
-                err.status = 404; */
             }
 
             res.render('Note_List', {
                 title: "All Tracks",
-                note: results.track
+                note: results.track,
+                dataPlaylists: results.dataMyPlaylist
             });
         })
     } catch (e) {
@@ -100,6 +108,64 @@ exports.detailInfoMus_GET = (req, res, next) => {
     });
 };
 
+//Add point for treack, about playlist has track
+exports.playlistHAStrack_POST = async (req, res, next) => {
+    let tempValTokenHeader = req.headers.cookie.split('token=')[1]
+    const decodedData = jwt.verify(tempValTokenHeader, secret)
+    req.user = decodedData
+    try {
+        let dataVal = req.body
+        console.log(dataVal, 'Даныне из запроса')
+        for(let i = 0; i < dataVal.length; i++) {
+            if(dataVal[i][3] == true) {
+                console.log('TRUE')
+                try {
+                    async.parallel({
+                        track(callback) {
+                            Tracks.findById({
+                                _id: dataVal[i][1]
+                            }).exec(callback)
+                        },
+                        playlist(callback) {
+                            Playlists.findById({
+                                _id: dataVal[i][2]
+                            }).exec(callback)
+                        }
+                    }, (err, results) => {
+                        if(err) {
+                            return next(err)
+                        }
+                        if(results.track == null || results.playlist == null) {
+                            var err = new Error(`Каких-то данных не достаточно для выввода - ${results.track} - Треки, ${results.playlist} - Плэйлисты`)
+                            err.status = 404
+                            return next(err);
+                        }
+                        results.track._id = new Array(results.track._id)
+                        console.log(results.track._id, ' - Данные по ID трека, котороый добавляем в БД')
+                        console.log(typeof results.playlist.playListMusick)
+                        console.log(results.playlist.playListMusick)
+                        let newStore = new Playlists({
+                            playListMusick: results.track._id,
+                            _id: results.playlist
+                        })
+
+                        Playlists.findByIdAndUpdate(results.playlist._id, newStore, {}, function(err, dataSend) {
+                            if(err) {
+                                return next(err)
+                            }
+                            console.log('Данные были переданы корректно - ', results.playlist, ' - ID плэйлиста', newStore, ' - то, что записали как модель в БД')
+                        })
+                    })
+                } catch(e) {
+                    return next(e)
+                }
+            }
+        }
+    } catch(e) {
+        console.log(e)
+    }
+};
+
 //Load NEW TRACK GET
 exports.AddNewTrack_GET = (req, res, next) => {
     try {
@@ -124,14 +190,10 @@ exports.AddNewTrack_GET = (req, res, next) => {
 //Load NEW TRACK POST
 exports.AddNewTrack_POST = [
     (req, res, next) => {
-        console.log('Что попадает в самом начале - ', req.body.data_janr)
         if (!(req.body.data_janr instanceof Array)) {
-            console.log('Данные о том, что попало в перебор из реквеста', req.body.data_janr)
             if (typeof req.body.data_janr === "undefined") {
-                console.log('Внутри цикла перебор реквестов - ', req.body.data_janr)
                 req.body.data_janr = [];
             } else {
-                console.log('Что выходит в итоге - ', req.data_janr)
                 req.body.data_janr = new Array(req.data_janr)
             }
         }

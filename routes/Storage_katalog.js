@@ -54,6 +54,9 @@ router.post('/catalog/tracks/:id/update', trackController.EditMus_POST)
 router.get('/catalog/tracks/:id/delete', trackController.DeleteMus_GET)
 router.post('/catalog/tracks/:id/delete', trackController.DeleteMus_POST)
 
+//Add track in playlist
+router.post('/catalog/tracks/allNotes', trackController.playlistHAStrack_POST)
+
 //UserRols storage - СПРАВОЧНИК
 router.get('/catalog/rols', userController.allRols_GET)
 

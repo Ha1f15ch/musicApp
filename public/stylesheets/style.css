@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: #05374b;
+  color: #000000;
 }
 
 .sidebar-nav {
@@ -43,7 +43,7 @@ p{
 
 .textArray{
   text-align: center;
-  background-color: rgb(9, 65, 83)
+  background-color: rgb(85, 196, 233)
 }
 
 .titleDataUpdate {
@@ -125,9 +125,9 @@ p{
 .botton_song {
   display: flex;
   position: relative;
-  min-width: 30px;
-  flex-basis: 30px;
-  height: 30px;
+  min-width: 24px;
+  flex-basis: 24px;
+  height: 24px;
 }
 
 .song_content {
@@ -191,4 +191,13 @@ p{
   border-radius: 5px;
   height: 6px;
   /* width: 50px; */
+}
+
+.dataPlaylistItems {
+  display: block;
+  position: relative;
+}
+
+.showerClass {
+  display:inherit;
 }

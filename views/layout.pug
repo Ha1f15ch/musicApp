@@ -19,14 +19,20 @@ html
               li 
                 a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/admin_mod/catalog/tracks' role="tab" aria-controls="main") Треклист
               li 
-                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/catalog/janrs' role="tab" aria-controls="main") Жанры 
+                a(class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href='/admin_mod/catalog/janrs' role="tab" aria-controls="main") Жанры 
         div(class='col-sm-8')
               block content 
               block Profile 
               block UpdateProfile
+              block playlist
+              block detailPlaylist
+              block playlistAdd
               block MusickList
               block errorToken 
               block tempPageLoad
         div(class='col-sm-2')
             ul(class='sidebar-nav')
-              a(href='/myprofile') Мой профиль 
+              li 
+                a(href='/myprofile') Мой профиль 
+              li 
+                a(href='/myPlaylists') Мои плeйлисты

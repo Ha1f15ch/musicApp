@@ -1,0 +1,13 @@
+extends detailPlaylist
+block playlistEdit 
+    p Изменить название плэйлиста - #{MusData.NamePlaylistUser} ?
+    form(action="", method="post") 
+        div.form-group
+            label(for="namePlaylist") Название плэйлиста:
+            input#namePlaylist.form-control(type='textarea', placeholder='NamePlaylist' name='NamePlaylist' value=(undefined===MusData ? '' : MusData.NamePlaylistUser) required='true')
+        button.btn.btn-primary(type='submit') Подтвердить  
+    br
+    if errors 
+        ul 
+        for error in errors 
+            li!=error.msg 

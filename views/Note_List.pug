@@ -14,11 +14,33 @@ block Note_list
                 div(class="playlist")
                     if(note.length!=0)
                         each val in note
-                            div(class="song_item" data_song_id=(val._id))
+                            div(class="song_item align-items-center" data_song_id=(val._id))
                                 div(class="botton_song" data_song_id=(val._id))
                                     div(class="button_play" data_song_id=(val._id) src="/img/play.png" href=(val.rout) val=(val.name))
                                 div(class="song_content" data_song_id=(val._id))
                                     a(class="song_name" href=(val.url)) #{val.name}
+                                div(class="playlistData" data_song_id=(val._id))
+                                    button(type="button" class="btn btn-primary buttonTrackData" data_song_id=(val._id) data-toggle="modal" data-target="#exampleModal3") Плэйлисты
+                                    div(class="modal" id="exampleModal3")
+                                        div(class="modal-dialog" role="document")
+                                            div(class="modal-content" data_song_id=(val._id))
+                                                div(class="modal-header")
+                                                    h5(class="modal-title" id="exampleModal3Label") Ваши плэйлисты
+                                                    button(type="button" class="close" data_song_id=(val._id)) 
+                                                        span(aria-hidden="true") &times;
+                                                div(class="modal-body")
+                                                    if(dataPlaylists.length!=0)
+                                                        each playlist in dataPlaylists
+                                                            div(class="input-group" playlistIdItem=(playlist._id))
+                                                                div(class="input-group-prepend")
+                                                                    div(class="form-check")
+                                                                        input(type="checkbox", value="" class="checkbox" name=(playlist.NamePlaylistUser) id=(playlist._id) data_song_id=(val._id))
+                                                                        label(class="form-check-label" for=(playlist._id) data_song_id=(val._id)) 
+                                                                        | #{playlist.NamePlaylistUser}
+                                                    else 
+                                                        p Нет плэйлистов
+                                                div(class="modal-footer")
+                                                    button(type="button" class="btn btn-primary BTNForSendDataToSever") Применить изменения
                         else 
                             p Треки не найдены!
     div(class="row fixed-bottom")

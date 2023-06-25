@@ -19,6 +19,7 @@ db.on('error', console.error.bind(console, 'Ошибка при подключе
 //var authentication = require()-------------------------------------------------------------------------------------
 var storage_katalog = require('./routes/Storage_katalog');
 var startFunction = require('./routes/startFunction')
+var playlistRouter = require('./routes/playlist.router')
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'D:/music')));
 //app.use('', ) -------------------------------------------------------------------
 app.use('/', startFunction);
 app.use('/admin_mod', [authJWT.verifytocen], storage_katalog);
+app.use('/myPlaylists', playlistRouter)
 require('./routes/MainPage')(app);
 require('./routes/auth.router')(app);
 require('./routes/test.router')(app);
