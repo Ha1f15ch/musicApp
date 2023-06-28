@@ -1,9 +1,0 @@
-extends detailPlaylist 
-block playlistDelete 
-    p Точно удалить данный #{MusData.NamePlaylistUser} плэйлист
-
-    form(method='POST' action="")
-        div(class="form-group")
-            input#id.form-control(type="hidden" name="id" required='true' value=MusData._id)
-        button.btn.btn-primary(type="submit") Удалить выбранный плэйлист 
-    br 
