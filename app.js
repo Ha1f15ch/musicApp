@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var path = require('path')
 
 var routerAPI = require('./routes/main')
+var routerAPIAdmin = require('./routes/adminRouter')
 
 var app = express();
 
@@ -16,9 +17,10 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, 'D:/music')));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); //oeizahq
 
-const mongoConectURL = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
+const mongoConectURL = 'mongodb+srv://root:root@cluster0.zvucxtc.mongodb.net/?retryWrites=true&w=majority'
+// old data connect = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
 mongoose.connect(mongoConectURL)
 mongoose.Promise = global.Promise
 var db = mongoose.connection
@@ -27,10 +29,8 @@ db.once('open', function callback() {
   loger.info('Connected to dataBase')
 })
 
-app.use('/', (req, res, next) => {
-  res.redirect('/v1/api/')
-})
-app.use('/v1/api/', routerAPI)
+app.use('/', routerAPI)
+app.use('/v1/api/adminCatalog/', routerAPIAdmin)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
