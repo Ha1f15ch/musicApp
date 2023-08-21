@@ -19,19 +19,17 @@ var users = new Schema({
         required: false, 
         trim: true
     },
-    role: [
-        {
-            type: String, 
-            ref: 'Roles'
-        }
-    ]
+    role: [{
+            type: Schema.ObjectId, 
+            ref: 'Roles',
+        }]
 });
 
 //возможно буду допиливать
 users
 .virtual('url')
 .get(function() {
-    return '/v1/api/main/users/user/' + this._id
+    return '/v1/api/adminCatalog/users/' + this._id
 });
 
 module.exports = mongoose.model('Users', users);

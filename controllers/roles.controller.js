@@ -21,7 +21,7 @@ exports.list_roles = async (req, res, next) => {
     }
 };
 
-exports.info_Role = async (req, res, next) => {
+exports.info_role = async (req, res, next) => {
     try {
 
         await Roles.findById({
@@ -32,42 +32,12 @@ exports.info_Role = async (req, res, next) => {
             res.send(results)
         })
         .catch((error) => {
+            if(error) {
+                res.send('Ошибка при поиске ...')
+            }
             console.log(error)
-            return next(error)
+            /* return next(error) */
         })
-
-        /* async.parallel({
-            roles: function(callback) {
-                Roles.findById(req.params.id)
-                .populate({path: 'values', model: Rights})
-                .then((roleRes) => {
-                    console.log(roleRes)
-                })
-                .catch((roleErr) => {
-                    console.log(roleErr)
-                    return next(roleErr)
-                })
-            },
-            rights: function(callback) {
-                Rights.find({})
-                .then((rightsRes) => {
-                    console.log(rightsRes)
-                })
-                .catch((rightsErr) => {
-                    console.log(rightsErr)
-                    return next(rightsErr)
-                })
-            }
-        }, (results) => {
-            for(let i = 0; i < results.rights.length; i++) {
-                if(updatedRole.values.indexOf(results.rights[i]._id) > -1) {
-                    results.rights[i].checked = "true"
-                }
-            }
-            
-            
-        }) */
-
     } catch(e) {
         console.log(e)
         return next(e)
@@ -106,7 +76,9 @@ exports.create_role = [
     }
 ];
 
-exports.update_role = (req, res, next) => {
+exports.update_role = async (req, res, next) => {
+
+    
 
     var updatedRole = new Roles({
         name: req.body.name,
@@ -117,7 +89,7 @@ exports.update_role = (req, res, next) => {
     console.log(updatedRole, 'updatedRole')
     console.log(req.params.id, 'ID roles')
 
-    Roles.findByIdAndUpdate(req.params.id, updatedRole, {})
+    await Roles.findByIdAndUpdate(req.params.id, updatedRole, {})
     .then((result) => {
         console.log(result, 'results - -')
         res.redirect('/v1/api/adminCatalog/roles')

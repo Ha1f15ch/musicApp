@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Rights = require('./rights.model')
+var Rights = require('../models/rights.model')
 
 var Schema = mongoose.Schema;
 
@@ -13,7 +13,7 @@ var roles = new Schema({
     values: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'rights',
+            ref: Rights,
             default: null
         }
     ]

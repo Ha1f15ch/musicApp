@@ -1,40 +1,50 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', (req, res, next) => {
+const janrs_controller = require('../controllers/janrs.controller')
+const users_controller = require('../controllers/users.controller')
+const mainPage_controller = require('../controllers/mainPage.controller')
+const music_controller = require('../controllers/music.controller')
+
+var authMiddlevare = require('../middleware/authMiddleware')
+var CheckUsersProperties = require('../middleware/propertiesMiddleware')
+
+router.get('/', [authMiddlevare, CheckUsersProperties.prop_readDicts], (req, res, next) => {
     res.redirect('/v1/api/main')
 })
 
-router.get('/v1/api/main', (req, res, next) => {
-    res.send({message: 'messagedata'})
-})
+router.get('/v1/api/main', mainPage_controller.mainPageData)
 
-router.get('/v1/api/main/track/:id', (req, res, next) => {
+router.get('/v1/api/main/music', music_controller.mainPage_listMusic_GET)
+
+router.get('/v1/api/main/music/:id', music_controller.mainPage_musicDetail_GET)
+
+router.get('/v1/api/main/music/create', music_controller.mainPage_createMusic_GET)
+
+router.post('/v1/api/main/music/create', music_controller.mainPage_createMusic_POST)
+
+router.get('/v1/api/main/music/:id', (req, res, next) => {
     res.send({message: `page composition ${id}`})
 })
 
-router.get('/v1/api/main/janrs', (req, res, next) => {
-    res.send({message: 'page with janrs, list with janrs'})
-})
+router.get('/v1/api/main/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], janrs_controller.list_janrs)
 
-router.get('/v1/api/main/janrs/janr/:id', (req, res, next) => {
-    res.send({message: `info about janr, list with composition, where this janr (${id}) is included`})
-})
+router.get('/v1/api/main/janrs/janr/:id', janrs_controller.info_janr)
 
-router.get('/v1/api/main/users/', (req, res, next) => {
-    res.send({message: 'list with all users, may be them statuses'})
-})
+router.get('/v1/api/main/users/', users_controller.list_users)
 
-router.get('/v1/api/main/users/user/:id', (req, res, next) => {
-    res.send({message: `publick info about other user ${id}`})
-})
+router.get('/v1/api/main/users/user/:id', users_controller.info_user)
 
-router.get('/v1/api/myProfile', (req, res, next) => {
-    res.send({message: 'myPage'})
-})
+router.get('/v1/api/myProfile', [authMiddlevare], users_controller.info_user_profile)
+
+router.put('/v1/api/myProfile', [authMiddlevare], users_controller.update_info_user_profile)
 
 router.get('/v1/api/myProfile/myPlaylists', (req, res, next) => {
     res.send({message: 'myplaylists'})
+})
+
+router.get('/v1/api/myProfile/myPlaylists/:id', (req, res, next) => {
+    res.send({message: 'myplaylists + id'})
 })
 
 module.exports = router;

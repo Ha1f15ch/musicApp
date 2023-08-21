@@ -1,0 +1,40 @@
+extends main 
+
+block listMusic 
+    div(class="button-section") 
+        button(class="btnCreateMusic" type="submit") Добавить
+    div(class='btn1-addtrack hidden')
+        form(method='POST' action="/v1/api/main/music/create" enctype="multipart/form-data" id="form_POST_data_track")
+            div.form-group 
+                label(for="name") Название компазиции:
+                input#name.form-control(type="text", placeholder="Название вашего трека" name='name' require='true' value=(undefined===newComposition ? '' : newComposition.name))
+            div.form-group
+                label Жанры:
+                    div 
+                        each janrs in dataJanr
+                            div(style='display: inline; padding-right:10px;')
+                                input.checkbox-input(type='checkbox', name='janrs', id=janrs._id, value=janrs._id, checked=janrs.checked)
+                                label(for=janrs._id) #{janrs.name}
+            div.form-group
+                .mb-3 
+                    label(for="description" class="form-label") О треке:
+                    textarea#description.form-control(rows="3" placeholder="Описание трека" name='description' require='true' value=(undefined===newComposition ? '' : newComposition.description))
+            label(for="Composition") Здесь укажите какой трек нужно загрузить
+                input(type="file" name="Composition" accept="audio/*" id="Composition")
+            input(type="submit" class="btn_send_form_create_track")
+    if errors 
+        ul 
+            for error in errors 
+                li!=error.msg
+    .text-allign Композиции
+        each composition in dataMusic
+            .inline #{composition}
+    .text-align Жанры
+        each janr in dataJanr
+            .inline #{janr}
+    .text-align Пользователи
+        each user in dataUser
+            .inline #{user}
+    .text-align Плэйлисты пользователя
+        each playlist in dataPlaylist
+            .inline #{playlist}

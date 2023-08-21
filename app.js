@@ -1,23 +1,40 @@
 var express = require('express');
 var logger = require('morgan');
+var methodOverride = require('method-override')
+var cors = require('cors')
 var loger = require('./logger')
 var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
-var router = express.Router();
+var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var path = require('path')
+var fileUpload = require('express-fileupload')
+var router = express.Router();
+
 
 var routerAPI = require('./routes/main')
 var routerAPIAdmin = require('./routes/adminRouter')
+var routerAPIAuthorization = require('./routes/authorizationRouter')
 
 var app = express();
 
+var corsOptions = {
+  origin: "http://localhost:3000"
+}
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(cors(corsOptions))
 app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(fileUpload());
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, 'D:/music')));
-app.use(express.urlencoded({ extended: false })); //oeizahq
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.zvucxtc.mongodb.net/?retryWrites=true&w=majority'
 // old data connect = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
@@ -31,6 +48,7 @@ db.once('open', function callback() {
 
 app.use('/', routerAPI)
 app.use('/v1/api/adminCatalog/', routerAPIAdmin)
+app.use('/v1/api/authorization/', routerAPIAuthorization)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

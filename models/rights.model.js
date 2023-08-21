@@ -3,10 +3,10 @@ var Roles = require('./roles.model')
 
 var Schema = mongoose.Schema;
 
-var rights = new Schema({
+var Rights = new Schema({
     name: {
         type: String, 
     },
 });
 
-module.exports = mongoose.model('Rigths', rights);
+module.exports = mongoose.model('Rigths', Rights);
