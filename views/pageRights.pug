@@ -1,0 +1,10 @@
+extends adminPage 
+
+block pageRights
+
+    h1=title 
+
+    div(class="main-content")
+        div(class="rights")
+            each itemProp in dataProperties
+                div(class="item-rights" id=(itemProp._id)) #{itemProp.name}

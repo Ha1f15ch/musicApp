@@ -14,6 +14,12 @@ exports.authorization_menu = async (req, res, next) => {
     res.send('show menu for authorization')
 }
 
+exports.sign_up_GET = async (req, res, next) => {
+    res.render('auth_users', {
+        title: 'Страница Регистрации'
+    })
+}
+
 exports.sign_up = [
     async (req, res, next) => {
         var login_Section = await Users.find({
@@ -24,7 +30,7 @@ exports.sign_up = [
         })
         
         var roles_system = await Roles.find({
-            name: 'sysUser'
+            name: 'mainRole'
         })
 
         if(login_Section == req.body.login || email_section == req.body.email) {
@@ -75,6 +81,12 @@ exports.sign_up = [
         }
     }
 ];
+
+exports.log_In_GET = async (req, res, next) => {
+    res.render('login_users', {
+        title: 'Страница Авторизации'
+    })
+}
 
 exports.log_In = [
     async (req, res, next) => {
@@ -287,10 +299,6 @@ exports.log_out = [
                     return next(errDelete)
                 })
             }
-            
-            
-            /* req.headers.cookie.split('access_token=')[1] = undefined */
-            
         } catch(e) {
             console.log(e)
             return next(e)

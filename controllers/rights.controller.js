@@ -45,6 +45,9 @@ exports.list_rights = async (req, res, next) => {
     }
     const rights = Rights.find()
     .then((result) => {
-        res.send(result)
+        res.render('pageRights', {
+            title: 'Список прав',
+            dataProperties: result
+        })
     })
 }

@@ -19,6 +19,7 @@ module.exports = async (req, res, next) => {
                 if(resultVerify) {
                     console.log('Верификация access токена прошла успешно')
                     req.userIds = resultVerify.id
+                    console.log(req.userIds, ' - записываем в хэдеры id пользователя')
                     next();
                 }
                 //По идее нужен обработчик попытки генерации нового токена

@@ -1,0 +1,35 @@
+extends adminPage 
+
+block pageRolesInfo 
+
+    h1=title+' '+dataRoles.dataRolesById.name
+
+    div(class="main-content")
+        div(class="item card" id=dataRoles._id)
+            div(class="card-body")
+                <h3>Название прав: #{dataRoles.name}</h3> 
+                div(class="prop-items")
+                    table(class="table")
+                        thread 
+                            each propRoles in dataRoles.dataRolesById.values
+                                tr(id=propRoles._id)
+                                    th(scope="col" id=propRoles._id name=propRoles.name) #{propRoles.name}
+                                    th(id=propRoles._id) 
+                                        button(type="submit" class="btn btn-danger deleteRight" id=propRoles._id) Убрать
+                div(class="btn-addNew-prop")
+                    br
+                    p Добавляемое значение:
+                    div(class="item-selection" style='display: inline; padding-right:10px;')
+                        select(name="" class="form-select selectData")
+                            option(selected style='display: inline; padding-right:10px;') Добавить в роль право  
+                            each properties in dataRoles.dataProp 
+                                option(value=properties._id style='display: inline; padding-right:10px;') #{properties.name}
+                    br
+                    div(class="btns")
+                        div(class="addNewRiggt")
+                            button(type="submit" class="btn btn-success sendCreateQuery" id="sendCreateQuery") Добавить
+                        div(class="deleteRole")
+                            button(type="submit" class="btn btn-warning btnForDelete" id=dataRoles.dataRolesById._id) Удалить право из системы
+                        div(class="back")
+                            button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000/v1/api/adminCatalog/roles"`) Назад
+                        

@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var Users = require('../models/users.model');
+var Janrs = require('../models/janrs.model');
 var Schema = mongoose.Schema;
 
 var compositions = new Schema({
@@ -10,12 +12,12 @@ var compositions = new Schema({
     rout: {
         type: String, 
         required: true, 
-        unique: true
+        unique: false
     },
     janrs: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Janrs',
+            ref: Janrs,
             default: null
         }
     ],
@@ -25,7 +27,7 @@ var compositions = new Schema({
     },
     userIdCreated: {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: Users
     }
 })
 

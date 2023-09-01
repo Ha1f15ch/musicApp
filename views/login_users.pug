@@ -1,0 +1,24 @@
+extends authorization_user
+
+block login_users
+    h1=title 
+
+    div(calss="main")
+        div(class="user_authorization_form")
+            form(action="", method="POST")
+                div(class="form-group")
+                    label(for="login") 
+                    p Введите login: 
+                    input#login(class="form-control" type="text" placeholder='login' name='login' value=(undefined===login ? '' : user.login), required='true')
+
+                    label(for='pass') 
+                    p Введите пароль:
+                    input#pass.form-control(type='text', placeholder='Password' name='pass' value=(undefined===pass ? '' : user.pass), required='true')
+
+                    button.btn.btn-primary(type='submit') Войти 
+                .IN 
+                    a(href="/v1/api/authorization/signUp") Зарегистрироваться
+                if errorsMSG 
+                    ul 
+                        for error in errorsMSG 
+                            li!= error.msg

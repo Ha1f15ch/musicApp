@@ -1,0 +1,20 @@
+extends main 
+
+block detailMusic 
+
+    div(class="main_content")
+        h1=title+resData.name
+        div(class="form_data")
+            div(class="name_composition")
+                p Название: #{resData.name}
+            <audio src=#{resData.rout} controls></audio>
+            div(class="janrs_string")
+                each val in resData.janrs
+                    div(class="janr_item" style='display: inline; padding-right:10px;')
+                    | #{val.name}
+            div(class="description_composition mb-3")
+                label(for="description" class="form-label") О композиции:
+                textarea#description.form-control(rows="3" name='description' require='true') #{resData.description}
+            div(class="user_Creator")
+                p Автор композиции: #{resData.userIdCreated.login}
+

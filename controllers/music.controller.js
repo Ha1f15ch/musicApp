@@ -81,6 +81,7 @@ exports.mainPage_createMusic_GET = async (req, res, next) => {
 exports.mainPage_createMusic_POST = async (req, res, next) => {
 
     console.log(req.body, 'BODY')
+    console.log(req.userIds, ' - Хедер, запись о id пользователя')
     console.log(req.files, 'FILES')
     console.log(req.files.Composition, 'req.files.Composition')
 
@@ -155,17 +156,47 @@ exports.mainPage_createMusic_POST = async (req, res, next) => {
     })
     .catch((errNewComposition) => {
         console.log('Что-то позшло не так при сохранении - ', errNewComposition)
+        console.log('Удаляем созданные данные из БД ...')
+        Compositions.findOneAndDelete({
+            name: newComposition.name
+        })
+        .then((resDelete) => {
+            console.log('Выполнено успешно - ', resDelete)
+        })
+        .catch((errDelete) => {
+            console.log('При удалении возникла ошибка - ', errDelete)
+            return next(errDelete)
+        })
         return next(errNewComposition)
     })
 }
 
 exports.mainPage_musicDetail_GET = (req, res, next) => {
-    Compositions.findById(req.params.id)
-    .then((resMusic) => {
-        res.send({resMusic})
-    })
-    .catch((errMusic) => {
-        console.log(errMusic, ' - Возникла ошибка')
-        res.send({errMusic})
+
+    async.parallel({
+        compositionDetaled: function(callback) {
+            Compositions.findById(req.params.id)
+            .populate({
+                path: "userIdCreated janrs",
+            })
+            .then((resMusic) => {
+                console.log('Поиск и данные - ', resMusic)
+                callback(null, resMusic)
+            })
+            .catch((errMus) => {
+                callback(null, errMus)
+            })
+        },
+    }, (errors, results) => {
+        if(errors) {
+            console.log('Ошибки при выполнении поиска - ', errors)
+            return next(errors)
+        }
+        console.log('результат сбора данных по композиции - ', results.compositionDetaled)
+        console.log(results.compositionDetaled.janrs, ' - Жанры')
+        res.render('detailMusic', {
+            title: 'Композиция: ',
+            resData: results.compositionDetaled
+        })
     })
 }

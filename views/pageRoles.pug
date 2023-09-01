@@ -1,0 +1,22 @@
+extends adminPage 
+
+block pageRoles 
+
+    h1=title 
+
+    div(class="main-content")
+        div(class="container text-center items")
+            table(class="table")
+                thead 
+                    each itemRole in dataRoles
+                        tr
+                            th 
+                                div(class="row justify-content-center item-roles" id=(itemRole._id)) 
+                                    div(class="col-6 data-a-tag" id=itemRole._id)
+                                        button(type="button" class="btn btn-success btmRole" onClick=`location.href="http://localhost:3000${itemRole.uri}"`) #{itemRole.name}
+                                    div(class="col-6 list_group")
+                                        ul(class="list-group")
+                                            each itemPropInRoles in itemRole.values 
+                                                li(class="list-group-item" id=(itemPropInRoles._id))
+                                                    div(class="item-prop" id=(itemPropInRoles._id)) #{itemPropInRoles.name} 
+    script(src="/javascripts/pageRoles.js") 

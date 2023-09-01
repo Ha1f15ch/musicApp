@@ -13,19 +13,15 @@ router.get('/', [authMiddlevare, CheckUsersProperties.prop_readDicts], (req, res
     res.redirect('/v1/api/main')
 })
 
-router.get('/v1/api/main', mainPage_controller.mainPageData)
+router.get('/v1/api/main', [authMiddlevare], mainPage_controller.mainPageData)
 
-router.get('/v1/api/main/music', music_controller.mainPage_listMusic_GET)
+router.get('/v1/api/main/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
 router.get('/v1/api/main/music/:id', music_controller.mainPage_musicDetail_GET)
 
-router.get('/v1/api/main/music/create', music_controller.mainPage_createMusic_GET)
+router.get('/v1/api/main/music/create', [authMiddlevare], music_controller.mainPage_createMusic_GET)
 
-router.post('/v1/api/main/music/create', music_controller.mainPage_createMusic_POST)
-
-router.get('/v1/api/main/music/:id', (req, res, next) => {
-    res.send({message: `page composition ${id}`})
-})
+router.post('/v1/api/main/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
 
 router.get('/v1/api/main/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], janrs_controller.list_janrs)
 

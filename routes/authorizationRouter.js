@@ -5,7 +5,11 @@ const user_authorization_controller = require('../controllers/users.authorizatio
 
 router.get('/', user_authorization_controller.authorization_menu)
 
+router.get('/signUp', user_authorization_controller.sign_up_GET)
+
 router.post('/signUp', user_authorization_controller.sign_up)
+
+router.get('/login', user_authorization_controller.log_In_GET)
 
 router.post('/login', user_authorization_controller.log_In)
 

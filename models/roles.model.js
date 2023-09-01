@@ -20,5 +20,9 @@ var roles = new Schema({
 });
 
 roles
+.virtual('uri')
+.get(function() {
+    return '/v1/api/adminCatalog/roles/' + this._id
+})
 
 module.exports = mongoose.model('Roles', roles);

@@ -46,6 +46,8 @@ router.post('/roles', roles_controller.create_role)
 
 router.get('/roles/:id', roles_controller.info_role)
 
+router.put('/roles/:id/UpdateRights', roles_controller.update_role_delete_right)
+
 router.put('/roles/:id', roles_controller.update_role)
 
 router.delete('/roles/:id', roles_controller.delete_role)

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Roles = require('../models/roles.model')
 
 var Schema = mongoose.Schema;
 
@@ -21,7 +22,7 @@ var users = new Schema({
     },
     role: [{
             type: Schema.ObjectId, 
-            ref: 'Roles',
+            ref: Roles,
         }]
 });
 
