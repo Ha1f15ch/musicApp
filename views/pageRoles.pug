@@ -2,13 +2,32 @@ extends adminPage
 
 block pageRoles 
 
-    h1=title 
-
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title 
+    button(type="submit" class="btn btn-md btn-outline-primary align-middle arrayData" style='display: inline; padding-right:10px;') Добавить
+    br
+    div(class="part-for-create-role")
+        div(class="CreateBtn hidden")
+            div(class="row dataNewRole")
+                div(class="col-md-4")
+                    label(for="name") <h4>Название роли:</h4>
+                div(class="col-md-6")
+                    input#name(class="form-control nameData" type="text" name='name' require='true')
+                div.form-group 
+                    label(for="dataRights") <h5>Список прав:</h5> 
+                    div(class="listProp")
+                        div(class="row")
+                            div(class="col-sm")
+                                each itemProp in dataRoles.dataProp
+                                    div(class="form-check itemData" id=itemProp._id)
+                                        input(type='checkbox' class="form-check-input checkbox-input" name='itemProp', id=itemProp._id, value=itemProp._id)
+                                        label(class="form-check-label" for=itemProp._id) #{itemProp.name}
+            button(type="submit" class="btn btn-info btnCreateNewRole") Создать новую роль
+                                        
     div(class="main-content")
         div(class="container text-center items")
             table(class="table")
                 thead 
-                    each itemRole in dataRoles
+                    each itemRole in dataRoles.dataRolesById
                         tr
                             th 
                                 div(class="row justify-content-center item-roles" id=(itemRole._id)) 

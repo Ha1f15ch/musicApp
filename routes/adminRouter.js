@@ -10,17 +10,19 @@ const adminPage_controller = require('../controllers/adminPage.controller');
 var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware')
 
-router.get('/', (req, res, next) => {
-    res.send({message: 'directorys'})
-})
+router.get('/', adminPage_controller.mainPage_GET)
 
 router.get('/users', users_controller.list_users)
 
 router.get('/users/:id', [authMiddlevare], users_controller.info_user)
 
-router.get('/users/update/:id', users_controller.updateUser_get)//переделать как положено, update наружу запроса, id внутрь
+router.put('/users/:id/update', users_controller.updateUser_put)
 
-router.put('/users/update/:id', users_controller.updateUser_put)// аналогично верхенму
+router.put('/users/:id/updateProfile', users_controller.updateUser_profile_put)
+
+router.put('/users/:id/updateRole', users_controller.updateUserRole_put)
+
+router.put('/users/:id/deleteRole', users_controller.update_user_delete_role)
 
 router.get('/users/:id/playlists/', (req, res, next) => {
     res.send('2й состав запроса, 2а параметра в поиске')

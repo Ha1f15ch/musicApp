@@ -1,0 +1,17 @@
+extends adminPage 
+
+block pageUsers 
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title
+
+    div(class="content")
+        table(class="table")
+            thread
+                tr 
+                    th <h5>Login пользователя</h5>
+                    th <h5>Email пользователя</h5>
+                each userItem in dataUsers.usersData
+                    tr(class="userItemString")
+                        th(class="UserItemColomn" scope="col" id=userItem._id name=userItem.login) 
+                            a(href=`/v1/api/adminCatalog/users/${userItem._id}`) #{userItem.login}
+                        th(class="UserItemColomn" scope="col" id=userItem._id name=userItem.email) #{userItem.email}

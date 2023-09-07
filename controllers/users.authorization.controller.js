@@ -32,53 +32,57 @@ exports.sign_up = [
         var roles_system = await Roles.find({
             name: 'mainRole'
         })
-
-        if(login_Section == req.body.login || email_section == req.body.email) {
-            console.log('Введенные данные уже использовались, попробуйте авторизоваться')
-            res.status(400).send('Введенные данные уже использовались, попробуйте авторизоваться')
-        } else {
-            const sicretPass = bcrypt.hashSync(req.body.pass, 7)
-
-            var user = new Users({
-                login: req.body.login,
-                email: req.body.email,
-                pass: sicretPass,
-                role: roles_system
-            });
-
-            await user.save()
-            .then((results_user) => {
-                console.log(results_user, 'выполнено корректно')
-                var userProfile = new UserProfile({
-                    idUser: results_user._id
+        .then(async (resRoles) => {
+            if(login_Section == req.body.login || email_section == req.body.email) {
+                console.log('Введенные данные уже использовались, попробуйте авторизоваться')
+                res.status(400).send('Введенные данные уже использовались, попробуйте авторизоваться')
+            } else {
+                const sicretPass = bcrypt.hashSync(req.body.pass, 7)
+    
+                var user = new Users({
+                    login: req.body.login,
+                    email: req.body.email,
+                    pass: sicretPass,
+                    role: resRoles,
+                    createDate: new Date()
                 });
-
-                let token = jwt.sign({id: results_user._id}, secret, {
-                    expiresIn: jwtExpiration
-                });
-
-                let refreschToken = RefreschToken.createToken(results_user._id)
-
-                userProfile.save()
-                .then((results_userProfile) => {
-                    console.log('Выполнено корректно - ', results_userProfile)
-                    res
-                    .cookie('access_token', token, {
-                        httpOnly: true,
-                        secure: true
+    
+                console.log('Сохраняемые данные - ', user)
+    
+                await user.save()
+                .then((results_user) => {
+                    console.log(results_user, 'выполнено корректно')
+                    var userProfile = new UserProfile({
+                        idUser: results_user._id
+                    });
+    
+                    let token = jwt.sign({id: results_user._id}, secret, {
+                        expiresIn: jwtExpiration
+                    });
+    
+                    let refreschToken = RefreschToken.createToken(results_user._id)
+    
+                    userProfile.save()
+                    .then((results_userProfile) => {
+                        console.log('Выполнено корректно - ', results_userProfile)
+                        res
+                        .cookie('access_token', token, {
+                            httpOnly: true,
+                            secure: true
+                        })
+                        .redirect('/v1/api/myProfile')
                     })
-                    .redirect('/v1/api/myProfile')
+                    .catch((errors_userProfile) => {
+                        console.log('errors_userProfile - ', errors_userProfile)
+                        return next(errors_userProfile)
+                    })
                 })
-                .catch((errors_userProfile) => {
-                    console.log('errors_userProfile - ', errors_userProfile)
-                    return next(errors_userProfile)
+                .catch((errors_user) => {
+                    console.log('errors_user - ', errors_user)
+                    return next(errors_user)
                 })
-            })
-            .catch((errors_user) => {
-                console.log('errors_user - ', errors_user)
-                return next(errors_user)
-            })
-        }
+            }
+        })
     }
 ];
 

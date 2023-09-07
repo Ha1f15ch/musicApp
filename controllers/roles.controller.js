@@ -4,20 +4,39 @@ const async = require('async');
 
 exports.list_roles = async (req, res, next) => {
     try {
-
-        await Roles.find({})
-        .populate({path: 'values', model: Rights})
-        .then((results) => {
-            res.render('pageRoles', {
-                title: 'Список ролей',
-                dataRoles: results
-            })
+        async.parallel({
+            dataRolesById: function(callback) {
+                Roles.find({})
+                .populate({path: 'values', model: Rights})
+                .then((results) => {
+                    callback(null, results)
+                })
+                .catch((error) => {
+                    console.log('Ошибка при поиске по id - ', error)
+                    callback(null, error)
+                })
+            },
+            dataProp: function(callback) {
+                Rights.find({})
+                .then((results) => {
+                    callback(null, results)
+                })
+                .catch((error) => {
+                    console.log('Ошибкапоиска прав - ', error)
+                    callback(null, error)
+                })
+            }
+        }, (err, results) => {
+            if(err) {
+                console.log(err, ' - Возникла ошибка')
+            }
+            if(results) {
+                res.render('pageRoles', {
+                    title: 'Список ролей',
+                    dataRoles: results
+                })
+            }
         })
-        .catch((error) => {
-            console.log(error)
-            return next(error)
-        })
-
     } catch(e) {
         console.log(e)
         return next(e)

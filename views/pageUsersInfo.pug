@@ -1,0 +1,86 @@
+extends adminPage 
+
+block pageUsersInfo 
+
+    h1=title+' '+dataUser.usersData.login 
+
+    div(class="content")
+        div(class="row")
+            div(class="card authData col-md-6")
+                div(class="card-header") Авторизационные данные
+                div(class="card-body")
+                    h5(class="card-title") Логин пользователя 
+                    p(clas="dataUserLogin") #{dataUser.usersData.login}
+                    h5(class="card-title") Email пользователя
+                    p(class="dataUserEmail") #{dataUser.usersData.email}
+                    h5(class="card-title") Пароль пользователя 
+                    p(class="dataUserPassword") ******
+                div(Class="card-footer")
+                    h5(class="card-title") Роли пользователя
+                    each value in dataUser.usersData.role
+                        button(type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=value.name onClick=`location.href="http://localhost:3000${value.uri}"`) #{value.name}
+                    button(type="button" class="btn btn-secondary addRoleToUser" data-bs-toggle="tooltip" data-bs-placement="top") Добавить роль
+                    div(class="list-group listRoles hidden")
+                        each valueRole in dataUser.usersRolesData
+                            li(class="list-group-item" id=valueRole._id)
+                                input(class="form-check-input me-1 itemRole" type="checkbox" value=valueRole._id id=valueRole._id)
+                                label(for=valueRole._id class="form-check-label") #{valueRole.name}
+                        button(class="btn btn-primary updateRoleList") Добавить выбранные роли 
+                    button(type="button" class="btn btn-danger menuDeleteRole" data-bs-toggle="tooltip" data-bs-placement="top") Удалить роли
+                    div(class="list-roles hidden")
+                        each rolesForDelete in dataUser.usersData.role
+                            li(class="list-group-item")
+                                label(for=rolesForDelete._id class="form-check-label") #{rolesForDelete.name}
+                                button(type="submit" class="btn btn-danger deleteRole" id=rolesForDelete._id) Убрать           
+                button(class="btn btn-primary updateUserData") Изменить Login и Email
+                div(class="userData hidden row")
+                    div(class="col-md-4")
+                        label(class="align-middle" for="login") Login пользователя 
+                    div(class="col-md-8")
+                        input(class="form-control loginData" type="text" name="login" value=dataUser.usersData.login)
+                    div(class="col-md-4")
+                        label(class="align-middle" for="email") Email пользователя 
+                    div(class="col-md-8") 
+                        input(class="form-control emailData" type="text" name="email" value=dataUser.usersData.email) 
+                    button(class="btn btn-success sendNewData") Обновить даныне  
+            div(class="card profileData col-md-6")
+                div(class="card-header") Данные профиля пользователя
+                div(class="card-body")
+                    h5(class="card-title") Имя пользователя 
+                    p(class="dataProfileUserFirstName") #{dataUser.userProfileData[0].firstName}
+                    h5(class="card-title") Фамилия пользователя 
+                    p(class="dataProfileUserLastName") #{dataUser.userProfileData[0].lastName}
+                    h5(class="card-title") Отчетсво пользователя 
+                    p(class="dataProfileUserMidlName") #{dataUser.userProfileData[0].midlName}
+                    h5(class="card-title") Возраст пользователя 
+                    p(class="dataProfileUserAgeUser") #{dataUser.userProfileData[0].ageUser}
+                dic(class="card-footer")
+                    h5(class="card-title") Короткая информация о пользователе 
+                    p(class="dataProfileUserAboutUser") #{dataUser.userProfileData[0].aboutUser}
+                button(class="btn btn-primary addUserProfileData") Изменить профиль 
+                div(class="userProfileData hidden row")
+                    div(class="col-md-4")
+                        label(class="align-middle" for="firstName") Имя пользователя 
+                    div(class="col-md-8")
+                        input(class="form-control firstNameData" type="text" name="firstName" value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].firstName))
+                    div(class="col-md-4")
+                        label(class="align-middle" for="lastName") Фамилия пользователя 
+                    div(class="col-md-8") 
+                        input(class="form-control lastNameData" type="text" name="lastName" value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].lastName)) 
+                    div(class="col-md-4")
+                        label(class="align-middle" for="midlName") Отчетсво пользователя 
+                    div(class="col-md-8") 
+                        input(class="form-control midlNameData" type="text" name="midlName" value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].midlName)) 
+                    div(class="col-md-4")
+                        label(class="align-middle" for="ageUser") Возраст пользователя 
+                    div(class="col-md-8") 
+                        input(class="form-control ageUserData" type="text" name="ageUser" value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].ageUser)) 
+                    div(class="col-md-12")
+                        label(class="align-middle" for="aboutUser") <h6>Информация о пользователе</h6>
+                    div(class="col-md-12") 
+                        textarea#aboutUserData(class="form-control aboutUserData" rows="2" name='aboutUser' value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].aboutUser)) #{dataUser.userProfileData[0].aboutUser}
+                    button(class="btn btn-success sendNewProfileData") Обновить даныне
+            p Данные о пользователе: #{dataUser.usersData}
+            p Данные о профиле пользователя: #{dataUser.userProfileData}
+            p Данные о ролях, которые доступны для пользователя: #{dataUser.usersRolesData}
+    script(src="/javascripts/pageUsersInfo.js") 

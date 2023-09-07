@@ -21,9 +21,12 @@ var users = new Schema({
         trim: true
     },
     role: [{
-            type: Schema.ObjectId, 
+            type: Schema.Types.ObjectId, 
             ref: Roles,
-        }]
+        }],
+    createDate: {
+        type: Date
+    }
 });
 
 //возможно буду допиливать
