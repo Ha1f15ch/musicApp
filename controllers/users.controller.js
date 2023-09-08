@@ -316,21 +316,13 @@ exports.updateUserRole_put = async (req, res, next) => {
                 console.log('Флаг дал true')
             }
         } else {
-            //нужно переписать запись новых ролей в уч запись пользователя
-            //сейчас, цикл просматривает записи, присваевает в новый набор данных новую роль
-            //и просатривает его еще раз, видит совпадение и отменяет апдейт, так как есть сопадение
+            var tempMassUserRole = results.userInfo.role.map((el) => el._id+'')
             for(let i = 0; i < req.body.RoleData.length; i++) {
-                console.log(results.userInfo.role, ' Исходные данные ')
-                for(let j = 0; j < results.userInfo.role.length; j++) {
-                    if(req.body.RoleData[i] == results.userInfo.role[j]._id+'') {
-                        console.log('Данные из резулта - ', results.userInfo.role[j]._id+'')
-                        console.log('Сравненние - ', req.body.RoleData[i], ' И ', results.userInfo.role[j]._id+'')
-                        console.log('Данные сопадают, применение новых ролей отклоняется')
-                        flag = false
-                    } else {
-                        console.log('Не совпало, записываем . . .')
-                        results.userInfo.role.push(req.body.RoleData[i])
-                    }
+                if(tempMassUserRole.includes(req.body.RoleData[i])) {
+                    console.log('Такое значение уже есть у пользователя, пропускаем . . .')
+                } else {
+                    results.userInfo.role.push(req.body.RoleData[i])
+                    flag = true
                 }
             }
         }
