@@ -5,7 +5,9 @@ exports.list_janrs = async (req, res, next) => {
     await Janrs.find({})
     .then((results) => {
         console.log(results)
-        res.status(200).send(results)
+        res.render('pageJanrs', {
+            dataJanrs: results
+        })
     })
     .catch((errors) => {
         console.log(errors)
@@ -14,10 +16,13 @@ exports.list_janrs = async (req, res, next) => {
 };
 
 exports.info_janr = async (req, res, next) => {
-    await Janrs.find({})
+    await Janrs.findById(req.params.id)
     .then((results) => {
         console.log(results)
-        res.status(200).send(results)
+        res.render('pageJanrInfo', {
+            title: 'Информация о жанре',
+            dataJanrItem: results
+        })
     })
     .catch((errors) => {
         console.log(errors)
@@ -60,20 +65,38 @@ exports.create_janr = [
 ];
 
 exports.update_janr = async (req, res, next) => {
-    var updatedJanr = new Janrs({
-        name: req.body.name,
-        descriptions: req.body.descriptions
-    })
 
-    await Janrs.findByIdAndUpdate(req.params.id, updatedJanr, {})
-    .then((results) => {
-        console.log(results)
-        res.redirect(results.janrId)
-    })
-    .catch((errs) => {
-        console.log(errs)
-        return next(errs)
-    })
+    try {
+        var findedJanr = await Janrs.findById(req.params.id)
+        var new_name = req.body.name
+
+        var anotherDataJanr = await Janrs.find({
+            name: new_name
+        })
+        var tempMass_idJanr = anotherDataJanr.map((el) => el._id+'')
+
+        if(tempMass_idJanr.includes(req.params.id) || tempMass_idJanr.length == 0) {
+            var updatedJanr = new Janrs({
+                name: req.body.name,
+                descriptions: req.body.descriptions,
+                _id: req.params.id
+            })
+        
+            await Janrs.findByIdAndUpdate(req.params.id, updatedJanr, {})
+            .then((results) => {
+                console.log(results, ' - Result Updated')
+                res.sendStatus(200)
+            })
+            .catch((errs) => {
+                console.log(errs)
+                res.sendStatus(500)
+            })
+        } else {
+            res.sendStatus(404)
+        }
+    } catch(e) {
+        console.log('Ошбика - ', e)
+    }
 };
 
 exports.delete_janr = async (req, res, next) => {
@@ -82,15 +105,15 @@ exports.delete_janr = async (req, res, next) => {
         Janrs.findByIdAndDelete(findedJanr._id)
         .then((deletedJanr) => {
             console.log(deletedJanr)
-            res.redirect('/v1/api/adminCatalog/janrs')
+            res.sendStatus(200)
         })
         .catch((errs) => {
             console.log(errs)
-            return next(errs)
+            res.sendStatus(500)
         })
     })
     .catch((errs) => {
         console.log(errs)
-        return next(errs)
+        res.sendStatus(501)
     })
 };

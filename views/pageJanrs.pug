@@ -1,0 +1,36 @@
+extends adminPage 
+
+block pageJanrs 
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title
+
+    div(class="content")
+        div(class="row")
+            div(class="col-sm-12")
+                table(class="table")
+                    thread
+                        tr 
+                            th <h5>Название жанра</h5>
+                        each janr_item in dataJanrs
+                            tr(class="userItemString")
+                                th(class="janr_item_Colomn" scope="col" id=janr_item._id name=janr_item.name) 
+                                    a(href=`/v1/api/adminCatalog/janrs/${janr_item._id}`) #{janr_item.name}
+                        tr
+                            th 
+                                button(class="btn btn-success BTN_addNewJanr" type="submit") Добавить новый жанр
+            div(class="row hidden addNewJanr")
+                div(class="col-sm-2")
+                div(class="col-sm")
+                    div(class="row")
+                        div(class="col-sm-6 align-top")
+                            label(for="name" class="col-form-label") Название жанра
+                        div(class="col-sm-6")
+                            input(class="form-control NameJanrData" type="text" for="name" name="name")
+                        div(class="col-sm-12")
+                            label(class="col-form-label" for="descriptions") Описание жанра
+                        div(class="col-sm-12")
+                            textarea#descriptions(class="form-control descriptionsJanrData" rows="5" name='descriptions')
+                        div(class="col-sm")
+                            button(class="btn btn-success sendNewJanr" type="submit") Создать
+                div(class="col-sm-2")
+    script(src="/javascripts/pageJanrs.js") 

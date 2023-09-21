@@ -1,0 +1,34 @@
+extends adminPage
+
+block pageJanrInfo 
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title+' - '+dataJanrItem.name
+
+    div(class="content")
+        div(class="row")
+            div(class="col-sm")
+                div(class="card")
+                    div(class="card-body")
+                        h5(class="card-title") Жанр #{dataJanrItem.name}
+                        h6(class="card-subtitle mb-2 text-body-secondary") Описание жанра
+                        p(class="card-text") #{dataJanrItem.descriptions}
+                div(class="row")
+                    div(class="col-sm-2")
+                        button(class="btn btn-secondary btn_for_back" type="submit" onClick=`location.href="http://localhost:3000/v1/api/adminCatalog/janrs"`) Назад
+                    div(class="col-sm-3")
+                    div(class="col-sm-2")
+                        button(class="btn btn-warning btn_for_edit") Изменить
+                    div(class="col-sm-3")
+                    div(class="col-sm-2")
+                        button(class="btn btn-danger btn_for_delete" id=dataJanrItem._id) Удалить
+                div(class='row form_new_data_janr hidden')
+                    div(class="col-sm")
+                        div(class="card")
+                            div(class="card-body")
+                                h5(class="card-title") Название жанра
+                                input(class="form-control New_NameJanrData" type="text" for="name" name="name" value=(undefined===dataJanrItem ? '' : dataJanrItem.name))
+                                <br/>
+                                h6(class="card-subtitle mb-2 text-body-secondary") Описание жанра
+                                textarea#descriptions(class="form-control New_descriptionsJanrData" rows="5" name='descriptions' value=(undefined===dataJanrItem ? ' - - - ' : dataJanrItem.descriptions)) #{dataJanrItem.descriptions}
+                            button(class="btn btn-info New_dataJanr" type="submit" id=dataJanrItem._id) Обновить данные 
+    script(src="/javascripts/pageJanrsInfo.js") 
