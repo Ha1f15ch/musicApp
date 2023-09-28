@@ -46,7 +46,7 @@ db.once('open', function callback() {
   loger.info('Connected to dataBase')
 })
 
-app.use('/', routerAPI)
+app.use('/v1/api/main/', routerAPI)
 app.use('/v1/api/adminCatalog/', routerAPIAdmin)
 app.use('/v1/api/authorization/', routerAPIAuthorization)
 

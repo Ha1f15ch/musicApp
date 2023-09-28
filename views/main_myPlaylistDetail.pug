@@ -1,0 +1,26 @@
+extends main 
+
+block main_myPlaylistDetail
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title+' - '+dataResult.name
+
+    div(class="content")
+        div(class="row")
+            div(class="col")
+                button(class="btn btn-warning btn_aditPlaylist" type="submit") Изменить название
+            div(class="col")
+                button(class="btn btn-danger btn_deletePlaylist" type="submit") Удалить
+        br
+        div(class="row g-3 block_editedPlaylist hidden")
+            div(class="col")
+                p Новое название
+                input(type="text" class="form-control name_playlist" placeholder="Название плэйлиста" aria-label="Имя" name="name" value=(undefined===dataResult ? '' : dataResult.name))
+            div(class="col")
+                button(type="submit" class="btn btn-success btn_editPlaylist") Изменить 
+        div(class="row blockDeletePlaylist hidden")
+            h6 Подтвердите удаление плэйлиста - #{dataResult.name}
+            div(class="col")
+                button(type="submit" class="btn btn-danger disbleDelete") Отменить 
+            div(class="col")
+                button(type="submit" class="btn btn-success approveDelete") Подтвердить
+    script(src="/javascripts/mainMyPlayListDetail.js") 

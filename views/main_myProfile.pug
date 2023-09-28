@@ -1,0 +1,73 @@
+extends main 
+
+block main_myProfile
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title
+
+    div(class="content")
+        table(class="table table-sm")
+            tbody 
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="login") Login пользоваптеля  
+                    div(class="col")
+                        input(class="form-control" type="text", name="login" value=(undefined===userData ? 'Не заполнено' : userData.login) aria-label="Login пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="email") Email пользоваптеля
+                    div(class="col")
+                        input(class="form-control" type="text", name="email" value=(undefined===userData ? 'Не заполнено' : userData.email) aria-label="email пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="password") Пароль пользователя 
+                    div(class="col")
+                        input(class="form-control" type="text", name="password" value="******" aria-label="пароль пользователя" readonly)
+            caption 
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="rolesUser") Роли пользователя
+                    div(class="col")
+                        each value in userData.role
+                            h9(class="align-middle" style='display: inline; padding-right:10px;') #{value.name}     
+        table(class="table table-sm")   
+            tbody
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="FirstName") Имя пользователя  
+                    div(class="col")
+                        input(class="form-control" type="text", name="FirstName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].firstName) aria-label="Имя пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="LastName") Фамилия пользователя  
+                    div(class="col")
+                        input(class="form-control" type="text", name="LastName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].lastName) aria-label="Фамилия пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="MidlName") Отчетсво пользователя  
+                    div(class="col")
+                        input(class="form-control" type="text", name="MidlName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].midlName) aria-label="Отчетсво пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="AgeUser") Возраст пользователя  
+                    div(class="col")
+                        input(class="form-control" type="text", name="AgeUser" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].ageUser) aria-label="Возраст пользователя" readonly)
+                div(class="row g-15")
+                    div(class="col")
+                        label(for="aboutUser") Короткая информация о пользователе 
+                div(class="row g-15")
+                    div(class="col")
+                        h9(class="dataProfileUserAboutUser") #{userProfileData[0].aboutUser}
+            caption
+                div(class="row")
+                    div(class="col")
+                        label(for="usersPlaylists") Плэйлисты пользователя
+                    div(class="row")
+                        each playlistItem in userPlaylistData
+                            div(class="col")
+                                button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.getPlaylist}"`) #{playlistItem.name} 
+                        else 
+                            p У пользователя нет плэйлистов
+                div(class="row")
+                    div(class="col")
+                        button(class="btn btn-info" type="submit" onClick=`location.href="http://localhost:3000/v1/api/main/myPlaylists"`) Список моих плэйлистов
+    script(src="/javascripts/main_pageUsersInfo.js") 

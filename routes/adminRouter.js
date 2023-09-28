@@ -6,12 +6,29 @@ const roles_controller = require('../controllers/roles.controller.js');
 const janrs_controller = require('../controllers/janrs.controller');
 const users_controller = require('../controllers/users.controller');
 const adminPage_controller = require('../controllers/adminPage.controller');
+const playlist_controller = require('../controllers/playlist.controller');
 
 var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware')
 
 router.get('/', adminPage_controller.mainPage_GET)
+// ------------------------------------------------------------------------- оптимизировать под admins
+router.get('/myProfile', [authMiddlevare], adminPage_controller.MyProfile_GET)
 
+router.put('/myProfile', [authMiddlevare], adminPage_controller.MyProfile_PUT)
+
+router.get('/myPlaylists/:id', [authMiddlevare], adminPage_controller.myPlaylistDetail_GET)
+
+router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], adminPage_controller.updatePlaylist_name_PUT)
+
+//После добавится апдейт на добавление или удаление композиции из плэйлиста
+
+router.delete('/myPlaylists/:id', [authMiddlevare], adminPage_controller.deletePlaylist_DELETE)
+
+router.get('/myPlaylists', [authMiddlevare], adminPage_controller.list_myPlaylists_GET)
+
+router.post('/myPlaylists', [authMiddlevare], adminPage_controller.createPlaylist_POST)
+//------------------------------------------------------------------------------------------
 router.get('/users', users_controller.list_users)
 
 router.get('/users/:id', [authMiddlevare], users_controller.info_user)
@@ -24,13 +41,13 @@ router.put('/users/:id/updateRole', users_controller.updateUserRole_put)
 
 router.put('/users/:id/deleteRole', users_controller.update_user_delete_role)
 
-router.get('/users/:id/playlists/', (req, res, next) => {
-    res.send('2й состав запроса, 2а параметра в поиске')
-})
+router.get('/users/:id/playlists/', playlist_controller.all_users_playlists_GET)
 
-router.get('users/:id/playlists/:id', (req, res, next) => {
-    res.send('2а параметра в строке, данные по определенному плэйлисту')
-})
+router.get('users/:idU/playlists/:idP', playlist_controller.detail_users_playlist_GET)
+
+router.get('/playlists', playlist_controller.all_playlists_GET)
+
+router.get('/playlists/:id', playlist_controller.detail_playlist_GET)
 
 router.get('/janrs', janrs_controller.list_janrs)
 

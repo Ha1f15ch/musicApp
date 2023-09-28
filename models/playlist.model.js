@@ -1,4 +1,7 @@
 var mongoose = require('mongoose');
+var Users = require('../models/users.model')
+var Compositions = require('../models/compositions.model')
+
 var Schema = mongoose.Schema;
 
 var playlists = new Schema({
@@ -9,26 +12,32 @@ var playlists = new Schema({
     compositions: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Compositions',
+            ref: Compositions,
             default: null
         }
     ],
     userId: {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: Users
     }
 })
 
 playlists
 .virtual('getPlaylist')
-.get(() => {
-    return '/v1/api/myProfile/myPlaylists/' + this._id
+.get(function() {
+    return '/v1/api/main/myPlaylists/' + this._id
 });
 
 playlists
-.virtual('getPlaylistByAdmin')
-.get(() => {
-    return 'users/'+ this.userId + '/playlists/' + this._id
+.virtual('getUsersPlaylists')
+.get(function() {
+    return '/v1/api/main/users/'+ this.userId + '/playlists/' + this._id
+})
+
+playlists
+.virtual('getUsersPlaylists_admin')
+.get(function() {
+    return '/v1/api/adminCatalog/users/'+ this.userId + '/playlists/' + this._id
 })
 
 module.exports = mongoose.model('Playlists', playlists);

@@ -80,7 +80,12 @@ block pageUsersInfo
                     div(class="col-md-12") 
                         textarea#aboutUserData(class="form-control aboutUserData" rows="2" name='aboutUser' value=(undefined===dataUser.userProfileData[0] ? '' : dataUser.userProfileData[0].aboutUser)) #{dataUser.userProfileData[0].aboutUser}
                     button(class="btn btn-success sendNewProfileData") Обновить даныне
-            p Данные о пользователе: #{dataUser.usersData}
-            p Данные о профиле пользователя: #{dataUser.userProfileData}
-            p Данные о ролях, которые доступны для пользователя: #{dataUser.usersRolesData}
+            div(class="card-footer")
+                h5(class="card-title") Плэйлисты пользователя 
+                div(class="row")
+                    each playlistItem in dataUser.userPlaylistsData
+                        div(class="col")
+                            button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.getUsersPlaylists_admin}"`) #{playlistItem.name} 
+                    else 
+                        p У пользователя нет плэйлистов
     script(src="/javascripts/pageUsersInfo.js") 

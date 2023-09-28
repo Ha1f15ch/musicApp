@@ -1,0 +1,18 @@
+extends main  
+
+block main_listJanrs 
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title
+
+    div(class="content")
+        div(class="row")
+            div(class="col-sm-12")
+                table(class="table")
+                    thread
+                        tr 
+                            th <h5>Название жанра</h5>
+                        each janr_item in dataJanrs
+                            tr(class="userItemString")
+                                th(class="janr_item_Colomn" scope="col" id=janr_item._id name=janr_item.name) 
+                                    a(href=`/v1/api/main/janrs/${janr_item._id}`) #{janr_item.name}
+            

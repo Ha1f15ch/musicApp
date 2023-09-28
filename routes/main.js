@@ -9,38 +9,40 @@ const music_controller = require('../controllers/music.controller')
 var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware')
 
-router.get('/', [authMiddlevare, CheckUsersProperties.prop_readDicts], (req, res, next) => {
-    res.redirect('/v1/api/main')
-})
+router.get('/', [authMiddlevare], mainPage_controller.mainPageData)
 
-router.get('/v1/api/main', [authMiddlevare], mainPage_controller.mainPageData)
+router.get('/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
-router.get('/v1/api/main/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
+router.get('/music/:id', [authMiddlevare], music_controller.mainPage_musicDetail_GET)
 
-router.get('/v1/api/main/music/:id', music_controller.mainPage_musicDetail_GET)
+router.get('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_GET)
 
-router.get('/v1/api/main/music/create', [authMiddlevare], music_controller.mainPage_createMusic_GET)
+router.post('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
 
-router.post('/v1/api/main/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
+router.get('/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.listJanrs_GET)
 
-router.get('/v1/api/main/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], janrs_controller.list_janrs)
+router.get('/janrs/:id', [authMiddlevare], mainPage_controller.info_janr_GET)
 
-router.get('/v1/api/main/janrs/janr/:id', janrs_controller.info_janr)
+router.get('/users', [authMiddlevare], mainPage_controller.main_listUsers_GET)
 
-router.get('/v1/api/main/users/', users_controller.list_users)
+router.get('/users/:id', [authMiddlevare], mainPage_controller.main_infoUser_GET)
 
-router.get('/v1/api/main/users/user/:id', users_controller.info_user)
+router.get('/users/:idU/playlists/:idP', mainPage_controller.main_infoUserPlaylistById_GET)
 
-router.get('/v1/api/myProfile', [authMiddlevare], users_controller.info_user_profile)
+router.get('/myProfile', [authMiddlevare], mainPage_controller.MyProfile_GET)
 
-router.put('/v1/api/myProfile', [authMiddlevare], users_controller.update_info_user_profile)
+router.put('/myProfile', [authMiddlevare], mainPage_controller.MyProfile_PUT)
 
-router.get('/v1/api/myProfile/myPlaylists', (req, res, next) => {
-    res.send({message: 'myplaylists'})
-})
+router.get('/myPlaylists/:id', [authMiddlevare], mainPage_controller.myPlaylistDetail_GET)
 
-router.get('/v1/api/myProfile/myPlaylists/:id', (req, res, next) => {
-    res.send({message: 'myplaylists + id'})
-})
+router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], mainPage_controller.updatePlaylist_name_PUT)
+
+//После добавится апдейт на добавление или удаление композиции из плэйлиста
+
+router.delete('/myPlaylists/:id', [authMiddlevare], mainPage_controller.deletePlaylist_DELETE)
+
+router.get('/myPlaylists', [authMiddlevare], mainPage_controller.list_myPlaylists_GET)
+
+router.post('/myPlaylists', [authMiddlevare], mainPage_controller.createPlaylist_POST)
 
 module.exports = router;

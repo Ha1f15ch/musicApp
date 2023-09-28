@@ -1,67 +1,9 @@
 var async = require('async');
 const Users = require('../models/users.model');
 const UserProfile = require('../models/user.profile.model');
-const Roles = require('../models/roles.model.js')
-const Rights = require('../models/rights.model')
-
-exports.info_user_profile = async (req, res, next) => {
-
-    var token = req.headers.cookie.split('access_token=')[1]
-    var valToken = token.split('.')[1]
-    var parsToken = valToken.replace(/-/g, '+').replace(/_/g, '/');
-    var decodedToken = JSON.parse(Buffer.from(parsToken, 'base64').toString('binary'));
-
-    console.log(decodedToken.id, ' - Определяем для кого выполнен запрос')
-
-    await UserProfile.findOne({idUser: decodedToken.id})
-    .then((resProfileData) => {
-        console.log('Найдены данные - ', resProfileData)
-        res.send(resProfileData)
-    })
-    .catch((errProfileData) => {
-        console.log('Возникла ошибка - ', errProfileData)
-        return next(errProfileData)
-    })
-}
-
-exports.update_info_user_profile = async (req, res, next) => {
-
-    var token = req.headers.cookie.split('access_token=')[1]
-    var valToken = token.split('.')[1]
-    var parsToken = valToken.replace(/-/g, '+').replace(/_/g, '/');
-    var decodedToken = JSON.parse(Buffer.from(parsToken, 'base64').toString('binary'));
-
-    console.log(decodedToken, ' - Декодед')
-
-    await UserProfile.findOne({idUser: decodedToken.id})
-    .then(async (resProfileUserId) => {
-        console.log('Найдено значение - ', resProfileUserId)
-
-        var newUserProfileData = new UserProfile({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            midlName: req.body.midlName,
-            ageUser: req.body.ageUser,
-            aboutUser: req.body.aboutUser,
-            _id: resProfileUserId._id
-        })
-    
-        await UserProfile.findByIdAndUpdate(resProfileUserId._id, newUserProfileData, {})
-        .then((resUpdate) => {
-            console.log(resUpdate, ' - Результат апдейта')
-            res.redirect('/v1/api/myProfile')
-        })
-        .catch((errUpdate) => {
-            console.log('Ошибка при выполнении апдейта - ', errUpdate)
-            return next(errUpdate)
-        })
-    })
-    .catch((errProfileUserId) => {
-        console.log('Возникла ошибка при поиске - ', errProfileUserId)
-        return next(errProfileUserId)
-    })
-
-}
+const Roles = require('../models/roles.model.js');
+const Rights = require('../models/rights.model');
+const PlaylistModel = require('../models/playlist.model');
 
 // Список пользователей 
 exports.list_users = async (req, res, next) => {
@@ -134,6 +76,17 @@ exports.info_user = async (req, res, next) => {
             })
             .catch((errUserProfileData) => {
                 return next(errUserProfileData)
+            })
+        },
+        userPlaylistsData: function(callback) {
+            PlaylistModel.find({
+                userId: req.params.id
+            })
+            .then((resUserPlaylists) => {
+                callback(null, resUserPlaylists)
+            })
+            .catch((errUsersPlaylists) => {
+                return next(errUsersPlaylists)
             })
         }
     }, (errors, result) => {
