@@ -4,7 +4,35 @@ var Compositions = require('../models/compositions.model');
 const async = require('async');
 
 exports.all_playlists_GET = async (req, res, next) => {
-    res.send('Custom playlists')
+    async.parallel({
+        dataPlaylists: function(callback) {
+            PlayLists.find()
+            .populate({
+                path: "userId",
+                model: Users
+            })
+            .populate({
+                path: "compositions",
+                model: Compositions
+            })
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        }
+    }, (err, results) => {
+        if(err) {
+            console.log('Ошибка при поиска плэйлистов - ', err)
+            return next(err)
+        } else {
+            res.render('admin_listPlaylists', {
+                title: 'Списо плэйлистов пользователей',
+                dataPlaylists: results
+            })
+        }
+    })
 }
 
 exports.detail_playlist_GET = async (req, res, next) => {

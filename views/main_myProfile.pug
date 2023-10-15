@@ -11,12 +11,12 @@ block main_myProfile
                     div(class="col")
                         label(for="login") Login пользоваптеля  
                     div(class="col")
-                        input(class="form-control" type="text", name="login" value=(undefined===userData ? 'Не заполнено' : userData.login) aria-label="Login пользователя" readonly)
+                        input(class="form-control userLoginData" type="text", name="login" value=(undefined===userData ? 'Не заполнено' : userData.login) aria-label="Login пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="email") Email пользоваптеля
                     div(class="col")
-                        input(class="form-control" type="text", name="email" value=(undefined===userData ? 'Не заполнено' : userData.email) aria-label="email пользователя" readonly)
+                        input(class="form-control userEmailData" type="text", name="email" value=(undefined===userData ? 'Не заполнено' : userData.email) aria-label="email пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="password") Пароль пользователя 
@@ -26,37 +26,41 @@ block main_myProfile
                 div(class="row g-15")
                     div(class="col")
                         label(for="rolesUser") Роли пользователя
-                    div(class="col")
+                    div(class="row")
                         each value in userData.role
-                            h9(class="align-middle" style='display: inline; padding-right:10px;') #{value.name}     
+                            div(class="col")
+                                p #{value.name}     
+                        else 
+                            p Роли у пользователя отсутствуют
         table(class="table table-sm")   
             tbody
                 div(class="row g-15")
                     div(class="col")
                         label(for="FirstName") Имя пользователя  
                     div(class="col")
-                        input(class="form-control" type="text", name="FirstName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].firstName) aria-label="Имя пользователя" readonly)
+                        input(class="form-control UserfirstNameData" type="text", name="FirstName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].firstName) aria-label="Имя пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="LastName") Фамилия пользователя  
                     div(class="col")
-                        input(class="form-control" type="text", name="LastName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].lastName) aria-label="Фамилия пользователя" readonly)
+                        input(class="form-control UserlastNameData" type="text", name="LastName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].lastName) aria-label="Фамилия пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="MidlName") Отчетсво пользователя  
                     div(class="col")
-                        input(class="form-control" type="text", name="MidlName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].midlName) aria-label="Отчетсво пользователя" readonly)
+                        input(class="form-control UsermidlNameData" type="text", name="MidlName" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].midlName) aria-label="Отчетсво пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="AgeUser") Возраст пользователя  
                     div(class="col")
-                        input(class="form-control" type="text", name="AgeUser" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].ageUser) aria-label="Возраст пользователя" readonly)
+                        input(class="form-control UserageUserData" type="text", name="AgeUser" value=(undefined===userProfileData ? 'Не заполнено' : userProfileData[0].ageUser) aria-label="Возраст пользователя" readonly=true)
                 div(class="row g-15")
                     div(class="col")
                         label(for="aboutUser") Короткая информация о пользователе 
                 div(class="row g-15")
                     div(class="col")
                         h9(class="dataProfileUserAboutUser") #{userProfileData[0].aboutUser}
+                        textarea#aboutUserData(class="form-control UseraboutUserData hidden" rows="4" name='aboutUser' value=(undefined===userProfileData[0] ? '' : userProfileData[0].aboutUser)) #{userProfileData[0].aboutUser}
             caption
                 div(class="row")
                     div(class="col")
@@ -67,7 +71,14 @@ block main_myProfile
                                 button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.getPlaylist}"`) #{playlistItem.name} 
                         else 
                             p У пользователя нет плэйлистов
+                br
                 div(class="row")
                     div(class="col")
-                        button(class="btn btn-info" type="submit" onClick=`location.href="http://localhost:3000/v1/api/main/myPlaylists"`) Список моих плэйлистов
+                        button(class="btn btn-secondary" type="submit" onClick=`location.href="http://localhost:3000/v1/api/main/myPlaylists"`) Список моих плэйлистов
+                    div(class="col")    
+                        button(class="btn btn-primary btn_editauthData" type="submit") Изменить login/email
+                    div(class="col")    
+                        button(class="btn btn-primary btn_editProfileData" type="submit") Изменить профиль 
+                button(class="btn btn-info btnSendAuthUserData hidden" type="submit") Изменить login/email
+                button(class="btn btn-info btnSendProfileUserData hidden" type="submit") Изменить профиль
     script(src="/javascripts/main_pageUsersInfo.js") 

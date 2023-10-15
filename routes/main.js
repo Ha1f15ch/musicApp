@@ -15,9 +15,9 @@ router.get('/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
 router.get('/music/:id', [authMiddlevare], music_controller.mainPage_musicDetail_GET)
 
-router.get('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_GET)
-
 router.post('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
+
+router.post('/music/updatePlaylists/:id', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)
 
 router.get('/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.listJanrs_GET)
 
@@ -31,7 +31,9 @@ router.get('/users/:idU/playlists/:idP', mainPage_controller.main_infoUserPlayli
 
 router.get('/myProfile', [authMiddlevare], mainPage_controller.MyProfile_GET)
 
-router.put('/myProfile', [authMiddlevare], mainPage_controller.MyProfile_PUT)
+router.put('/myProfile/updateProfile', [authMiddlevare], mainPage_controller.MyProfile_PUT)
+
+router.put('/myProfile', [authMiddlevare], mainPage_controller.main_UpdateMyAuth_PUT)
 
 router.get('/myPlaylists/:id', [authMiddlevare], mainPage_controller.myPlaylistDetail_GET)
 

@@ -56,6 +56,8 @@ exports.mainPage_listMusic_GET = async (req, res, next) => {
             return next(errors)
         }
         if(results) {
+
+            //
             res.render('listMusic', {
                 dataMusic: results.dataMusic,
                 dataJanr: results.dataJanr,
@@ -63,18 +65,6 @@ exports.mainPage_listMusic_GET = async (req, res, next) => {
                 dataPlaylist: results.dataPlaylist
             })
         }
-    })
-}
-
-exports.mainPage_createMusic_GET = async (req, res, next) => {
-    await Janrs.find({})
-    .then((resJanrs) => {
-        res.render('CreateMusicGET', {
-            janr: resJanrs
-        })
-    })
-    .catch((errJanrs) => {
-        console.log('Возникла ошибка при поиске жанров - ', errJanrs)
     })
 }
 
@@ -187,10 +177,24 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
                 callback(null, errMus)
             })
         },
+        janrs: function(callback) {
+            Janrs.find({})
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        }
     }, (errors, results) => {
         if(errors) {
             console.log('Ошибки при выполнении поиска - ', errors)
             return next(errors)
+        }
+        for(const janr_item of results.janrs) {
+            if(results.compositionDetaled.janrs.includes(janr_item._id)) {
+                janr_item.checked = "true";
+            }
         }
         console.log('результат сбора данных по композиции - ', results.compositionDetaled)
         console.log(results.compositionDetaled.janrs, ' - Жанры')
@@ -199,4 +203,100 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
             resData: results.compositionDetaled
         })
     })
+}
+
+exports.mainPage_addComposition_inPlaylist_POST = async (req, res, next) => {
+    try {
+        var compositionId = req.params.id
+        var Playlists_id_inner = req.body.playlist_IDs
+
+        if(Playlists_id_inner.length == 0) {
+            console.log('Проапдейтили на 0')    
+            Playlists.find({
+                userId: req.userIds
+            })  
+            .populate({
+                path: 'compositions',
+                model: Compositions
+            })
+            .then((resFinded) => {
+                for(let i = 0; i < resFinded.length; i++) {
+                    console.log('Проверочка . . .')
+                    console.log(resFinded[i].compositions, ' - общий массив')
+                    console.log(compositionId, ' - Что в нем ищем')
+                    //if(resFinded[i].compositions.length !== 0) {
+                        var tempMassAfterDeleted = resFinded[i].compositions.filter((mus_item) => mus_item._id+'' !== compositionId+'')
+                        console.log(tempMassAfterDeleted, ' - результат отсева')
+                    //}
+
+                    var newPlaylistData = new Playlists({
+                        name: resFinded[i].name,
+                        compositions: tempMassAfterDeleted,
+                        userId: resFinded[i].userId,
+                        _id: resFinded[i]._id
+                    })
+
+                    Playlists.findByIdAndUpdate(resFinded[i]._id, newPlaylistData, {})
+                    .then((resUpdated) => {
+                        console.log('Результат апдейта 1 - ', resUpdated)
+                    })
+                    .catch((errUpdate) => {
+                        console.log('Ошибка при апдейте - ', errUpdate)
+                    })
+                }
+        
+                res.sendStatus(200)
+            })
+            .catch((errFinded) => {
+                console.log('Ошибка при поиске или update плэйлистов из которых удаляем композицию', - errFinded)
+                res.sendStatus(505)
+            })
+        } else {
+
+            await Compositions.findById(compositionId)
+            .then(async (resFinded) => {
+                for(let i = 0; i < Playlists_id_inner.length; i++) {
+                    await Playlists.findById(Playlists_id_inner[i])
+                    .then((resFindedPlaylist) => {
+                        console.log(resFindedPlaylist, ' - найденный плэйлист')
+                        console.log(resFindedPlaylist.compositions, ' - resFindedPlaylist.compositions', ' - ', compositionId, ' - compositionId')
+                        if(resFindedPlaylist.compositions.includes(compositionId)) {
+                            console.log('Входит!!')
+                        } else {
+                            var tempMassIdComposition
+                            console.log('Такого трека в плэйлисте нет, добавляем . . .')
+                            resFindedPlaylist.compositions.push(compositionId)
+                            let Updated = new Playlists({
+                                name: resFindedPlaylist.name,
+                                compositions: resFindedPlaylist.compositions,
+                                userId: resFindedPlaylist.userId,
+                                _id: resFindedPlaylist._id
+                            })
+
+                            Playlists.findByIdAndUpdate(resFindedPlaylist._id, Updated, {})
+                            .then((resUpdated) => {
+                                console.log('Результат апдейта - ', resUpdated)
+                            })
+                            .catch((errUpdate) => {
+                                console.log('Ошибка при апдейте - ', errUpdate)
+                                res.sendStatus(500)
+                            })
+                        }
+                    })
+                    .catch((errFindedPlaylist) => {
+                        console.log('Ошибка при поиске playlists для update - ', errFindedPlaylist)
+                        res.sendStatus(500)
+                    })
+                }
+            res.sendStatus(200)
+        })
+        .catch((errFinded) => {
+            console.log('Ошибка при поиске композции для update to playlist')
+            res.sendStatus(500)
+        })
+        }
+    } catch(e) {
+        console.log('Ошибка при выполнении работы роута/апдейта - ',e)
+        return next(e)
+    }
 }

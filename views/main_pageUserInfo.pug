@@ -29,6 +29,8 @@ block main_pageUserInfo
                     div(class="col")
                         each value in dataUser.usersData.role
                             h9(class="align-middle" style='display: inline; padding-right:10px;') #{value.name}     
+                        else 
+                            p У пользователя нет ролей
         table(class="table table-sm")   
             tbody
                 div(class="row g-15")

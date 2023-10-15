@@ -10,3 +10,198 @@ a {
 .hidden {
   display: none;
 }
+
+.sidebar-nav {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.registration {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  /* position: absolute; */
+  top: 50%;
+  width: 100%;
+}
+
+.page-header{
+  background-color: rgb(179, 222, 236);
+}
+
+p{
+  width:100%;
+  text-align:justify;
+}
+
+.p{
+  width:100%;
+  text-align:justify;
+}
+
+#stolbecTracks{
+  text-align: center;
+  background-color: rgb(179, 222, 236)
+}
+
+.textArray{
+  text-align: center;
+  background-color: rgb(85, 196, 233)
+}
+
+.titleDataUpdate {
+  text-align: center;
+}
+
+.userData {
+  text-align:left;
+  width:100%;
+}
+
+.usernameSection, .emailSection {
+  display: inline-block;
+  place-items:inherit;
+  width:50%;
+}
+
+.passwordSection {
+  display: inline-block;
+  place-items:inherit;
+  width:50%;
+}
+
+.userProfileData {
+  text-align:left;
+  width:100%;
+}
+
+.FirstNameSection, .MidNameSection, .LastNameSection {
+  display: inline-block;
+  place-items:inherit;
+  width:33%;
+}
+
+.AboutUserSection {
+  display: inline-block;
+  place-items:inherit;
+  width:100%;
+}
+
+.dark-theme {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+.normal-theme {
+  background-color: #B8FFF7;
+  color: #C53131;
+}
+
+.light-theme {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.song_item {
+  display: flex;
+  position: relative;
+  padding: 1px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button_play {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 24px!important;
+  height: 24px!important;
+}
+
+.button_play_image{
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  border-radius: 5px;
+}
+
+.botton_song {
+  display: flex;
+  position: relative;
+  min-width: 24px;
+  flex-basis: 24px;
+  height: 24px;
+}
+
+.song_content {
+  padding-left: 10px;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.progress_container_player {
+  background: #E4E9ED;
+  border-radius: 5px;
+  width: 100%;
+  height: 10px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.progress_player {
+  background: #2B3C5B;
+  border-radius: 5px;
+  height: 6px;
+  /* width: 150px; */
+}
+
+.button_play {
+  background-image: url(/img/play.png);
+}
+
+.playing_track {
+  background-image: url(/img/pause.png);
+}
+
+.hideClass {
+  display: none;
+}
+
+.volume_player_img {
+  width: 24px;
+  height: 24px;
+}
+
+.change_size__volume {
+  background: #E4E9ED;
+  border-radius: 5px;
+  width: 100px;
+  height: 10px;
+  margin-top: 15px;
+  /* display: flex; */
+  align-items: center;
+  cursor: pointer;
+  position:absolute;
+  padding: 0px 0px 2px 2px;
+}
+
+.size_volume {
+  background: #2B3C5B;
+  border-radius: 5px;
+  height: 6px;
+  /* width: 50px; */
+}
+
+.dataPlaylistItems {
+  display: block;
+  position: relative;
+}
+
+.showerClass {
+  display:inherit;
+}

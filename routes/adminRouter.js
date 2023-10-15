@@ -12,10 +12,12 @@ var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware')
 
 router.get('/', adminPage_controller.mainPage_GET)
-// ------------------------------------------------------------------------- оптимизировать под admins
+
 router.get('/myProfile', [authMiddlevare], adminPage_controller.MyProfile_GET)
 
-router.put('/myProfile', [authMiddlevare], adminPage_controller.MyProfile_PUT)
+router.put('/myProfile', [authMiddlevare], adminPage_controller.admin_UpdateMyAuth_PUT)
+
+router.put('/myProfile/updateProfile', [authMiddlevare], adminPage_controller.MyProfile_PUT)
 
 router.get('/myPlaylists/:id', [authMiddlevare], adminPage_controller.myPlaylistDetail_GET)
 
@@ -28,7 +30,7 @@ router.delete('/myPlaylists/:id', [authMiddlevare], adminPage_controller.deleteP
 router.get('/myPlaylists', [authMiddlevare], adminPage_controller.list_myPlaylists_GET)
 
 router.post('/myPlaylists', [authMiddlevare], adminPage_controller.createPlaylist_POST)
-//------------------------------------------------------------------------------------------
+
 router.get('/users', users_controller.list_users)
 
 router.get('/users/:id', [authMiddlevare], users_controller.info_user)

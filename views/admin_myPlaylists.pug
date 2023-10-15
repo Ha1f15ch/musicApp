@@ -1,0 +1,27 @@
+extends adminPage   
+
+block admin_myPlaylists 
+
+    h1(class="align-middle" style='display: inline; padding-right:10px;')=title
+
+    div(class="content")
+        div(class="row g-3")
+            div(class="col")
+                button(class="btn btn-info addPlaylist" type="submit") Добавить 
+        div(class="row")
+            div(class="card col")
+                div(Class="card-footer")
+                    each valPlaylist in dataResult 
+                        button(type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=valPlaylist.name onClick=`location.href="http://localhost:3000${valPlaylist.getPlaylist}"`) #{valPlaylist.name}
+                    else 
+                        p У Вас нет доступных плэйлистов
+    br
+    div(class="row g-3 block_newplaylist hidden")
+        div(class="col")
+            p Введите название нового плэйлиста
+            input(type="text" class="form-control name_playlist" placeholder="Название плэйлиста" aria-label="Имя" name="name")
+        div(class="col")
+            button(type="submit" class="btn btn-success btn_createNewPlaylist") Создать 
+    script(src="/javascripts/mainMyPlayList.js") 
+//- Добавить возможност ьвыбирать сразу композиции в листе чекбоксов, возможно последние просмотренные
+//- если да, доработать БД или работу роутов, для записи в куки временных файлов, ссылок на них

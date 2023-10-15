@@ -14,7 +14,7 @@ block detailMusic
                     | #{val.name}
             div(class="description_composition mb-3")
                 label(for="description" class="form-label") О композиции:
-                textarea#description.form-control(rows="3" name='description' require='true') #{resData.description}
+                textarea#description.form-control(rows="3" name='description' require='true' readonly=true) #{resData.description}
             div(class="user_Creator")
                 p Автор композиции: #{resData.userIdCreated.login}
 
