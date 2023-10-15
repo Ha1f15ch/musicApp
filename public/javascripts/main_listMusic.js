@@ -80,9 +80,11 @@ window.document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        const observer = new MutationObserver(mutationCallback)
+        const observer = new MutationObserver(mutationCallback) // переделываем по другому, в зависимости от того ,что напишем на бэке
+        // важно понимать, в какой последовательности будут добавлять и удаляться композиции из плэйлиста, пример на сайте - https://muzofond.fm/personal-music/playlists/434033
         observer.observe(listModalDisplay[i], configMutationEvent)
     }
+    // переделываем по примеру на сайте - https://muzofond.fm/personal-music/playlists/434033
 
     function serchTrackForPlaylist(dataSerch) {
         
