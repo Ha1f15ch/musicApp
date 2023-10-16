@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
 var playlists = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     compositions: [
         {

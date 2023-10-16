@@ -51,14 +51,12 @@ block listMusic
                                                 div(class="modal-body")
                                                     if(dataPlaylist.length!=0)
                                                         div(class="row")
-                                                            div(class="col hstack gap-3")
+                                                            div(class="col d-grid gap-2 list_btn_for_send")
                                                                 each playlist in dataPlaylist
-                                                                    div(class="form-check" id_playlist=playlist._id)
-                                                                        input(class=`form-check-input IdSong-${val._id}` type='checkbox' name=playlist.NamePlaylistUser id_checkbox_playlist=playlist._id checked=playlist.compositions.checked)
-                                                                        label(class="form-check-label" for=playlist._id) <h7>#{playlist.name}</h7>
+                                                                    button(class="btn btn-outline-info btn_playlist_id" type="submit" id_song=val._id id_playlist=playlist._id) <h7>#{playlist.name}</h7>
                                                     else 
                                                         p Нет плэйлистов
-                                                div(class="modal-footer")
+                                                //- div(class="modal-footer")
                                                     button(type="button" class=`btn btn-primary BTNForSendDataToSever_${val._id}` modal_song_id=`modal_song_id-${val._id}`) Обновить данные 
                         else 
                             p Треки не найдены!

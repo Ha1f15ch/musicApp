@@ -16,75 +16,53 @@ window.document.addEventListener('DOMContentLoaded', () => {
     var musArray = []
     var PrevElement = document.querySelectorAll('.song_item')
     var choosenElement_song
-
     var listModalDisplay = document.querySelectorAll('.modal') 
-
-    for(let i = 0; i < listModalDisplay.length; i++) {
-        const configMutationEvent = {
-            attributes: true,
-            subtree: true,
-        }
-        const mutationCallback = function(mutationsList, observer) {
-            for (let mutation of mutationsList) {
-                if(mutation.type === "attributes") {
-                    if(mutation.target.classList.contains('showerClass')) {
-                        console.log('Есть!!') //проверяем есть ли нужный класс в прослушиваемом элементе
-                        var tempVal = mutation.target.attributes.modal_song_id.value.split('-')[1]
-                        var BTNForSendDataToSever = document.querySelector(`.BTNForSendDataToSever_${tempVal}`) // элемент найден, создаем на его основе кнопку 
-
-                        BTNForSendDataToSever.addEventListener('click', async () => {
-    
-                            var playlistIDs = document.querySelectorAll(`.IdSong-${choosenElement_song}`)
-                            var list_id_playlist = []
-
-                            for(let i = 0; i < playlistIDs.length; i++) {
-
-                                if(playlistIDs[i].checked) {
-                                    console.log(playlistIDs[i].getAttribute('id_checkbox_playlist'), ' - id playlist') // вывод выбранных плэйлистов для контекстного трека
-                                    list_id_playlist.push(playlistIDs[i].getAttribute('id_checkbox_playlist'))
-                                }
-                            }
-                
-                            var dataForUpdate = {
-                                songId: choosenElement_song,
-                                playlist_ids: list_id_playlist
-                            }
-                            console.log(dataForUpdate, ' - res for send')
-                            let preload = document.location.href
-                            let href = document.location.href+'/updatePlaylists/'+dataForUpdate.songId
-                            try {
-                                var res = await fetch(href, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json;charset=utf-8'
-                                    },
-                                    body: JSON.stringify({
-                                        "songID": dataForUpdate.songId,
-                                        "playlist_IDs": dataForUpdate.playlist_ids
-                                    })
-                                })
-                                if(res.ok) {
-                                    /* for(let j = 0; j < dataForUpdate.playlist_ids.length; j++) {
-                                        var elemntInputCheckbox = document.getAttribute(`id_checkbox_playlist=${dataForUpdate.playlist_ids[j]}`)
-                                        elemntInputCheckbox[j].checked = true
-                                    }
-                                    console.log('Элемент который будем пост изменять - ', elemntInputCheckbox)
-                                    console.log('Меняем на чекед чекбоксы в инпутах у плэйлистов') */
-                                    setTimeout(alert('Успешно обновлено'), 2000)
-                                }
-                            } catch(e) {
-                                console.log('Ошибка - ', e)
-                            }
-                        })
-                    }
-                }
-            }
-        }
-        const observer = new MutationObserver(mutationCallback) // переделываем по другому, в зависимости от того ,что напишем на бэке
-        // важно понимать, в какой последовательности будут добавлять и удаляться композиции из плэйлиста, пример на сайте - https://muzofond.fm/personal-music/playlists/434033
-        observer.observe(listModalDisplay[i], configMutationEvent)
-    }
+    var btn_playlist_id = document.querySelectorAll('.btn_playlist_id')
+    var href = document.location.href
+    var href_preload = document.location.href
     // переделываем по примеру на сайте - https://muzofond.fm/personal-music/playlists/434033
+    // music/update/:playlistId/:musicID
+    for(let j = 0; j < btn_playlist_id.length; j++) {
+        btn_playlist_id[j].addEventListener('click', async () => {
+            let mus_id = btn_playlist_id[j].getAttribute('id_song')
+            let playlist_id = btn_playlist_id[j].getAttribute('id_playlist')
+
+            href = `${href}/update/${playlist_id}/${mus_id}`
+
+            try {
+                var res = await fetch(href, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify({
+                        "mus_id": mus_id,
+                        "playlist_id": playlist_id
+                    })
+                })
+                if(res.ok) {
+                    console.log('Корректно записано')
+                    href = href_preload
+                    setTimeout(() => {
+                        alert('Успешно добавлено') 
+                        let showerClass = document.querySelector('.showerClass')
+                        if(showerClass.classList.contains('showerClass')) {
+                            showerClass.classList.remove('showerClass')
+                        }
+                    }, 1000)
+                } else {
+                    console.log('Возникла ошибка')
+                    setTimeout(() => {
+                        alert('При добавлении возникла ошибка')
+                        window.location = href_preload
+                    }, 2000)
+                }
+            } catch(e) {
+                console.log('Ошибка при передаче данных или получении ответа- ', e)
+                return e
+            }
+        })
+    }
 
     function serchTrackForPlaylist(dataSerch) {
         

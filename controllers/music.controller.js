@@ -206,5 +206,44 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
 }
 
 exports.mainPage_addComposition_inPlaylist_POST = async (req, res, next) => {
-   
+   var playlist = req.params.playlistId,
+       musicItem = req.params.musicID
+
+    try {
+
+        var dataPlaylist = await Playlists.findById(playlist)
+        var dataComposition = await Compositions.findById(musicItem)
+
+        if(dataPlaylist.length == 0) {
+            console.log('Не нашли плэйлист - ', dataPlaylist)
+            res.sendStatus(404)
+        }
+
+        if(dataComposition.length == 0) {
+            console.log('Трек не нашли, bedReqwest - ', dataComposition)
+            res.sendStatus(404)
+        }
+
+        dataPlaylist.compositions.push(dataComposition._id+'')
+
+        var updateData = new Playlists({
+            name: dataPlaylist.name,
+            compositions: dataPlaylist.compositions,
+            userId: dataPlaylist.userId,
+            _id: dataPlaylist._id
+        })
+
+        await Playlists.findByIdAndUpdate(dataPlaylist._id, updateData, {})
+        .then((resUpdated) => {
+            console.log('Успешно обновлено - ', resUpdated)
+            res.sendStatus(200)
+        })        
+        .catch((errUpdated) => {
+            console.log('Ошибка обновления - ', errUpdated)
+            res.sendStatus(505)
+        })
+    } catch(e) {
+        console.log('Ошибка при выполнении роута update плэйлиста - ', e)
+        return next(e)
+    }
 }
