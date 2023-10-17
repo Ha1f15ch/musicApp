@@ -15,6 +15,45 @@ document.addEventListener('DOMContentLoaded', () => {
     var btn_aditPlaylist = document.querySelector('.btn_aditPlaylist')
     var musArray = []
     var PrevElement = document.querySelectorAll('.song_item')
+    var btn_delete_icon = document.querySelectorAll('.btn_delete_icon')
+
+    for(let k = 0; k < btn_delete_icon.length; k++) {
+        btn_delete_icon[k].addEventListener('click', async () => {
+            console.log('Данные из выборки - ', btn_delete_icon[k])
+
+            var positionInMass = btn_delete_icon[k].getAttribute('arraydata')
+            var parentIMG = btn_delete_icon[k].parentNode //див в который обернуто изображение-кнопка
+            var parent_musItem = parentIMG.parentNode //див, в котром содержатся кнопки и ссылка на композицию
+    
+            var prev_href = document.location.href
+            var href = document.location.href+'/deletemusic'
+            try {
+
+                var res = await fetch(href, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify({
+                        "positionValue": ++positionInMass
+                    })
+                })
+                if(res.ok) {
+                    href = prev_href
+                    console.log('Успешно!')
+                    setTimeout(() => {
+                        playlist.removeChild(parent_musItem)
+                        alert('Удалено')
+                    }, 2000);
+                } else {
+                    console.log('Не получилось')
+
+                }
+            } catch(e) {
+                console.log('Что-то пошло не так - ', e)
+            }
+        })
+    }
     
     btn_aditPlaylist.addEventListener('click', () => {
         let block_editedPlaylist = document.querySelector('.block_editedPlaylist')

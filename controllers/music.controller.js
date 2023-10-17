@@ -247,3 +247,9 @@ exports.mainPage_addComposition_inPlaylist_POST = async (req, res, next) => {
         return next(e)
     }
 }
+
+exports.mainPage_delete_music_fromPlaylist_PUT = async (req, res, next) => {
+    var id_playlist = req.params.playlistId
+    console.log('Данные, которые получаем - ', req.body.positionValue)
+    res.sendStatus(200)
+}

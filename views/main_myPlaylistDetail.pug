@@ -11,16 +11,6 @@ block main_myPlaylistDetail
             div(class="col")
                 button(class="btn btn-danger btn_deletePlaylist" type="submit") Удалить
         br
-        div(class='normal-theme')
-                div(class="playlist")
-                    if(dataResult.compositions.length!=0)
-                        each val in dataResult.compositions
-                            div(class="song_item align-items-center" data_song_id=val._id)
-                                div(class="botton_song" data_song_id=val._id)
-                                    div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
-                                div(class="song_content" data_song_id=val._id)
-                                    a(class="song_name" href=val.getMusic) #{val.name}
-        br
         div(class="row g-3 block_editedPlaylist hidden")
             div(class="col")
                 p Новое название
@@ -33,6 +23,21 @@ block main_myPlaylistDetail
                 button(type="submit" class="btn btn-danger disbleDelete") Отменить 
             div(class="col")
                 button(type="submit" class="btn btn-success approveDelete") Подтвердить
+        br
+        div(class='normal-theme')
+                div(class="playlist")
+                    if(dataResult.compositions.length!=0)
+                    - var i = dataResult.compositions.length - 1
+                        each val in dataResult.compositions
+                            div(class="song_item align-items-center" data_song_id=val._id)
+                                div(class="botton_song" data_song_id=val._id)
+                                    div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
+                                div(class="song_content" data_song_id=val._id)
+                                    a(class="song_name" href=val.getMusic) #{val.name}
+                                div(class="song_btn_delete" data_song_id=val._id)
+                                    img(class="btn_delete_icon" data_song_id=val._id src="/img/delete_icon.png" arraydata=i alt="Delete song from playlist")
+                            - i = i - 1
+        br
     div(class="row fixed-bottom")
         div(class="col-lg-2")
             br
