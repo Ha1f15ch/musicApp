@@ -250,6 +250,57 @@ exports.mainPage_addComposition_inPlaylist_POST = async (req, res, next) => {
 
 exports.mainPage_delete_music_fromPlaylist_PUT = async (req, res, next) => {
     var id_playlist = req.params.playlistId
-    console.log('Данные, которые получаем - ', req.body.positionValue)
-    res.sendStatus(200)
+    var index_Composition = req.body.positionValue
+    var dataPlaylist = await Playlists.findById(id_playlist)
+    console.log('Весь список композиций - ', dataPlaylist.compositions)
+    console.log('Индекс удаляемого элемента - ', index_Composition)
+    try {
+
+        var newMAss = dataPlaylist.compositions.splice(index_Composition, 1)
+        console.log('После удаления композиции - ', dataPlaylist.compositions)
+
+        var newPlaylistData = new Playlists({
+            name: dataPlaylist.name,
+            compositions: dataPlaylist.compositions,
+            userId: dataPlaylist.userId,
+            _id: dataPlaylist._id
+        })
+
+        await Playlists.findByIdAndUpdate(dataPlaylist._id, newPlaylistData, {})
+        .then((resUpdated) => {
+            console.log('Успешно обновлено - ', resUpdated)
+            res.sendStatus(200)
+        })
+        .catch((errUpdated) => {
+            console.log('Ошибка при удалении композиции из плэйлиста - ', errUpdated)
+            return next(errUpdated)
+        })
+    } catch(e) {
+        console.log('Возникла ошибка при удалении композиции из плэйлиста - ', e)
+        res.sendStatus(505)
+    }
+}
+
+exports.mainPage_myMusic_GET = async (req, res, next) => {
+    var userID = req.userIds
+
+    var dataMus = await Compositions.find({
+        userIdCreated: userID
+    })
+    .populate({
+        path: "janrs",
+        model: Janrs
+    })
+    .populate({
+        path: "userIdCreated",
+        model: Users
+    })
+
+    var dataJanrs = await Janrs.find({})
+
+    res.render('main_myMusic', {
+        title: "Мои композиции",
+        data_mus: dataMus,
+        data_janr: dataJanrs
+    })
 }

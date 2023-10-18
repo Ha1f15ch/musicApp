@@ -1,0 +1,67 @@
+extends main 
+
+block main_myMusic 
+
+    h1=title 
+
+    div(class="row hstack gap-3")
+        div(class="cal button-section") 
+            button(class="btn btn-primary btnCreateMusic" type="submit") <h5>Добавить</h5>
+    br
+    div(class='btn1-addtrack hidden')
+        form(class="row vstack gap-3" method='POST' action="/v1/api/main/music/create" enctype="multipart/form-data" id="form_POST_data_track")
+            div(class="row")
+                div(class="col")
+                    label(for="name" class="form-label") <h5>Название компазиции</h5>
+                    input(class="form-control" type="text" placeholder="Название вашего трека" name='name' id="name")
+            div(class="row")
+                div(class="col hstack gap-3")
+                    each janrs in data_janr
+                        div(class="form-check")
+                            input(class="form-check-input" type='checkbox' name='janrs' id=janrs._id value=janrs._id checked=janrs.checked)
+                            label(class="form-check-label" for=janrs._id) <h7>#{janrs.name}</h7>
+            div(class="row")
+                div(class="col")
+                    label(class="form-label" for="description") <h5>О треке</h5>
+                    textarea(class="form-control" rows="4" placeholder="Описание трека" name="description" id="description")
+            div(class="row")
+                div(class="col")
+                    label(for="Composition") <h6>Здесь укажите какой трек нужно загрузить - </h6>
+                    input(type="file" name="Composition" accept="audio/*" id="Composition")
+            div(class="row")
+                div(class="col")
+                    button(class="btn btn-info" type="submit" class="btn_send_form_create_track") Создать
+    div(class='normal-theme')
+                div(class="playlist")
+                    if(data_mus.length!=0)
+                        each val in data_mus
+                            div(class="song_item align-items-center" data_song_id=val._id)
+                                div(class="botton_song" data_song_id=val._id)
+                                    div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
+                                div(class="song_content" data_song_id=val._id)
+                                    a(class="song_name" href=val.getMusic) #{val.name} 
+                        else 
+                            p Треки не найдены!
+    div(class="row fixed-bottom")
+        div(class="col-lg-2")
+            br
+        div(class="col-lg-8 footer_palyer_wrapper justify-content-center text-center shadow")
+            div(class="player hideClass")
+                div(class="name_song") 
+                | 
+                <audio class="audio_player" src=''></audio>
+                div(class="progress_container_player")
+                    div(class="progress_player")
+                div(class="buttons_player")
+                    div(class="btn prev_player")
+                        img(class="prev_player_img" src="/img/prev.png", alt="previos")
+                    div(class="btn")
+                        img(class="play_player" src="/img/play.png", alt="play")
+                    div(class="btn next_player")
+                        img(class="next_player_img" src="/img/next.png", alt="next")
+                    div(class="btn volume_player")
+                        img(class="volume_player_img" src="/img/volume.png", alt="volume")
+                    div(class="btn change_size__volume hideClass")
+                        div(class="size_volume")
+        div(class="col-lg-2")
+    script(src="/javascripts/main_myMusic.js")

@@ -50,4 +50,6 @@ router.get('/myPlaylists', [authMiddlevare], mainPage_controller.list_myPlaylist
 
 router.post('/myPlaylists', [authMiddlevare], mainPage_controller.createPlaylist_POST)
 
+router.get('/myMusic', [authMiddlevare], music_controller.mainPage_myMusic_GET)
+
 module.exports = router;

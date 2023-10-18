@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Данные из выборки - ', btn_delete_icon[k])
 
             var positionInMass = btn_delete_icon[k].getAttribute('arraydata')
-            var parentIMG = btn_delete_icon[k].parentNode //див в который обернуто изображение-кнопка
-            var parent_musItem = parentIMG.parentNode //див, в котром содержатся кнопки и ссылка на композицию
+            var parentIMG = btn_delete_icon[k].parentNode //div в который обернуто изображение-кнопка
+            var parent_musItem = parentIMG.parentNode //div, в котром содержатся кнопки и ссылка на композицию
     
             var prev_href = document.location.href
             var href = document.location.href+'/deletemusic'
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                     body: JSON.stringify({
-                        "positionValue": ++positionInMass
+                        "positionValue": positionInMass
                     })
                 })
                 if(res.ok) {
@@ -43,8 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Успешно!')
                     setTimeout(() => {
                         playlist.removeChild(parent_musItem)
+                        setArrayId(parseInt(positionInMass))
                         alert('Удалено')
-                    }, 2000);
+                    }, 1500);
                 } else {
                     console.log('Не получилось')
 
@@ -53,6 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Что-то пошло не так - ', e)
             }
         })
+    }
+
+    function setArrayId(deletedElement) {
+        let massElemnts = document.querySelectorAll('.btn_delete_icon')
+        for(let i = 0; i < massElemnts.length; i++) {
+            if(parseInt(massElemnts[i].getAttribute('arraydata')) > deletedElement) {
+                let tempValue = parseInt(massElemnts[i].getAttribute('arraydata'))
+                tempValue -= 1
+                massElemnts[i].setAttribute('arraydata', tempValue)
+            }
+        }
     }
     
     btn_aditPlaylist.addEventListener('click', () => {
