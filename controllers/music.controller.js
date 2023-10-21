@@ -304,3 +304,24 @@ exports.mainPage_myMusic_GET = async (req, res, next) => {
         data_janr: dataJanrs
     })
 }
+
+exports.mainPage_deleteMyMusic_DELETE = async (req, res, next) => {
+    var id_deleted_music = req.params.id
+
+    var deleted_music = await Compositions.findById(id_deleted_music)
+    
+    if(deleted_music) {
+        await Compositions.findByIdAndRemove(id_deleted_music)
+        .then((resDeleted) => {
+            console.log('Удаление прошло успешно - ', resDeleted)
+            res.sendStatus(200)
+        })
+        .catch((errDeleted) => {
+            console.log('Удаление не выполнено ! Ошибка - ', errDeleted)
+            res.sendStatus(500)
+        })
+    } else {
+        console.log('Данные не найдены !!')
+        return next()
+    }
+}

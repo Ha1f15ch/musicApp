@@ -52,4 +52,6 @@ router.post('/myPlaylists', [authMiddlevare], mainPage_controller.createPlaylist
 
 router.get('/myMusic', [authMiddlevare], music_controller.mainPage_myMusic_GET)
 
+router.delete('/myMusic/:id', music_controller.mainPage_deleteMyMusic_DELETE)
+
 module.exports = router;
