@@ -42,6 +42,27 @@ exports.mainPageData = async (req, res, next) => {
     })
 }
 
+exports.mainPage_search_value_fromReq = async (req, res, next) => {
+    var user_data = req.params.value 
+
+    var janr_data = await Janrs.find({
+        name: `/${user_data}/`
+    })
+
+    if(janr_data.length != 0) {
+
+    }
+
+    var users_data = await Users.find({
+        login: `/${user_data}/`
+    })
+
+    var composition_data = await Compositions.find({
+        name: `/${user_data}/`
+    })
+
+}
+
 exports.MyProfile_GET = async (req, res, next) => {
     try {
         
