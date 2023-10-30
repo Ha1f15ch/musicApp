@@ -43,15 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         })
     }
-    
-/*     btn_aditPlaylist.addEventListener('click', () => {
-        let block_editedPlaylist = document.querySelector('.block_editedPlaylist')
-        if(block_editedPlaylist.classList.contains('hidden')) {
-            block_editedPlaylist.classList.remove('hidden')
-        } else {
-            block_editedPlaylist.classList.add('hidden')
-        }
-    }) */
 
     for(let i = 0; i < PrevElement.length; i++) {
         let tempValDataSongItem = PrevElement[i].querySelector('.button_play')

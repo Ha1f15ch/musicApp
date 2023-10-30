@@ -224,17 +224,11 @@ exports.mainPage_createMusic_POST = async (req, res, next) => {
 
 exports.adminPage_createMusic_POST = async (req, res, next) => {
 
-    console.log(req.body, 'BODY')
-    console.log(req.userIds, ' - Хедер, запись о id пользователя')
-    console.log(req.files, 'FILES')
-    console.log(req.files.Composition, 'req.files.Composition')
-
     if(!(req.body.janrs instanceof Array)) {
         if(typeof req.body.janrs === 'undefined') {
             req.body.janrs = []
         } else {
             req.body.janrs = new Array(req.body.janrs)
-            console.log(req.body.janrs, 'Список жанров')
         }
     }
 
@@ -247,8 +241,6 @@ exports.adminPage_createMusic_POST = async (req, res, next) => {
         description: req.body.description,
         userIdCreated: req.userIds
     });
-
-    console.log(newComposition, ' - созданный набор данных из запроса')
 
     async.parallel({
         dataJanr: function(callback) {

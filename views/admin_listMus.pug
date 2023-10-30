@@ -29,6 +29,8 @@ block admin_listMus
                                                                     button(class="btn btn-outline-info btn_playlist_id" type="submit" id_song=val._id id_playlist=playlist._id) <h7>#{playlist.name}</h7>
                                                     else 
                                                         p Нет плэйлистов
+                                div(class="song_btn_delete" data_song_id=val._id)
+                                    img(class="btn_delete_icon" data_song_id=val._id src="/img/delete_icon.png" alt="Delete song from the system")
                         else 
                             p Треки не найдены!
     div(class="row fixed-bottom")

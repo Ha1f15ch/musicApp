@@ -1,10 +1,14 @@
-var async = require('async');
 const Users = require('../models/users.model');
 const UserProfile = require('../models/user.profile.model');
 const Roles = require('../models/roles.model');
 const Janrs = require('../models/janrs.model');
 const PlaylistModel = require('../models/playlist.model');
 const Compositions = require('../models/compositions.model');
+
+const part_path = 'E:/Musik_app/musik_app/public'
+
+var async = require('async');
+var fs = require('fs');
 
 exports.mainPage_GET = async (req, res, next) => {
     res.render('adminPage', {
@@ -362,3 +366,39 @@ exports.deletePlaylist_DELETE = async (req, res, next) => {
     }
 }
 
+exports.adminPAge_deleteUsersComposition_DELETE = async (req, res, next) => {
+    var id_deleted_music = req.params.id
+
+    var deleted_music = await Compositions.findById(id_deleted_music)
+    
+    if(deleted_music) {
+
+        try {
+
+            let temp_path = deleted_music.rout.split('/music')[1]
+            fs.unlink(part_path+deleted_music.rout, err => {
+                if(err) {
+                    console.log('Ошибка при удалении файла - ', err)
+                    return next(err)
+                } else {
+                    console.log()
+                    Compositions.findByIdAndRemove(id_deleted_music)
+                    .then((resDeleted) => {
+                        console.log('Удаление прошло успешно - ', resDeleted)
+                        res.sendStatus(200)
+                    })
+                    .catch((errDeleted) => {
+                        console.log('Удаление не выполнено ! Ошибка - ', errDeleted)
+                        res.sendStatus(500)
+                    })
+                }
+            })
+
+        } catch(e) {
+            console.log('Ошибка при поиске файла в ОС - ', e)
+        }
+    } else {
+        console.log('Данные не найдены !!')
+        res.sendStatus(500)
+    }
+}

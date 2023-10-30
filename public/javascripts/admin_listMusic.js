@@ -20,6 +20,36 @@ window.document.addEventListener('DOMContentLoaded', () => {
     var btn_playlist_id = document.querySelectorAll('.btn_playlist_id')
     var href = document.location.href
     var href_preload = document.location.href
+    var btn_delete_icon = document.querySelectorAll('.btn_delete_icon')
+
+    for(let j = 0; j < btn_delete_icon.length; j++) {
+        btn_delete_icon[j].addEventListener('click', async () => {
+            var Id_music = btn_delete_icon[j].getAttribute('data_song_id')
+            var parent_imgIcon = btn_delete_icon[j].parentNode //div
+            var rec_parent_imgIcon = parent_imgIcon.parentNode
+            let prev_href = document.location.href
+            let href = document.location.href+`/${Id_music}`
+
+            fetch(href, {
+                method: 'DELETE'
+            })
+            .then(function(data) {
+                setTimeout(() => {
+                    playlist.removeChild(rec_parent_imgIcon)
+                    alert('Успешно удалено!')
+                }, 1000);
+            })
+            .catch(function(errData) {
+                console.log('Ошибка - ', errData)
+                setTimeout(() => {
+                    alert('Ошибкаа при удалении !')
+                    document.location = prev_href
+                }, 1000)
+           })
+
+
+        })
+    }
 
     for(let j = 0; j < btn_playlist_id.length; j++) {
         btn_playlist_id[j].addEventListener('click', async () => {
