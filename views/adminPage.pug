@@ -29,7 +29,7 @@ html
                 li
                   a(class="dropdown-item" href="/v1/api/adminCatalog/compositions") Композиции
                 li
-                  a(class="dropdown-item" href="/v1/api/adminCatalog/myComposition") Мои композиции
+                  a(class="dropdown-item" href="/v1/api/adminCatalog/myCompositions") Мои композиции
                 li
                   a(class="dropdown-item" href="/v1/api/adminCatalog/roles") Роли пользователей 
                 li
@@ -50,10 +50,15 @@ html
           block pageUsersInfo 
           block pageJanrs
           block pageJanrInfo
+          block admin_listMus
+          block adminPage_detailMusic
+          block adminPage_myCompositions
           block admin_myProfile
           block admin_myPlaylists
           block admin_myPlaylistDetail
           block admin_listPlaylists
+          block adminPage_detailPlaylist_byUser
+          block adminPage_detailPlaylist
         div(class="col-2 col-sm-1")
           p Данные 2
     //- script(src="/scripts/script.js") 

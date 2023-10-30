@@ -6,9 +6,12 @@ var loger = require('./logger')
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
-var path = require('path')
-var fileUpload = require('express-fileupload')
+var path = require('path');
+var fileUpload = require('express-fileupload');
 var router = express.Router();
+
+var ip = require('ip')
+console.log(ip.address())
 
 
 var routerAPI = require('./routes/main')
@@ -18,7 +21,10 @@ var routerAPIAuthorization = require('./routes/authorizationRouter')
 var app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3000"
+  /* origin: `http://${ip.address}:3000` */
+  /* origin: `http://localhost:3000`,
+  custom: `http://${ip.address}:3000` */
+  origin: "*"
 }
 
 // view engine setup

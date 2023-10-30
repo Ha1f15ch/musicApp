@@ -40,7 +40,7 @@ compositions
 compositions
 .virtual('getMusicByAdmin')
 .get(function() {
-    return '/v1/api/adminCatalog/music/' + this.id
+    return '/v1/api/adminCatalog/compositions/' + this.id
 })
 
 module.exports = mongoose.model('Compositions', compositions);

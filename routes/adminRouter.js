@@ -7,6 +7,7 @@ const janrs_controller = require('../controllers/janrs.controller');
 const users_controller = require('../controllers/users.controller');
 const adminPage_controller = require('../controllers/adminPage.controller');
 const playlist_controller = require('../controllers/playlist.controller');
+const music_controller = require('../controllers/music.controller');
 
 var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware')
@@ -24,6 +25,7 @@ router.get('/myPlaylists/:id', [authMiddlevare], adminPage_controller.myPlaylist
 router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], adminPage_controller.updatePlaylist_name_PUT)
 
 //После добавится апдейт на добавление или удаление композиции из плэйлиста
+router.put('/myPlaylists/:playlistId/deletemusic', [authMiddlevare], music_controller.adminPAge_delete_music_fromPlaylist_PUT)
 
 router.delete('/myPlaylists/:id', [authMiddlevare], adminPage_controller.deletePlaylist_DELETE)
 
@@ -43,13 +45,38 @@ router.put('/users/:id/updateRole', users_controller.updateUserRole_put)
 
 router.put('/users/:id/deleteRole', users_controller.update_user_delete_role)
 
-router.get('/users/:id/playlists/', playlist_controller.all_users_playlists_GET)
+router.get('/users/:idU/playlists/:idP', playlist_controller.detail_users_playlist_GET)
 
-router.get('users/:idU/playlists/:idP', playlist_controller.detail_users_playlist_GET)
+//Написать роут для изменения плэйлиста (как название, так и содержание - удаление треков из плэйлиста)
+router.put('/users/:idU/playlists/:idP/updateName', [authMiddlevare], playlist_controller.adminPage_updatePlaylist_name_byUserId_PUT)
+
+//Написать роут на удаление плэйлиста, все по пути users/:id/playlists/id
+router.put('/users/:idU/playlists/:idP/deletemusic', [authMiddlevare], music_controller.adminPAge_delete_music_fromPlaylist_byUserId_PUT)
+
+router.delete('/users/:idU/playlists/:idP', [authMiddlevare], playlist_controller.adminPage_deletePlaylist_byUserId_DELETE)
+
+//Написать роуты на изменение и удаление и т.д. для пути - playlists/:id
+router.put('/playlists/:id/updateName', [authMiddlevare], playlist_controller.adminPage_updatePlaylist_name_PUT)
+
+router.put('/playlists/:id/deletemusic', [authMiddlevare], music_controller.adminPAge_delete_music_fromPlaylist_PUT)
+
+router.delete('/playlists/:id', [authMiddlevare], playlist_controller.adminPage_deletePlaylist_DELETE)
 
 router.get('/playlists', playlist_controller.all_playlists_GET)
 
-router.get('/playlists/:id', playlist_controller.detail_playlist_GET)
+router.get('/playlists/:id', playlist_controller.adminPage_detail_playlist_GET)
+
+router.get('/compositions', [authMiddlevare], music_controller.adminPage_listMusic_GET)
+
+router.get('/compositions/:id', music_controller.adminPage_musicDetail_GET)
+
+router.post('/compositions', music_controller.adminPage_createMusic_POST)
+
+router.post('/compositions/update/:playlistId/:musicID', music_controller.adminPage_addComposition_inPlaylist_POST)
+
+router.get('/myCompositions', [authMiddlevare], music_controller.adminPage_myCompositions_GET)
+
+router.delete('/myCompositions', [authMiddlevare], music_controller.adminPage_deleteMyMusic_DELETE)
 
 router.get('/janrs', janrs_controller.list_janrs)
 

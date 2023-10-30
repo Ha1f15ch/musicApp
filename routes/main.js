@@ -18,9 +18,6 @@ router.get('/music/:id', [authMiddlevare], music_controller.mainPage_musicDetail
 router.post('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
 
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
-// реализую по аналогии того, как это сделано на сайте - https://muzofond.fm/personal-music/playlists/434033
-// плэйлисты не помечаются чекбоксами (мол композиция уже в плэйлисте, композиции могут дублироваться в плэйлисте) !!!!
-router.put('/myPlaylists/:playlistId/deletemusic', music_controller.mainPage_delete_music_fromPlaylist_PUT)
 
 router.get('/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.listJanrs_GET)
 
@@ -43,6 +40,7 @@ router.get('/myPlaylists/:id', [authMiddlevare], mainPage_controller.myPlaylistD
 router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], mainPage_controller.updatePlaylist_name_PUT)
 
 //После добавится апдейт на добавление или удаление композиции из плэйлиста
+router.put('/myPlaylists/:playlistId/deletemusic', music_controller.mainPage_delete_music_fromPlaylist_PUT)
 
 router.delete('/myPlaylists/:id', [authMiddlevare], mainPage_controller.deletePlaylist_DELETE)
 

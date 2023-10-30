@@ -3,33 +3,6 @@ extends main
 block listMusic 
 
     h1 Список композиций 
-    div(class="row hstack gap-3")
-        div(class="cal button-section") 
-            button(class="btn btn-primary btnCreateMusic" type="submit") <h5>Добавить</h5>
-    br
-    div(class='btn1-addtrack hidden')
-        form(class="row vstack gap-3" method='POST' action="/v1/api/main/music/create" enctype="multipart/form-data" id="form_POST_data_track")
-            div(class="row")
-                div(class="col")
-                    label(for="name" class="form-label") <h5>Название компазиции</h5>
-                    input(class="form-control" type="text" placeholder="Название вашего трека" name='name' id="name")
-            div(class="row")
-                div(class="col hstack gap-3")
-                    each janrs in dataJanr
-                        div(class="form-check")
-                            input(class="form-check-input" type='checkbox' name='janrs' id=janrs._id value=janrs._id checked=janrs.checked)
-                            label(class="form-check-label" for=janrs._id) <h7>#{janrs.name}</h7>
-            div(class="row")
-                div(class="col")
-                    label(class="form-label" for="description") <h5>О треке</h5>
-                    textarea(class="form-control" rows="4" placeholder="Описание трека" name="description" id="description")
-            div(class="row")
-                div(class="col")
-                    label(for="Composition") <h6>Здесь укажите какой трек нужно загрузить - </h6>
-                    input(type="file" name="Composition" accept="audio/*" id="Composition")
-            div(class="row")
-                div(class="col")
-                    button(class="btn btn-info" type="submit" class="btn_send_form_create_track") Создать
     div(class='normal-theme')
                 div(class="playlist")
                     if(dataMusic.length!=0)
@@ -56,8 +29,6 @@ block listMusic
                                                                     button(class="btn btn-outline-info btn_playlist_id" type="submit" id_song=val._id id_playlist=playlist._id) <h7>#{playlist.name}</h7>
                                                     else 
                                                         p Нет плэйлистов
-                                                //- div(class="modal-footer")
-                                                    button(type="button" class=`btn btn-primary BTNForSendDataToSever_${val._id}` modal_song_id=`modal_song_id-${val._id}`) Обновить данные 
                         else 
                             p Треки не найдены!
     div(class="row fixed-bottom")
