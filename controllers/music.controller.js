@@ -288,7 +288,7 @@ exports.adminPage_createMusic_POST = async (req, res, next) => {
                 console.log(`Выполнено преобразование загруженного файла - из ${req.files.Composition.name} в ${musRoutName}`)
             }
         })
-        res.redirect(newComposition.getMusic)
+        res.redirect(newComposition.getMusicByAdmin)
     })
     .catch((errNewComposition) => {
         console.log('Что-то позшло не так при сохранении - ', errNewComposition)
@@ -342,8 +342,6 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
                 janr_item.checked = "true";
             }
         }
-        console.log('результат сбора данных по композиции - ', results.compositionDetaled)
-        console.log(results.compositionDetaled.janrs, ' - Жанры')
         res.render('detailMusic', {
             title: 'Композиция: ',
             resData: results.compositionDetaled

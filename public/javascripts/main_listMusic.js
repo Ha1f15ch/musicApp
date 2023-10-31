@@ -20,8 +20,7 @@ window.document.addEventListener('DOMContentLoaded', () => {
     var btn_playlist_id = document.querySelectorAll('.btn_playlist_id')
     var href = document.location.href
     var href_preload = document.location.href
-    // переделываем по примеру на сайте - https://muzofond.fm/personal-music/playlists/434033
-    // music/update/:playlistId/:musicID
+
     for(let j = 0; j < btn_playlist_id.length; j++) {
         btn_playlist_id[j].addEventListener('click', async () => {
             let mus_id = btn_playlist_id[j].getAttribute('id_song')
