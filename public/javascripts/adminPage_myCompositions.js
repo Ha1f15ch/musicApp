@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     var musArray = []
     var PrevElement = document.querySelectorAll('.song_item')
     var btn_delete_icon = document.querySelectorAll('.btn_delete_icon')
+    var btn1Addtrack = document.querySelector('.btn1-addtrack')
+    var btnCreateMusic = document.querySelector('.btnCreateMusic')
+    var btn_send_form_create_track = document.querySelector('.btn_send_form_create_track')
 
     for(let j = 0; j < btn_delete_icon.length; j++) {
         btn_delete_icon[j].addEventListener('click', async () => {
@@ -43,21 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         })
     }
-    
-/*     btn_aditPlaylist.addEventListener('click', () => {
-        let block_editedPlaylist = document.querySelector('.block_editedPlaylist')
-        if(block_editedPlaylist.classList.contains('hidden')) {
-            block_editedPlaylist.classList.remove('hidden')
-        } else {
-            block_editedPlaylist.classList.add('hidden')
-        }
-    }) */
 
     for(let i = 0; i < PrevElement.length; i++) {
         let tempValDataSongItem = PrevElement[i].querySelector('.button_play')
         let DataSRCSong = tempValDataSongItem.getAttribute('href')
         musArray.push(DataSRCSong)
     }
+
+    btnCreateMusic.addEventListener('click', async () => {
+        if(btn1Addtrack.classList.contains('hidden')) {
+            btn1Addtrack.classList.remove('hidden')
+        } else {
+            btn1Addtrack.classList.add('hidden')
+        }
+    })  
+
+    btn_send_form_create_track.addEventListener('click', () => {
+        console.log(11)
+        var form_control = document.querySelector('.form-control')
+        console.log(form_control.value)
+    })
 
     function progressBar(e) {
         const {duration, currentTime} = e.srcElement
