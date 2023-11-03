@@ -1,14 +1,16 @@
 var express = require('express');
 var logger = require('morgan');
-var methodOverride = require('method-override')
-var cors = require('cors')
-var loger = require('./logger')
-var bodyParser = require('body-parser')
+var methodOverride = require('method-override');
+var cors = require('cors');
+var loger = require('./logger');
+var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var path = require('path');
 var fileUpload = require('express-fileupload');
 var router = express.Router();
+
+require('dotenv').config();
 
 var ip = require('ip')
 console.log(ip.address())
@@ -40,7 +42,7 @@ app.use(cookieParser());
 app.use(fileUpload());
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, 'D:/music')));
+app.use(express.static(path.join(__dirname, process.env._DIRMUS)));
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.zvucxtc.mongodb.net/?retryWrites=true&w=majority'
 // old data connect = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'
