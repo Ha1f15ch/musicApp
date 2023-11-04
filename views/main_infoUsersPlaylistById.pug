@@ -5,24 +5,6 @@ block main_infoUsersPlaylistById
     h1=title
 
     div(class="content")
-        div(class="row")
-            div(class="col")
-                button(class="btn btn-warning btn_aditPlaylist" type="submit") Изменить название
-            div(class="col")
-                button(class="btn btn-danger btn_deletePlaylist" type="submit") Удалить
-        br
-        div(class="row g-3 block_editedPlaylist hidden")
-            div(class="col")
-                p Новое название
-                input(type="text" class="form-control name_playlist" placeholder="Название плэйлиста" aria-label="Имя" name="name" value=(undefined===dataPlaylist ? '' : dataPlaylist.name))
-            div(class="col")
-                button(type="submit" class="btn btn-success btn_editPlaylist") Изменить 
-        div(class="row blockDeletePlaylist hidden")
-            h6 Подтвердите удаление плэйлиста - #{dataPlaylist.name}
-            div(class="col")
-                button(type="submit" class="btn btn-danger disbleDelete") Отменить 
-            div(class="col")
-                button(type="submit" class="btn btn-success approveDelete") Подтвердить
         br
         div(class='normal-theme')
                 div(class="playlist")
@@ -33,7 +15,7 @@ block main_infoUsersPlaylistById
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)
-                                    a(class="song_name" href=val.getMusicByAdmin) #{val.name}
+                                    a(class="song_name" href=val.getMusic) #{val.name}
                             - i +=1
         br
     div(class="row fixed-bottom")
