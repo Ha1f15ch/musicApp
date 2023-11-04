@@ -185,7 +185,7 @@ exports.main_UpdateMyAuth_PUT = async (req, res, next) => {
     })
     console.log(arrayEmail, ' - email')
     var massIDs = arrayLogin.map((el) => el._id)
-    var massValidIDs = massIDs.find((el) => el == paramsID)
+    var massValidIDs = massIDs.find((el) => el == paramsID+'')
 
     if(massValidIDs.length > 1) {
         console.log(massValidIDs, ' - Введенные данные уже зарегистрированы у другого пользователя')

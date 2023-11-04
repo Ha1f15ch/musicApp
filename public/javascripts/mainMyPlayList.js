@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    var btn_valPlaylist_admin_getPlaylist = document.querySelector('.btn_valPlaylist_admin_getPlaylist')
-    btn_valPlaylist_admin_getPlaylist.addEventListener('click', async () => {
-        window.location = "https://mytestferssite.ru"+btn_valPlaylist_admin_getPlaylist.getAttribute('btn_admin_getPlaylist')
+    var btn_getPlaylist = document.querySelector('.btn_getPlaylist')
+    btn_getPlaylist.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru"+btn_getPlaylist.getAttribute('btn_getPlaylist')
     })
 
     var btn_createNewPlaylist = document.querySelector('.btn_createNewPlaylist')

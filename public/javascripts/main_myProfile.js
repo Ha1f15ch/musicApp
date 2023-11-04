@@ -15,13 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    var btn_redirect = document.querySelectorAll('.btn_redirect')
-    for(let k = 0; k < btn_redirect.length; k++) {
-        btn_redirect[k].addEventListener('click', async () => {
-            window.location = "https://mytestferssite.ru"+btn_redirect[k].getAttribute('dataForRedirect')
-        })
-    }
-
     btn_editauthData.addEventListener('click', () => {
         var userLoginData = document.querySelector('.userLoginData'),
             userEmailData = document.querySelector('.userEmailData'),
@@ -108,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location = prevHref
                 } else {
                     window.location = prevHref
-                    setTimeout(alert('Введены уже существующие в системе данные'), 2000) 
+                    setTimeout(alert('Введены уже существующие в системе данные'), 500) 
                 }
              } catch(e) {
                 console.log('Ошибка - ', e)
