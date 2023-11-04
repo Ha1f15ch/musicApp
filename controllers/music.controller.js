@@ -184,7 +184,7 @@ exports.mainPage_createMusic_POST = async (req, res, next) => {
     newComposition.save()
     .then((resNewComosition) => {
         console.log('Успешно сохранено - ', resNewComosition)
-        req.files.Composition.mv('public/music/' + musRoutName, (err) => {
+        req.files.Composition.mv('/root/serverDir/musicApp/public/music/' + musRoutName, (err) => {
             if(err) {
                 console.log('Ошибка при загрузке файла - ', err)
                 console.log('Удаляем созданные данные из БД ...')
@@ -269,7 +269,7 @@ exports.adminPage_createMusic_POST = async (req, res, next) => {
     newComposition.save()
     .then((resNewComosition) => {
         console.log('Успешно сохранено - ', resNewComosition)
-        req.files.Composition.mv('/public/music/' + musRoutName, (err) => {
+        req.files.Composition.mv('/root/serverDir/musicApp/public/music/' + musRoutName, (err) => {
             if(err) {
                 console.log('Ошибка при загрузке файла - ', err)
                 console.log('Удаляем созданные данные из БД ...')

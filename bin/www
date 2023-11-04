@@ -28,7 +28,7 @@ var server = http.createServer(app);
 /* server.listen(port); */
 
 server.listen(port, process.env._HOST, () => {
-  console.log(`Server is running on http://${process.env._HOST}:${port}`);
+  console.log(`Server is running on http://${server.address()}:${port}`);
 })
 
 server.on('error', onError);
