@@ -17,7 +17,7 @@ router.get('/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
 router.get('/music/:id', [authMiddlevare], music_controller.mainPage_musicDetail_GET)
 
-router.post('/music/create', [authMiddlevare], music_controller.mainPage_createMusic_POST)
+router.post('/myMusic', [authMiddlevare], music_controller.mainPage_createMusic_POST)
 
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
 

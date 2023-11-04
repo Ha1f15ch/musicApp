@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(fileUpload());
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, process.env._DIRMUS)));
+app.use(express.static(path.join(__dirname, "D:/music")));
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.zvucxtc.mongodb.net/?retryWrites=true&w=majority'
 // old data connect = 'mongodb+srv://root:root@cluster0.iqkyd.mongodb.net/MusMarket?retryWrites=true&w=majority'

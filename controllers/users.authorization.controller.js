@@ -70,7 +70,7 @@ exports.sign_up = [
                             httpOnly: true,
                             secure: true
                         })
-                        .redirect('/v1/api/myProfile')
+                        .redirect('/v1/api/main/myProfile')
                     })
                     .catch((errors_userProfile) => {
                         console.log('errors_userProfile - ', errors_userProfile)

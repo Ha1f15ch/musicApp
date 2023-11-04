@@ -9,7 +9,7 @@ block main_myMusic
             button(class="btn btn-primary btnCreateMusic" type="submit") <h5>Добавить</h5>
     br
     div(class='btn1-addtrack hidden')
-        form(class="row vstack gap-3" method='POST' action="/v1/api/main/music/create" enctype="multipart/form-data" id="form_POST_data_track")
+        form(class="row vstack gap-3" method='POST' action="/v1/api/myMusic" enctype="multipart/form-data" id="form_POST_data_track")
             div(class="row")
                 div(class="col")
                     label(for="name" class="form-label") <h5>Название компазиции</h5>
