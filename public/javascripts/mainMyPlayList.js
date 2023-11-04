@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    var btn_getPlaylist = document.querySelector('.btn_getPlaylist')
-    btn_getPlaylist.addEventListener('click', async () => {
-        window.location = "https://mytestferssite.ru"+btn_getPlaylist.getAttribute('btn_getPlaylist')
-    })
+    var btn_getPlaylist = document.querySelectorAll('.btn_getPlaylist')
+    for(let i = 0; i < btn_getPlaylist.length; i++) {
+        btn_getPlaylist[i].addEventListener('click', async () => {
+            window.location = "https://mytestferssite.ru"+btn_getPlaylist[i].getAttribute('btn_getPlaylist')
+        })
+    }
 
     var btn_createNewPlaylist = document.querySelector('.btn_createNewPlaylist')
     btn_createNewPlaylist.addEventListener('click', async () => {
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location = href
         } else {
             window.location = href
-            setTimeout(alert('Возникла ошибка при создании нового плэйлиста, указано используемое название - ', nameData), 2000)
+            setTimeout(alert('Возникла ошибка при создании нового плэйлиста, указано используемое название - ', nameData), 700)
         }
     })
 })
