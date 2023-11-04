@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(fileUpload());
 app.use(methodOverride('_method'))
-app.use(express.static(path.join(__dirname, "/serverDir/musicApp/public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "D:/music")));
 
 const mongoConectURL = 'mongodb+srv://root:root@cluster0.zvucxtc.mongodb.net/?retryWrites=true&w=majority'
