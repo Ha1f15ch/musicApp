@@ -12,8 +12,7 @@ block admin_listPlaylists
                         each valList in dataPlaylists.dataPlaylists
                             li(class="list-group-item")
                                 h4 плэйлист - 
-                                    a(href=`http://localhost:3000/v1/api/adminCatalog/playlists/${valList._id}`) #{valList.name} 
+                                    a(href=`https://mytestferssite.ru/v1/api/adminCatalog/playlists/${valList._id}`) #{valList.name} 
                                 h5 Пользователь - 
-                                    //- a(href=`http://localhost:3000${valList.getUsersPlaylists_admin}`) #{valList.userId.login}
-                                    a(href=`http://localhost:3000/v1/api/adminCatalog/users/${valList.userId._id}`) #{valList.userId.login}
+                                    a(href=`https://mytestferssite.ru/v1/api/adminCatalog/users/${valList.userId._id}`) #{valList.userId.login}
                         

@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var musArray = []
     var PrevElement = document.querySelectorAll('.song_item')
     var btn_delete_icon = document.querySelectorAll('.btn_delete_icon')
+    var btn_getPlaylist = document.querySelector('.btn_getPlaylist')
 
     for(let j = 0; j < btn_delete_icon.length; j++) {
         btn_delete_icon[j].addEventListener('click', async () => {
@@ -128,6 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
         audio_player.volume = (clickPositionX / width) * duration
         size_volume.style.width = `${clickPositionX}px`
     }
+
+    btn_getPlaylist.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru"+btn_getPlaylist.getAttribute('btn_getPlaylist')
+    })
 
     playlist.addEventListener('click', (elem) => {
 

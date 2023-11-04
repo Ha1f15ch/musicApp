@@ -32,7 +32,7 @@ block pageRoles
                             th 
                                 div(class="row justify-content-center item-roles" id=(itemRole._id)) 
                                     div(class="col-6 data-a-tag" id=itemRole._id)
-                                        button(type="button" class="btn btn-success btmRole" onClick=`location.href="http://localhost:3000${itemRole.uri}"`) #{itemRole.name}
+                                        button(type="button" class="btn btn-success btmRole" itemRoleData=itemRole.uri) #{itemRole.name}
                                     div(class="col-6 list_group")
                                         ul(class="list-group")
                                             each itemPropInRoles in itemRole.values 

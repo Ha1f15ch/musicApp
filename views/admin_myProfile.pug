@@ -29,7 +29,7 @@ block admin_myProfile
                     div(class="col")
                         each value in userData.role
                             h9(class="align-middle" style='display: inline; padding-right:10px;') 
-                                a(href=`http://localhost:3000/v1/api/adminCatalog/roles/${value._id}`) #{value.name}     
+                                a(href=`https://mytestferssite.ru/v1/api/adminCatalog/roles/${value._id}`) #{value.name}     
         table(class="table table-sm")   
             tbody
                 div(class="row g-15")
@@ -66,13 +66,13 @@ block admin_myProfile
                     div(class="row")
                         each playlistItem in userPlaylistData
                             div(class="col")
-                                button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.admin_getPlaylist}"`) #{playlistItem.name} 
+                                button(type="submit" class="btn btn-secondary btn_playlist_users" playlistItem_adminGetPlaylist=playlistItem.admin_getPlaylist) #{playlistItem.name} 
                         else 
                             p У пользователя нет плэйлистов
                 br
                 div(class="row")
                     div(class="col")
-                        button(class="btn btn-secondary" type="submit" onClick=`location.href="http://localhost:3000/v1/api/adminCatalog/myPlaylists"`) Список моих плэйлистов
+                        button(class="btn btn-secondary btn_listPlaylists" type="submit") Список моих плэйлистов
                     div(class="col")    
                         button(class="btn btn-primary btn_editauthData" type="submit") Изменить login/email
                     div(class="col")    

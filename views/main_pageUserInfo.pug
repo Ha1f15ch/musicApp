@@ -66,7 +66,7 @@ block main_pageUserInfo
                     div(class="row")
                         each playlistItem in dataUser.userPlaylistsData
                             div(class="col")
-                                button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.getUsersPlaylists}"`) #{playlistItem.name} 
+                                button(type="submit" class="btn btn-secondary btn_redirect" dataForRedirect=playlistItem.getUsersPlaylists) #{playlistItem.name} 
                         else 
                             p У пользователя нет плэйлистов
     script(src="/javascripts/main_pageUsersInfo.js") 

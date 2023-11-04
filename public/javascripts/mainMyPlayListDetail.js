@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'DELETE'
         })
         .then(function(data) {
-            window.location = 'http://localhost:3000/v1/api/main/myPlaylists'
+            window.location = 'https://mytestferssite.ru/v1/api/main/myPlaylists'
         })
         .catch(function(data) {
             console.log('Ошбика - ', data)

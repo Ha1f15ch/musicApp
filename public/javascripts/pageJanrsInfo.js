@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'DELETE'
         })
         .then(function(data) {
-            window.location = 'http://localhost:3000/v1/api/adminCatalog/janrs'
+            window.location = 'https://mytestferssite.ru/v1/api/adminCatalog/janrs'
         })
     })
 
@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             formData.classList.add('hidden')
         }
+    })
+
+    var btn_for_back = document.querySelector('.btn_for_back')
+    btn_for_back.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru/v1/api/adminCatalog/janrs"
     })
 
     var New_dataJanr = document.querySelector('.New_dataJanr')

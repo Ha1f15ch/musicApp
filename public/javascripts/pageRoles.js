@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const btnRole = document.querySelector('.btmRole')
-    btnRole.addEventListener('click', () => {
+    var btnRole = document.querySelector('.btmRole')
+    /* btnRole.addEventListener('click', () => {
         document.addEventListener('DOMContentLoaded', () => {
             const btnForDelete = document.querySelector('.btnForDelete')
             btnForDelete.addEventListener('click', () => {
@@ -10,11 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'DELETE'
                 })
                 .then(function(data) {
-                    window.location = 'http://localhost:3000/v1/api/adminCatalog/roles'
+                    window.location = 'https://mytestferssite.ru/v1/api/adminCatalog/roles'
                 })
             })
         })
         
+    }) */
+
+    btnRole.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru"+btnRole.getAttribute('itemRoleData')
     })
 
     const btnCreateNewRole =  document.querySelector('.btnCreateNewRole')

@@ -68,13 +68,13 @@ block main_myProfile
                     div(class="row")
                         each playlistItem in userPlaylistData
                             div(class="col")
-                                button(type="submit" class="btn btn-secondary" onClick=`location.href="http://localhost:3000${playlistItem.getPlaylist}"`) #{playlistItem.name} 
+                                button(type="submit" class="btn btn-secondary btn_get_getPlaylist" get_playlist=playlistItem.getPlaylist) #{playlistItem.name} 
                         else 
                             p У пользователя нет плэйлистов
                 br
                 div(class="row")
                     div(class="col")
-                        button(class="btn btn-secondary" type="submit" onClick=`location.href="http://localhost:3000/v1/api/main/myPlaylists"`) Список моих плэйлистов
+                        button(class="btn btn-secondary list_my_playlists" type="submit") Список моих плэйлистов
                     div(class="col")    
                         button(class="btn btn-primary btn_editauthData" type="submit") Изменить login/email
                     div(class="col")    

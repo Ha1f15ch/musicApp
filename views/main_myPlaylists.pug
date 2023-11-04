@@ -12,7 +12,7 @@ block main_myPlaylists
             div(class="card col")
                 div(Class="card-footer")
                     each valPlaylist in dataResult 
-                        button(type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=valPlaylist.name onClick=`location.href="http://localhost:3000${valPlaylist.getPlaylist}"`) #{valPlaylist.name}
+                        button(type="button" class="btn btn-secondary btn_getPlaylist" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=valPlaylist.name btn_getPlaylist=valPlaylist.getPlaylist onClick=`location.href="http://localhost:3000${valPlaylist.getPlaylist}"`) #{valPlaylist.name}
                     else 
                         p У Вас нет доступных плэйлистов
     br

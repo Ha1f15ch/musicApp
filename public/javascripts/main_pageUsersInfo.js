@@ -3,6 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
     var btn_editauthData = document.querySelector('.btn_editauthData'),
     btn_editProfileData = document.querySelector('.btn_editProfileData')
 
+    var btn_redirect = document.querySelector('.btn_redirect')
+    btn_redirect.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru"+btn_redirect.getAttribute('dataForRedirect')
+    })
+
+    var list_my_playlists = document.querySelector('.list_my_playlists')
+    list_my_playlists.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru/v1/api/main/myPlaylists"
+    })
+
+    var btn_get_getPlaylist = document.querySelector('.btn_get_getPlaylist')
+    btn_get_getPlaylist.addEventListener('click', async () => {
+        window.location = "https://mytestferssite.ru"+btn_get_getPlaylist.getAttribute('get_playlist')
+    })
+
     btn_editauthData.addEventListener('click', () => {
         var userLoginData = document.querySelector('.userLoginData'),
             userEmailData = document.querySelector('.userEmailData'),
