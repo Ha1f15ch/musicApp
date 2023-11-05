@@ -131,14 +131,7 @@ exports.MyProfile_GET = async (req, res, next) => {
 
 exports.MyProfile_PUT = async (req, res, next) => {
 
-    var token = req.headers.cookie.split('access_token=')[1]
-    var valToken = token.split('.')[1]
-    var parsToken = valToken.replace(/-/g, '+').replace(/_/g, '/');
-    var decodedToken = JSON.parse(Buffer.from(parsToken, 'base64').toString('binary'));
-
-    console.log(decodedToken, ' - Декодед')
-
-    await UserProfile.findOne({idUser: decodedToken.id})
+    await UserProfile.findOne({idUser: req.userIds})
     .then(async (resProfileUserId) => {
         console.log('Найдено значение - ', resProfileUserId)
 
@@ -172,82 +165,89 @@ exports.main_UpdateMyAuth_PUT = async (req, res, next) => {
 
     var loginData = req.body.login
     var emailData = req.body.email
-    var paramsID = req.userIds
-    console.log(emailData, ' - emailData')
+    var paramsID = req.userIds+''
+    var resFindUser = await Users.findById(paramsID)
 
-    var UserData = await Users.findById({_id: paramsID})
-    console.log(UserData)
-    var arrayLogin = await Users.find({
-        login: loginData
-    })
-    var arrayEmail = await Users.find({
-        email: emailData
-    })
-    console.log(arrayEmail, ' - email')
-    var massIDs = arrayLogin.map((el) => el._id)
-    var massValidIDs = massIDs.find((el) => el == paramsID+'')
-
-    if(massValidIDs.length > 1) {
-        console.log(massValidIDs, ' - Введенные данные уже зарегистрированы у другого пользователя')
-        res.sendStatus(401)
-    }
-    console.log(typeof arrayEmail)
-
-    var massIDs_ = arrayEmail.map((el) => el._id)
-    var massValidIDs_ = massIDs_.find((el) => el == paramsID+'')
-
-    try {
-        if(massValidIDs_ == undefined) {
-            console.log('Значение не найдено, записываем в БД')
-    
-            var newUserData = new Users({
-                login: loginData,
-                email: emailData,
-                pass: UserData.pass,
-                role: UserData.role,
-                _id: paramsID
+    async.parallel({
+        data_byLogin: function(callback) {
+            Users.find({login: loginData})
+            .then((res_data_byLogin) => {
+                callback(null, res_data_byLogin)
             })
-            await Users.findByIdAndUpdate(paramsID, newUserData, {})
-            .then((resUpdateUSer) => {
-                console.log(resUpdateUSer, ' - Результат пдейта 1')
-                /* res.sendStatus(200) */
+            .catch((err_data_byLogin) => {
+                callback(null, err_data_byLogin)
             })
-            .catch((errUpdateUser) => {
-                console.log('Ошибка при апдейте - ', errUpdateUser)
-                res.sendStatus(401)
+        },
+        data_byEmail: function(callback) {
+            Users.find({email: emailData})
+            .then((res_data_byEmail) => {
+                callback(null, res_data_byEmail)
             })
-            res.sendStatus(200)
-        } 
-    } catch(e2) {
-        console.log(e2, ' - Ошибка отловлена')
-    }
-
-    try {
-        if(massValidIDs_.length > 1) {
-            console.log(massValidIDs_, ' - Введенные данные уже зарегистрированы у другого пользователя')
-            
-            .sendStatus(401)
-        } else {
-            var newUserData = new Users({
-                login: loginData,
-                email: emailData,
-                pass: UserData.pass,
-                role: UserData.role,
-                _id: paramsID
-            })
-            await Users.findByIdAndUpdate(paramsID, newUserData, {})
-            .then((resUpdateUSer) => {
-                console.log(resUpdateUSer, ' - Результат пдейта 2')
-                res.sendStatus(200)
-            })
-            .catch((errUpdateUser) => {
-                console.log('Ошибка при апдейте - ', errUpdateUser)
-                res.sendStatus(401)
+            .catch((err_data_byEmail) => {
+                callback(null, err_data_byEmail)
             })
         }
-    } catch(e) {
-        console.log(e, ' - Ошибка')
-    }
+    }, async (err, resAllFind) => {
+        if(err) {
+            console.log('Была допущена ошибка при поиске - ', err)
+            return next(err)
+        }
+
+        var mass_data_byLogin = resAllFind.data_byLogin.map(el => el._id+'')
+        var mass_data_byEmail = resAllFind.data_byEmail.map(el => el._id+'')
+
+        if((Object.keys(mass_data_byLogin).length === 0) && (Object.keys(mass_data_byEmail).length === 0)) {
+            console.log('Новые заданные значения для Login и Email остутсвуют в зарегистрированных, записываем новые данные . . .')
+
+            var newUserData = new Users({
+                login: loginData,
+                email: emailData,
+                pass: resFindUser.pass,
+                role: resFindUser.role,
+                _id: paramsID
+            })
+
+            await Users.findByIdAndUpdate(paramsID, newUserData, {})
+            .then((resUpdate) => {
+                console.log('Успешно обновлено')
+                res.sendStatus(200)
+            })
+            .catch((errUpdate) => {
+                console.log('Ошибка при обновлении - ', errUpdate)
+                res.sendStatus(505)
+            })
+        } else {
+            if(((Object.keys(mass_data_byLogin).length === 1) && (mass_data_byLogin.includes(paramsID))) || (Object.keys(mass_data_byLogin).length === 0)) {
+                console.log('Такая запись есть и она принадлежит этому пользователю, либо, запись отсутствует в БД записываем Login . . .')
+                if(((Object.keys(mass_data_byEmail).length === 1) && (mass_data_byEmail.includes(paramsID))) || (Object.keys(mass_data_byEmail).length === 1)) {
+                    console.log('Такая запись есть и она принадлежит этому пользователю, либо, запись отсутствует в БД записываем Email . . .')
+                    var newUserData = new Users({
+                        login: loginData,
+                        email: emailData,
+                        pass: resFindUser.pass,
+                        role: resFindUser.role,
+                        _id: paramsID
+                    })
+    
+                    await Users.findByIdAndUpdate(paramsID, newUserData, {})
+                    .then((resUpdate) => {
+                        console.log('Успешно обновлено')
+                        res.sendStatus(200)
+                    })
+                    .catch((errUpdate) => {
+                        console.log('Ошибка при обновлении - ', errUpdate)
+                        res.sendStatus(505)
+                    })
+                } else {
+                    console.log('Запись Email уже есть в системе у другого пользователя, возвращаем 404 . . .')
+                    res.sendStatus(404)
+                }
+            } else {
+                console.log('Запись Login уже есть в системе у другого пользователя, возвращаем 404 . . .')
+                res.sendStatus(404)
+            }
+        }
+    })     
 }
 
 exports.list_myPlaylists_GET = async (req, res, next) => {

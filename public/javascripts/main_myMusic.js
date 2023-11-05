@@ -130,10 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         size_volume.style.width = `${clickPositionX}px`
     }
 
-    btn_getPlaylist.addEventListener('click', async () => {
-        window.location = "https://mytestferssite.ru"+btn_getPlaylist.getAttribute('btn_getPlaylist')
-    })
-
     playlist.addEventListener('click', (elem) => {
 
         if(elem.target.classList.contains('button_play')) {
