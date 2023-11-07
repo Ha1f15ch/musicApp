@@ -17,8 +17,6 @@ router.get('/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
 router.get('/music/:id', [authMiddlevare], music_controller.mainPage_musicDetail_GET)
 
-router.post('/myMusic', [authMiddlevare], music_controller.mainPage_createMusic_POST)
-
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
 
 router.get('/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.listJanrs_GET)
@@ -50,8 +48,14 @@ router.get('/myPlaylists', [authMiddlevare], mainPage_controller.list_myPlaylist
 
 router.post('/myPlaylists', [authMiddlevare], mainPage_controller.createPlaylist_POST)
 
+router.post('/myMusic', [authMiddlevare], music_controller.mainPage_createMusic_POST)
+
+router.get('/myMusic/:id', [authMiddlevare], music_controller.mainPage_MyMusicDetail_GET)
+
 router.get('/myMusic', [authMiddlevare], music_controller.mainPage_myMusic_GET)
 
-router.delete('/myMusic/:id', music_controller.mainPage_deleteMyMusic_DELETE)
+router.put('/myMusic/:id', [authMiddlevare], music_controller.mainPage_MyMusic_UPDATE)
+
+router.delete('/myMusic/:id', [authMiddlevare], music_controller.mainPage_deleteMyMusic_DELETE)
 
 module.exports = router;

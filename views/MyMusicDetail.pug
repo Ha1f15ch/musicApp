@@ -1,0 +1,54 @@
+extends main 
+
+block MyMusicDetail 
+
+    div(class="main_content")
+        h1=title+resData.name
+        div(class="form_data hstack gap-3")
+            div(class="name_composition")
+                p Название: #{resData.name}
+            <audio src=#{resData.rout} controls></audio>
+            div(class="janrs_string")
+                each val in resData.janrs
+                    div(class="janr_item" style='display: inline; padding-right:10px;')
+                    | #{val.name}
+            div(class="description_composition mb-3")
+                label(for="description" class="form-label") О композиции:
+                textarea#description.form-control(rows="3" name='description' require='true' readonly=true) #{resData.description}
+            div(class="user_Creator mb-3")
+                p Автор композиции: #{resData.userIdCreated.login}
+            div(class="col mb-3")
+                button(class="btn btn-outline-success btn_for_update_music" type="submit") Изменить композицию
+        br
+        div(class="content hstack gap-3 block_with_update_data hidden")
+            div(class="row")
+                div(class="col")
+                    label(for="name" class="form-label") <h5>Название компазиции</h5>
+                    input(class="form-control name_value" type="text" placeholder="Название вашего трека" name='name' id="name" value=(undefined===resData ? 'Не заполнено' : resData.name))
+            div(class="row")
+                div(class="col hstack gap-3")
+                    p Жанры данной композиции: 
+                    each val in resData.janrs 
+                        div(class="form-check")
+                            label(class="form-check-label" for=val._id) <h7>#{val.name}</h7>
+            div(class="row")
+                div(class="col hstack gap-3")
+                    p Другие жанры:
+                    - var massJanrs = resData.janrs.map(el=>el.name)
+                    each janr_val in janrData  
+                        - if(massJanrs.includes(janr_val.name))
+                            div(class="form-check")
+                                input(class="form-check-input janr_item_data" type='checkbox' name='janr_item' id=janr_val._id value=janr_val._id checked=true)
+                                label(class="form-check-label" for=janr_val._id) <h7>#{janr_val.name}</h7>
+                        - else
+                            div(class="form-check")
+                                input(class="form-check-input janr_item_data" type='checkbox' name='janr_item' id=janr_val._id value=janr_val._id)
+                                label(class="form-check-label" for=janr_val._id) <h7>#{janr_val.name}</h7>
+            div(class="row")
+                div(class="col")
+                    label(class="form-label" for="description") <h5>О треке</h5>
+                    textarea(class="form-control description_value" rows="4" placeholder="Описание трека" name="description" id="description" value=(resData===undefined ? 'Не заполнено' : resData.description)) #{resData.description}
+            div(class="row")
+                div(class="col")
+                    button(class="btn btn-success btn_submit_send_data" type="submit") Подтвердить изменнеие
+    script(src="/javascripts/MyMusicDetail.js") 

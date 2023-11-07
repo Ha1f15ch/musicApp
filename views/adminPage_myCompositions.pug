@@ -40,7 +40,7 @@ block adminPage_myCompositions
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)
-                                    a(class="song_name" href=val.getMusicByAdmin) #{val.name} 
+                                    a(class="song_name" href=val.getMyMusicByAdmin) #{val.name} 
                                 div(class="song_btn_delete" data_song_id=val._id)
                                     img(class="btn_delete_icon" data_song_id=val._id src="/img/delete_icon.png" alt="Delete song from the system")
                         else 

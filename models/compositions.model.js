@@ -43,4 +43,16 @@ compositions
     return '/v1/api/adminCatalog/compositions/' + this.id
 })
 
+compositions
+.virtual('getMyMusic')
+.get(function() {
+    return '/v1/api/main/myMusic/' + this._id
+})
+
+compositions
+.virtual('getMyMusicByAdmin')
+.get(function() {
+    return '/v1/api/adminCatalog/myMusic/' + this._id
+})
+
 module.exports = mongoose.model('Compositions', compositions);
