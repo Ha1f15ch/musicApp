@@ -70,6 +70,8 @@ router.get('/compositions', [authMiddlevare], music_controller.adminPage_listMus
 
 router.get('/compositions/:id', music_controller.adminPage_musicDetail_GET)
 
+router.put('/compositions/:id', [authMiddlevare], music_controller.adminPage_Music_UPDATE)
+
 router.delete('/compositions/:id', [authMiddlevare], adminPage_controller.adminPAge_deleteUsersComposition_DELETE)
 
 router.post('/compositions/update/:playlistId/:musicID', music_controller.adminPage_addComposition_inPlaylist_POST)

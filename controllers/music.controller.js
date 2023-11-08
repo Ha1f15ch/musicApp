@@ -470,9 +470,48 @@ exports.adminPage_musicDetail_GET = async (req, res, next) => {
         console.log(results.compositionDetaled.janrs, ' - Жанры')
         res.render('adminPage_detailMusic', {
             title: 'Композиция: ',
-            resData: results.compositionDetaled
+            resData: results.compositionDetaled,
+            janrData: results.janrs
         })
     })
+}
+
+exports.adminPage_Music_UPDATE = async (req, res, next) => {
+    var new_data_nameMusic = req.body.name
+    var new_data_janrsMusic = req.body.array_janrs
+    var new_data_descriptionMusic = req.body.description
+
+    console.log(new_data_nameMusic, new_data_janrsMusic, new_data_descriptionMusic, ' - data from client')
+
+    var finded_music = await Compositions.findById(req.params.id)
+    var finded_music_fromReq = await Compositions.find({
+        "name": new_data_nameMusic
+    })
+
+    if((Object.keys(finded_music_fromReq).length === 0) || ((Object.keys(finded_music_fromReq).length === 1) && (req.params.id+'' == finded_music._id+''))) {
+        console.log('Такого названия композиции в системе нет, записываем . . .')
+        var new_misuc_value = new Compositions({
+            name: new_data_nameMusic,
+            rout: finded_music.rout,
+            janrs: new_data_janrsMusic,
+            description: new_data_descriptionMusic,
+            userIdCreated: finded_music.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, new_misuc_value, {})
+        .then((resUpdate) => {
+            console.log('Успешно обновлено - ', resUpdate)
+            res.sendStatus(200)
+        })
+        .catch((errUpdate) => {
+            console.log('ошибка при апдейте - ', errUpdate)
+            res.sendStatus(505)
+        })
+    } else {
+        console.log('Название композиции есть у другой композиции, которую сейчас не редактируют, отсылаем 404 . . .')
+        res.sendStatus(404)
+    }
 }
 
 exports.mainPage_addComposition_inPlaylist_POST = async (req, res, next) => {
