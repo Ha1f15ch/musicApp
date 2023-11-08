@@ -729,6 +729,88 @@ exports.adminPage_myCompositions_GET = async (req, res, next) => {
     })
 }
 
+exports.adminPage_MyMusicDetail_GET = (req, res, next) => {
+
+    async.parallel({
+        compositionDetaled: function(callback) {
+            Compositions.findById(req.params.id)
+            .populate({
+                path: "userIdCreated janrs",
+            })
+            .then((resMusic) => {
+                console.log('Поиск и данные - ', resMusic)
+                callback(null, resMusic)
+            })
+            .catch((errMus) => {
+                callback(null, errMus)
+            })
+        },
+        janrs: function(callback) {
+            Janrs.find({})
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        }
+    }, (errors, results) => {
+        if(errors) {
+            console.log('Ошибки при выполнении поиска - ', errors)
+            return next(errors)
+        }
+        for(const janr_item of results.janrs) {
+            if(results.compositionDetaled.janrs.includes(janr_item._id)) {
+                janr_item.checked = true;
+            }
+        }
+        res.render('adminPage_MyMusicDetail', {
+            title: 'Композиция: ',
+            resData: results.compositionDetaled,
+            janrData: results.janrs
+        })
+    })
+}
+
+exports.adminPage_MyMusic_UPDATE = async (req, res, next) => {
+    var user_id = req.userIds
+    var new_data_nameMusic = req.body.name
+    var new_data_janrsMusic = req.body.array_janrs
+    var new_data_descriptionMusic = req.body.description
+
+    console.log(new_data_nameMusic, new_data_janrsMusic, new_data_descriptionMusic, ' - data from client')
+
+    var finded_music = await Compositions.findById(req.params.id)
+    var finded_music_fromReq = await Compositions.find({
+        "name": new_data_nameMusic
+    })
+
+    if((Object.keys(finded_music_fromReq).length === 0) || ((Object.keys(finded_music_fromReq).length === 1) && (req.params.id+'' == finded_music._id+''))) {
+        console.log('Такого названия композиции в системе нет, записываем . . .')
+        var new_misuc_value = new Compositions({
+            name: new_data_nameMusic,
+            rout: finded_music.rout,
+            janrs: new_data_janrsMusic,
+            description: new_data_descriptionMusic,
+            userIdCreated: finded_music.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, new_misuc_value, {})
+        .then((resUpdate) => {
+            console.log('Успешно обновлено - ', resUpdate)
+            res.sendStatus(200)
+        })
+        .catch((errUpdate) => {
+            console.log('ошибка при апдейте - ', errUpdate)
+            res.sendStatus(505)
+        })
+    } else {
+        console.log('Название композиции есть у другой композиции, которую сейчас не редактируют, отсылаем 404 . . .')
+        res.sendStatus(404)
+    }
+}
+
 exports.adminPage_deleteMyMusic_DELETE = async (req, res, next) => {
     var id_deleted_music = req.params.id
 

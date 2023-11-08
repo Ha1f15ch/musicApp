@@ -1,10 +1,10 @@
-extends adminPage 
+extends adminPage   
 
-block adminPage_detailMusic 
+block adminPage_MyMusicDetail 
 
     div(class="main_content")
         h1=title+resData.name
-        div(class="form_data")
+        div(class="form_data hstack gap-3")
             div(class="name_composition")
                 p Название: #{resData.name}
             <audio src=#{resData.rout} controls></audio>
@@ -15,7 +15,7 @@ block adminPage_detailMusic
             div(class="description_composition mb-3")
                 label(for="description" class="form-label") О композиции:
                 textarea#description.form-control(rows="3" name='description' require='true' readonly=true) #{resData.description}
-            div(class="user_Creator")
+            div(class="user_Creator mb-3")
                 p Автор композиции: #{resData.userIdCreated.login}
             div(class="col mb-3")
                 button(class="btn btn-outline-success btn_for_update_music" type="submit") Изменить композицию
@@ -51,4 +51,4 @@ block adminPage_detailMusic
             div(class="row")
                 div(class="col")
                     button(class="btn btn-success btn_submit_send_data" type="submit") Подтвердить изменнеие
-    script(src="/javascripts/adminPage_detailMusic.js") 
+    script(src="/javascripts/adminPage_MyMusicDetail.js") 

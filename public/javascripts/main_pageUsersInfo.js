@@ -3,11 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     var btn_editauthData = document.querySelector('.btn_editauthData'),
     btn_editProfileData = document.querySelector('.btn_editProfileData')
 
-    var list_my_playlists = document.querySelector('.list_my_playlists')
-    list_my_playlists.addEventListener('click', async () => {
-        window.location = "https://mytestferssite.ru/v1/api/main/myPlaylists"
-    })
-
     var btn_get_getPlaylist = document.querySelectorAll('.btn_get_getPlaylist')
     for(let j = 0; j < btn_get_getPlaylist.length; j++) {
         btn_get_getPlaylist[j].addEventListener('click', async () => {

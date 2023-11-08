@@ -74,9 +74,13 @@ router.delete('/compositions/:id', [authMiddlevare], adminPage_controller.adminP
 
 router.post('/compositions/update/:playlistId/:musicID', music_controller.adminPage_addComposition_inPlaylist_POST)
 
+router.post('/myCompositions', [authMiddlevare], music_controller.adminPage_createMusic_POST) 
+
 router.get('/myCompositions', [authMiddlevare], music_controller.adminPage_myCompositions_GET)
 
-router.post('/myCompositions', [authMiddlevare], music_controller.adminPage_createMusic_POST) // Испроавить, долно быть в myCompositions 
+router.get('/myCompositions/:id', [authMiddlevare], music_controller.adminPage_MyMusicDetail_GET)
+
+router.put('/myCompositions/:id', [authMiddlevare], music_controller.adminPage_MyMusic_UPDATE)
 
 router.delete('/myCompositions', [authMiddlevare], music_controller.adminPage_deleteMyMusic_DELETE)
 
