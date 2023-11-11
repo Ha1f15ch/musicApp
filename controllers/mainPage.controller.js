@@ -42,24 +42,71 @@ exports.mainPageData = async (req, res, next) => {
     })
 }
 
-exports.mainPage_search_value_fromReq = async (req, res, next) => {
+exports.mainPage_GeneralSearch_value_fromReq_GET = async (req, res, next) => {
     var user_data = req.params.value 
+    console.log(user_data, ' - user_data')
+    var errMSSG = 'В системе по данному запросу ничего не найдено, попробуйте задать вопрос иначе'
 
-    var janr_data = await Janrs.find({
-        name: `/${user_data}/`
-    })
+    async.parallel({
+        composition_data: function(callback) {
+            Compositions.find({
+                name: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            })
+            .then((resCompositionData) => {
+                callback(null, resCompositionData)
+            })
+            .catch((errCompositionData) => {
+                callback(null, errCompositionData)
+            })
+        },
+        users_data: function(callback) {
+            Users.find({
+                login: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            })
+            .limit(5)
+            .then((resUsers_data) => {
+                callback(null, resUsers_data)
+            })
+            .catch((errUseres_data) => {
+                callback(null, errUseres_data)
+            })
+        },
+        janr_data: function(callback) {
+            Janrs.find({
+                name: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            })
+            .limit(5)
+            .then((resJanrs_data) => {
+                callback(null, resJanrs_data)
+            })
+            .catch((errJanrs_data) => {
+                callback(null, errJanrs_data)
+            })
+        }
+    }, async (err, results) => {
 
-    if(janr_data.length != 0) {
+        if(err) {
+            console.log('Созникла ошибка при поиске в разделах - ', err)
+            return next(err)
+        }
 
-    }
+        res.render('main_searchList', {
+            title: `Поиск по значению - "${user_data}"`,
+            show_composition: results.composition_data,
+            show_janrs: results.janr_data,
+            show_users: results.users_data,
+            errMSSG: errMSSG
+        })
+    }) 
+}
 
-    var users_data = await Users.find({
-        login: `/${user_data}/`
-    })
-
-    var composition_data = await Compositions.find({
-        name: `/${user_data}/`
-    })
+exports.mainPage_fastSearch_value_fromReq = async (req, res, next) => {
 
 }
 

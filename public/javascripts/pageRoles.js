@@ -1,25 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var btnRole = document.querySelector('.btmRole')
-    /* btnRole.addEventListener('click', () => {
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnForDelete = document.querySelector('.btnForDelete')
-            btnForDelete.addEventListener('click', () => {
-                let dataDelete = btnForDelete.getAttribute('id')
-                console.log(dataDelete)
-                fetch(document.location.href, {
-                    method: 'DELETE'
-                })
-                .then(function(data) {
-                    window.location = 'https://mytestferssite.ru/v1/api/adminCatalog/roles'
-                })
-            })
-        })
-        
-    }) */
+    var btnRole = document.querySelectorAll('.btmRole')
 
-    btnRole.addEventListener('click', async () => {
-        window.location = "https://mytestferssite.ru"+btnRole.getAttribute('itemRoleData')
-    })
+    for(let i = 0; i < btnRole.length; i++) {
+        btnRole[i].addEventListener('click', async () => {
+            window.location = "https://mytestferssite.ru"+btnRole[i].getAttribute('itemRoleData')
+        })
+    }
 
     const btnCreateNewRole =  document.querySelector('.btnCreateNewRole')
     btnCreateNewRole.addEventListener('click', async () => {

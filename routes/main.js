@@ -11,7 +11,9 @@ var CheckUsersProperties = require('../middleware/propertiesMiddleware')
 
 router.get('/', [authMiddlevare], mainPage_controller.mainPageData)
 
-router.get('/search/:value', mainPage_controller.mainPage_search_value_fromReq)
+router.get('/generalSearch/:value', mainPage_controller.mainPage_GeneralSearch_value_fromReq_GET)
+
+router.post('/fastSearch/:value', mainPage_controller.mainPage_fastSearch_value_fromReq)
 
 router.get('/music', [authMiddlevare], music_controller.mainPage_listMusic_GET)
 
