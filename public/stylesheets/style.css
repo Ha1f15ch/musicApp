@@ -222,3 +222,7 @@ p{
   flex-basis: 24px;
   height: 24px;
 }
+
+.high {
+  background: #ffc600;
+}

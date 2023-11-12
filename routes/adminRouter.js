@@ -16,7 +16,7 @@ router.get('/', adminPage_controller.mainPage_GET)
 
 router.get('/generalSearch/:value', adminPage_controller.adminPage_GeneralSearch_value_fromReq_GET)
 
-router.post('/fastSearch/:value', adminPage_controller.adminPage_fastSearch_value_fromReq)
+router.get('/fastSearch/:value', adminPage_controller.adminPage_fastSearch_value_fromReq)
 
 router.get('/myProfile', [authMiddlevare], adminPage_controller.MyProfile_GET)
 

@@ -148,7 +148,75 @@ exports.adminPage_GeneralSearch_value_fromReq_GET = async (req, res, next) => {
 }
 
 exports.adminPage_fastSearch_value_fromReq = async (req, res, next) => {
-    
+    var user_data = req.params.value 
+    console.log(user_data, ' - user_data')
+    var errMSSG = "В системе по данному запросу ничего не найдено, попробуйте задать вопрос иначе"
+
+    async.parallel({
+        composition_data: function(callback) {
+            Compositions.find({
+                name: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            }, {
+                _id: true,
+                name: true
+            })
+            .limit(2)
+            .then((resCompositionData) => {
+                callback(null, resCompositionData)
+            })
+            .catch((errCompositionData) => {
+                callback(null, errCompositionData)
+            })
+        },
+        users_data: function(callback) {
+            Users.find({
+                login: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            }, {
+                _id: true,
+                email: true,
+                login: true
+            })
+            .limit(2)
+            .then((resUsers_data) => {
+                callback(null, resUsers_data)
+            })
+            .catch((errUseres_data) => {
+                callback(null, errUseres_data)
+            })
+        },
+        janr_data: function(callback) {
+            Janrs.find({
+                name: {
+                    $regex: `.*${user_data}.*`, $options: 'si'
+                }
+            })
+            .limit(2)
+            .then((resJanrs_data) => {
+                callback(null, resJanrs_data)
+            })
+            .catch((errJanrs_data) => {
+                callback(null, errJanrs_data)
+            })
+        }
+    }, async (err, results) => {
+
+        if(err) {
+            console.log('Созникла ошибка при поиске в разделах - ', err)
+            return next(err)
+        }
+        var pocketData = {
+            "show_composition": results.composition_data,
+            "show_janrs": results.janr_data,
+            "show_users": results.users_data,
+            "errMSSG": errMSSG
+        }
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(pocketData))
+    }) 
 }
 
 exports.MyProfile_PUT = async (req, res, next) => {
