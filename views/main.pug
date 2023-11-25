@@ -12,20 +12,27 @@ html
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
           ul(class="navbar-nav me-auto mb-2 ")
             li(class="nav-item")
-              a(class="nav-link active" aria-current="page" href="/v1/api/main") Главная
+              a(class="nav-link a_link active" aria-current="page" href="/v1/api/main") Главная
             li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/myProfile") Мой профиль 
+              a(class="nav-link a_link" aria-current="page" href="/v1/api/main/users") Другие пользователи
             li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/myPlaylists") Мои плэйлисты  
+              a(class="nav-link a_link" aria-current="page" href="/v1/api/main/janrs") Жанры 
             li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/myMusic") Мои композиции 
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/users") Другие пользователи
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/janrs") Жанры 
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/main/music") Композиции 
-          div(class="d-flex")
+              a(class="nav-link a_link" aria-current="page" href="/v1/api/main/music") Композиции 
+          div(class="d-flex justify-content-between")
+            ul(class="navbar-nav me-auto mb-2 ")
+              li(class="nav-item dropdown")
+                a(class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Мои Данные 
+                ul(class="dropdown-menu")
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/main/myProfile") Мой профиль 
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/main/myPlaylists") Мои плэйлисты  
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/main/myMusic") Мои композиции 
+                  li 
+                    a(class="nav-link" aria-current="page" href="/v1/api/main/logOut") Выйти
+          div(class="d-flex justify-content-end")
             input(class="form-control me-2 searchData" type="text" name="searchData" placeholder="Поиск" aria-label="Поиск") 
             button(class="btn btn-outline-success btn_global_search" type="submit") Найти
     br

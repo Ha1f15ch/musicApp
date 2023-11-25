@@ -1,3 +1,15 @@
 .hidden {
     display: none;
 }
+
+@media screen and (prefers-color-scheme: dark) {
+    body {
+      background: #ADADAD;
+      color: rgba((223, 140, 140, 0.884)23, 140, 140);
+        }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }

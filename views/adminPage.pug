@@ -8,17 +8,11 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     nav(class="navbar navbar-expand bg-body-tertiary")
-      div(class="container-fluid justify-content-center")
+      div(class="container-fluid justify-content-between")
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
           ul(class="navbar-nav me-auto mb-2 ")
             li(class="nav-item")
-              a(class="nav-link active" aria-current="page" href="/v1/api/adminCatalog") Главная (Администрация)
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myProfile") Мой профиль 
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myCompositions") Мои композиции
-            li(class="nav-item")
-              a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myPlaylists") Мои плэйлисты  
+              a(class="nav-link a_link active" aria-current="page" href="/v1/api/adminCatalog") Главная (Администрация)
             li(class="nav-item dropdown")
               a(class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Каталог 
               ul(class="dropdown-menu")
@@ -34,7 +28,18 @@ html
                   a(class="dropdown-item" href="/v1/api/adminCatalog/roles") Роли пользователей 
                 li
                   a(class="dropdown-item" href="/v1/api/adminCatalog/rights") Доступные системные права  
-          div(class="d-flex")
+          div(class="d-flex justify-content-between")
+            ul(class="navbar-nav me-auto mb-2 ")
+              li(class="nav-item dropdown")
+                a(class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Мои Данные 
+                ul(class="dropdown-menu")
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myProfile") Мой профиль 
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myCompositions") Мои композиции
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog/myPlaylists") Мои плэйлисты  
+          div(class="d-flex justify-content-end")
             input(class="form-control me-2 searchData" type="text" name="searchData" placeholder="Поиск" aria-label="Поиск") 
             button(class="btn btn-outline-success btn_global_search" type="submit") Найти
     br

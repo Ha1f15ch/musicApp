@@ -7,11 +7,11 @@ block admin_listMus
                 div(class="playlist")
                     if(dataMusic.length!=0)
                         each val in dataMusic
-                            div(class="song_item align-items-center" data_song_id=val._id)
+                            div(class="border border-info-subtle border-end-0 rounded-pill song_item align-items-center" data_song_id=val._id)
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)
-                                    a(class="song_name" href=val.getMusicByAdmin) #{val.name}
+                                    a(class="song_name a_link_mus" href=val.getMusicByAdmin) #{val.name}
                                 div(class="playlistData" data_song_id=val._id)
                                     button(type="button" class="btn btn-primary buttonTrackData" data_song_id=val._id data-toggle="modal" data-target="#exampleModal3") + 
                                     div(class="modal" id="exampleModal3" modal_song_id=`modal_song_id-${val._id}`)

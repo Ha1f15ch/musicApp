@@ -1,25 +1,41 @@
 extends authorization_user
 
 block auth_users
-    h1=title 
-
-    div(calss="main")
-        div(class="user_registration_form")
-            form(action="", method="POST")
-                div(class="form-group")
-                    label(for="login") Введите login: 
-                    input#login(class="form-control" type="text" placeholder='login' name='login' value=(undefined===login ? '' : user.login), required='true')
-
-                    label(for='email') Введите email:
-                    input#email.form-control(type='text', placeholder='email' name='email' value=(undefined===email ? '' : user.email), required='true')
-
-                    label(for='pass') Введите пароль:
-                    input#pass.form-control(type='text', placeholder='Password' name='pass' value=(undefined===pass ? '' : user.pass), required='true')
-
-                    button.btn.btn-primary(type='submit') Зарегистрироваться 
-                .IN 
-                    a(href="/v1/api/authorization/login") Уже зарегистрированы ? Войти...
-                if errorsMSG 
-                    ul 
-                        for error in errorsMSG 
-                            li!= error.msg 
+    
+    div(class="row")
+        div(class="d-flex justify-content-center")
+            h1=title 
+    br
+    div(class="content ")
+        div(class="row g-3")
+            div(class="col-3")
+            div(class="col")
+                div(class="border border-2 rounded-4 user_registration_form")
+                    form(action="", method="POST")
+                        div(class="row mb-3")
+                            label(class="col-sm-2 col-form-label" for="login") Введите login: 
+                            div(class="col-sm-10")
+                                input(class="form-control" type="text" id="login" placeholder='login' name='login' value=(undefined===login ? '' : user.login), required='true')
+                        div(class="row mb-3")
+                            label(class="col-sm-2 col-form-label" for='email') Введите email:
+                            div(class="col-sm-10")
+                                input(class="form-control" type='text' id="email" placeholder='email' name='email' value=(undefined===email ? '' : user.email), required='true')
+                        div(class="row mb-3")
+                            label(class="col-sm-2 col-form-label" for='pass') Введите пароль:
+                            div(class="col-sm-10")
+                                input(class="form-control" type='text' id="pass" placeholder='Password' name='pass' value=(undefined===pass ? '' : user.pass), required='true')
+                        div(class="row")
+                            div(class="d-flex justify-content-center")
+                                button.btn.btn-primary(type='submit') Зарегистрироваться 
+                        .IN 
+                            div(class="hstack gap-3")
+                                div(class="p-2 ms-auto")
+                                    a(class="" href="/v1/api/main") Назад на главную
+                                div(class="vr")
+                                div(class="p-2")
+                                    a(href="/v1/api/authorization/login") Уже зарегистрированы ? Войти...
+                        if errorsMSG 
+                            ul 
+                                for error in errorsMSG 
+                                    li!= error.msg 
+            div(class="col-3")

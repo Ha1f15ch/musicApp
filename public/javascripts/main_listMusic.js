@@ -67,9 +67,7 @@ window.document.addEventListener('DOMContentLoaded', () => {
         
         for (let i = 0; i < dataSerch.length; i++) {
             dataSerch[i].addEventListener('click', (elem) => {
-                console.log(elem.target, 'кнопка, по которой нажимаем для просмотра списка доступных плэйлистов') // кнопка, по которой нажимаем для просмотра списка доступных плэйлистов
                 let ParentData = elem.target.closest('div')
-                console.log(ParentData, ' - родительский элемент относительного того, по которому нажали')
                 let itemWithPlaylists = ParentData.querySelector('.modal')
                 itemWithPlaylists.classList.add('showerClass')
                 let buttonCloseModal = ParentData.querySelector('.close')
@@ -167,6 +165,10 @@ window.document.addEventListener('DOMContentLoaded', () => {
         audio_player.volume = (clickPositionX / width) * duration
         size_volume.style.width = `${clickPositionX}px`
     }
+
+  /*   function findMyParent(child_elem) {
+
+    } */
 
     playlist.addEventListener('click', (elem) => {
 
