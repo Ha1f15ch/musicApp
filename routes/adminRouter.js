@@ -28,7 +28,6 @@ router.get('/myPlaylists/:id', [authMiddlevare], adminPage_controller.myPlaylist
 
 router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], adminPage_controller.updatePlaylist_name_PUT)
 
-//После добавится апдейт на добавление или удаление композиции из плэйлиста
 router.put('/myPlaylists/:playlistId/deletemusic', [authMiddlevare], music_controller.adminPAge_delete_music_fromPlaylist_PUT)
 
 router.delete('/myPlaylists/:id', [authMiddlevare], adminPage_controller.deletePlaylist_DELETE)

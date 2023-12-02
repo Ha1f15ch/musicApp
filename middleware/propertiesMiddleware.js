@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const {secret} = require('../models/configSettings');
 const Users = require('../models/users.model');
 const Roles = require('../models/roles.model');
 const Rights = require('../models/rights.model');
@@ -213,13 +214,44 @@ prop_editUsersRoles = (req, res, next) => {
     })
 }
 
+//функция нужна для проверки токена у уже авторизованных пользователей для страниц,
+//где не требуется авторизация
+checkReqParameter = (req, res, next) => {
+    try {
+
+        if(req.headers.cookie) {
+            var token = req.headers.cookie.split('access_token=')[1]
+
+            jwt.verify(token, secret, (errorVerify, resultVerify) => {
+                if(errorVerify) {
+                    console.log('При верификации пользователя по пути возникла ошибка - токен access проcрочен')
+
+                    next();
+                }
+                if(resultVerify) {
+                    console.log('Верификация access токена прошла успешно')
+                    req.userIds = resultVerify.id
+                    console.log(req.userIds, ' - записываем в хэдеры id пользователя')
+                    next();
+                }
+            })
+        } else {
+            next();
+        }
+    } catch(e) {
+        console.log('Ошбика проверки доп параметра в запросах', e)
+        next()
+    }
+}
+
 const CheckUsersProperties = {
     prop_readDicts,
     prop_administrationPanel,
     prop_editDicts,
     prop_editUsersRoles,
     prop_getProfileUser,
-    prop_loadFile
+    prop_loadFile,
+    checkReqParameter
 }
 
 module.exports = CheckUsersProperties;

@@ -127,9 +127,6 @@ exports.log_In = [
                                 if(RefreschToken.verifyExpiration(resultsRefToken)) {
                                     console.log('Удаляем старый токен - ', resultsRefToken, 9)
                                     RefreschToken.findByIdAndRemove(resultsRefToken._id, {useFindAndModify: false})
-                                    /* var newAccessToken = jwt.sign({id: resultsUser._id}, secret, {
-                                        expiresIn: jwtExpiration,
-                                    }); */
                                     const newReftoken = RefreschToken.createToken(resultsUser._id)
                                     console.log('Создаем новй токен - ', newReftoken, 10)
                                     res
@@ -151,9 +148,6 @@ exports.log_In = [
                                 console.log('refresh токена нет, 11', errorRefToken)
                                 const newReftoken = await RefreschToken.createToken(resultsUser._id)
                                 console.log('Создаем новй токен - ', newReftoken, 12)
-                                /* var newAccessToken = jwt.sign({id: resultsUser._id}, secret, {
-                                    expiresIn: jwtExpiration,
-                                }); */
                                 res
                                 .cookie('access_token', newAccessToken, {
                                     httpOnly: true,

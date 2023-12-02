@@ -8,15 +8,15 @@ const user_auth_controller = require('../controllers/users.authorization.control
 var authMiddlevare = require('../middleware/authMiddleware')
 var CheckUsersProperties = require('../middleware/propertiesMiddleware');
 
-router.get('/', mainPage_controller.mainPageData)
+router.get('/', [CheckUsersProperties.checkReqParameter], mainPage_controller.mainPageData)
 
-router.get('/generalSearch/:value', mainPage_controller.mainPage_GeneralSearch_value_fromReq_GET)
+router.get('/generalSearch/:value', [CheckUsersProperties.checkReqParameter], mainPage_controller.mainPage_GeneralSearch_value_fromReq_GET)
 
-router.get('/fastSearch/:value', mainPage_controller.mainPage_fastSearch_value_fromReq)
+router.get('/fastSearch/:value', [CheckUsersProperties.checkReqParameter], mainPage_controller.mainPage_fastSearch_value_fromReq)
 
-router.get('/music', music_controller.mainPage_listMusic_GET)
+router.get('/music', [CheckUsersProperties.checkReqParameter], music_controller.mainPage_listMusic_GET)
 
-router.get('/music/:id', music_controller.mainPage_musicDetail_GET)
+router.get('/music/:id', [CheckUsersProperties.checkReqParameter], music_controller.mainPage_musicDetail_GET)
 
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
 
@@ -40,7 +40,6 @@ router.get('/myPlaylists/:id', [authMiddlevare], mainPage_controller.myPlaylistD
 
 router.put('/myPlaylists/:id', [authMiddlevare, CheckUsersProperties.prop_editDicts], mainPage_controller.updatePlaylist_name_PUT)
 
-//После добавится апдейт на добавление или удаление композиции из плэйлиста
 router.put('/myPlaylists/:playlistId/deletemusic', [authMiddlevare], music_controller.mainPage_delete_music_fromPlaylist_PUT)
 
 router.delete('/myPlaylists/:id', [authMiddlevare], mainPage_controller.deletePlaylist_DELETE)
