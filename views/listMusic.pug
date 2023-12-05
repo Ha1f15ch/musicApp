@@ -7,13 +7,13 @@ block listMusic
                 div(class="playlist")
                     if(dataMusic.length!=0)
                         each val in dataMusic
-                            div(class="border border-info-subtle border-end-0 rounded-pill song_item align-items-center" data_song_id=val._id)
+                            div(class="song_item align-items-center" data_song_id=val._id)
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)
                                     a(class="song_name a_link_mus" href=val.getMusic) #{val.name}
                                 div(class="playlistData" data_song_id=val._id)
-                                    button(type="button" class="btn btn-primary buttonTrackData" data_song_id=val._id data-toggle="modal" data-target="#exampleModal3") + 
+                                    button(type="button" class="btn btn-sm btn-outline-secondary buttonTrackData" data_song_id=val._id data-toggle="modal" data-target="#exampleModal3") + 
                                     div(class="modal" id="exampleModal3" modal_song_id=`modal_song_id-${val._id}`)
                                         div(class="modal-dialog" role="document")
                                             div(class="modal-content" data_song_id=val._id)

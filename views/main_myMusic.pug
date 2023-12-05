@@ -6,7 +6,7 @@ block main_myMusic
 
     div(class="row hstack gap-3")
         div(class="cal button-section") 
-            button(class="btn btn-primary btnCreateMusic" type="submit") <h5>Добавить</h5>
+            button(class="btn btn-outline-light btnCreateMusic" type="submit") <h5>Добавить</h5>
     br
     div(class='btn1-addtrack hidden')
         form(class="row vstack gap-3" method='POST' action="/v1/api/main/myMusic" enctype="multipart/form-data" id="form_POST_data_track")

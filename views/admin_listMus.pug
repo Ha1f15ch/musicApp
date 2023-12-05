@@ -3,11 +3,11 @@ extends adminPage
 block admin_listMus  
 
     h1 Список композиций 
-    div(class='light-theme')
+    div(class='normal-theme')
                 div(class="playlist")
                     if(dataMusic.length!=0)
                         each val in dataMusic
-                            div(class="border border-info-subtle border-end-0 rounded-pill song_item align-items-center" data_song_id=val._id)
+                            div(class="song_item align-items-center" data_song_id=val._id)
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)

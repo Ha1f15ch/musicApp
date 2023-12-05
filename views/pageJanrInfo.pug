@@ -31,4 +31,7 @@ block pageJanrInfo
                                 h6(class="card-subtitle mb-2 text-body-secondary") Описание жанра
                                 textarea#descriptions(class="form-control New_descriptionsJanrData" rows="5" name='descriptions' value=(undefined===dataJanrItem ? ' - - - ' : dataJanrItem.descriptions)) #{dataJanrItem.descriptions}
                             button(class="btn btn-info New_dataJanr" type="submit" id=dataJanrItem._id) Обновить данные 
+    div(class="fixed-bottom") 
+          div(class="footerText")
+            p По всем вопросам можно обращаться ко мне на почту - alexy.alexy98@mail.ru
     script(src="/javascripts/pageJanrsInfo.js") 

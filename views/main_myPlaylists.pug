@@ -9,10 +9,10 @@ block main_myPlaylists
             div(class="col")
                 button(class="btn btn-info addPlaylist" type="submit") Добавить 
         div(class="row")
-            div(class="card col")
-                div(Class="card-footer")
+            div(class="col g-3")
+                div(Class="d-grid gap-2")
                     each valPlaylist in dataResult 
-                        button(type="button" class="btn btn-secondary btn_getPlaylist" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=valPlaylist.name btn_getPlaylist=valPlaylist.getPlaylist) #{valPlaylist.name}
+                        button(type="button" class="btn btn-outline-secondary btn_getPlaylist" data-bs-title=valPlaylist.name btn_getPlaylist=valPlaylist.getPlaylist) #{valPlaylist.name}
                     else 
                         p У Вас нет доступных плэйлистов
     br
@@ -22,6 +22,7 @@ block main_myPlaylists
             input(type="text" class="form-control name_playlist" placeholder="Название плэйлиста" aria-label="Имя" name="name")
         div(class="col")
             button(type="submit" class="btn btn-success btn_createNewPlaylist") Создать 
+    div(class="fixed-bottom") 
+          div(class="footerText")
+            p По всем вопросам можно обращаться ко мне на почту - alexy.alexy98@mail.ru
     script(src="/javascripts/mainMyPlayList.js") 
-//- Добавить возможност ьвыбирать сразу композиции в листе чекбоксов, возможно последние просмотренные
-//- если да, доработать БД или работу роутов, для записи в куки временных файлов, ссылок на них

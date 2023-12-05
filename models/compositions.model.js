@@ -25,6 +25,24 @@ var compositions = new Schema({
         type: String,
         required: false
     },
+    AVGScore: [
+        {
+            u_id: {
+                type: Schema.Types.ObjectId,
+                ref: Users,
+                default: null,
+                required: false,
+                unique: false
+            },
+            value: {
+                type: Number,
+                max: 5,
+                default: null,
+                required: false,
+                unique: false
+            }
+        }
+    ],
     userIdCreated: {
         type: Schema.Types.ObjectId,
         ref: Users
@@ -53,6 +71,13 @@ compositions
 .virtual('getMyMusicByAdmin')
 .get(function() {
     return '/v1/api/adminCatalog/myCompositions/' + this._id
+})
+
+compositions
+.virtual('AVGValues'
+)
+.get(function(u_id, m_id) {
+
 })
 
 module.exports = mongoose.model('Compositions', compositions);
