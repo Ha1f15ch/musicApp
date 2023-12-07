@@ -7,8 +7,8 @@ html
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/styleMainPage.css')
   body
-    nav(class="navbar navbar-expand bg-body-tertiary g-3")
-      div(class="container-fluid justify-content-center")
+    nav(class="col navbar navbar-expand bg-body-tertiary g-3")
+      div(class="col container-fluid justify-content-center")
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
           ul(class="navbar-nav me-auto mb-2 ")
             li(class="nav-item")
@@ -30,6 +30,10 @@ html
                     a(class="nav-link" aria-current="page" href="/v1/api/main/myPlaylists") Мои плэйлисты  
                   li
                     a(class="nav-link" aria-current="page" href="/v1/api/main/myMusic") Мои композиции 
+                  li
+                    a(class="nav-link" aria-current="page" href="/v1/api/authorization/login") Авторизация
+                  li 
+                    a(class="nav-link" aria.current="page" href="/v1/api/authorization/signUp") Регистрация
                   li 
                     a(class="nav-link" aria-current="page" href="/v1/api/main/logOut") Выйти
           div(class="d-flex justify-content-end")
@@ -37,9 +41,9 @@ html
             button(class="btn btn-outline-success btn_global_search" type="submit") Найти
     div(class="line")
     br
-    div(class="container text-center g-3")
+    div(class="col container text-center g-3")
       div(class="row align-items-start")
-        div(class="col-xl-2 col-lg-2 col-md-1 col-sm leftData")
+        div(class="col-xl-2 col-lg-2 col-md-1 col-sm-0 leftData")
           div(class="child_leftData")
         div(class="col-xl-8 col-lg-8 col-md-10 col-sm-12")
           div(class="row")
@@ -54,6 +58,7 @@ html
                 div(class="users_search_title")
                 | Пользователи: 
                 div(class="list-group-item users_search")
+          block main_content
           block listMusic 
           block detailMusic 
           block main_myPlaylists
@@ -67,7 +72,7 @@ html
           block main_pageUserInfo
           block main_infoUsersPlaylistById
           block main_searchList
-        div(class="col-xl-2 col-lg-2 col-md-1 col-sm rightData")
+        div(class="col-xl-2 col-lg-2 col-md-1 col-sm-0 rightData")
           div(class="child_rightData")
     script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous")
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous")

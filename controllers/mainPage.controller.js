@@ -10,33 +10,48 @@ exports.mainPageData = async (req, res, next) => {
     async.parallel({
         janrs: function(callback) {
             Janrs.find({})
+            .limit(3)
             .then((resJanrs) => {
                 callback(null, resJanrs)
             })
             .catch((errJanrs) => {
                 console.log('Возникла ошибка при поиске жанров - ', errJanrs)
-                return next(errJanrs)
+                callback(null, errJanrs)
             })
         },
         users: function(callback) {
             Users.find({})
+            .limit(3)
             .then((resUsers) => {
                 callback(null, resUsers)
             })
             .catch((errUsers) => {
                 console.log('При поиске пользователей возникла ошибка - ', errUsers)
+                callback(null, errUsers)
             })
         },
+        music: function(callback) {
+            Compositions.find({})
+            .limit(5)
+            .then((resMusic) => {
+                callback(null, resMusic)
+            })
+            .catch((errMusic) => {
+                console.log('При поиске композиций возникла ошибка - ', errUsers)
+                callback(null, errMusic)
+            })
+        }
 
     }, (errors, results) => {
         if(errors) {
             return next(errors)
         }
         if(results) {
-            res.render('main', {
+            res.render('main_content', {
                 title: "Главная страница", 
                 dataJanrs: results.janrs,
-                dataUsers: results.users
+                dataUsers: results.users,
+                dataMusic: results.music
             })
         }
     })

@@ -14,7 +14,7 @@ block pageUsers
                     tr(class="userItemString")
                         th(class="UserItemColomn" scope="col" id=userItem._id name=userItem.login) 
                             a(href=`/v1/api/adminCatalog/users/${userItem._id}`) #{userItem.login}
-                        th(class="UserItemColomn" scope="col" id=userItem._id name=userItem.email) #{userItem.email}
+                        th(class="UserItemColomn" scope="col" id=userItem._id name=userItem.email) <h7>#{userItem.email}</h7>
     div(class="fixed-bottom") 
           div(class="footerText")
             p По всем вопросам можно обращаться ко мне на почту - alexy.alexy98@mail.ru

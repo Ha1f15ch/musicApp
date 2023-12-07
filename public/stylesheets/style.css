@@ -5,6 +5,11 @@ body {
   color: #b99e9e;
 }
 
+h1, h2, h3, h4, h5, h6, h7 {
+  font: "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #b99e9e;
+}
+
 a {
   text-decoration: none;
 }
@@ -121,6 +126,10 @@ p{
 
 .line {
   border-bottom: 1px solid #f00;
+}
+
+.ellow_line {
+  border-bottom: 1px solid rgb(241, 186, 34);
 }
 
 .button_play {
@@ -248,16 +257,6 @@ p{
 .user_registration_form {
   padding: 10px;
   margin: 5px;
-}
-
-.user_registration_form:hover {
-  background: #8a8a86a9;
-  border-radius: 10px;
-}
-
-.user_authorization_form:hover {
-  background: #8a8a86a9;
-  border-radius: 10px;
 }
 
 .song_item {

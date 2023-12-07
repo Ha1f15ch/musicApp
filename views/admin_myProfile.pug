@@ -63,10 +63,9 @@ block admin_myProfile
                 div(class="row")
                     div(class="col")
                         label(for="usersPlaylists") Плэйлисты пользователя
-                    div(class="row")
+                    div(class="d-grid gap-2 g-3")
                         each playlistItem in userPlaylistData
-                            div(class="col")
-                                button(type="submit" class="btn btn-secondary btn_playlist_users" playlistItem_adminGetPlaylist=playlistItem.admin_getPlaylist) #{playlistItem.name} 
+                            button(type="submit" class="btn btn-secondary btn_playlist_users" playlistItem_adminGetPlaylist=playlistItem.admin_getPlaylist) #{playlistItem.name} 
                         else 
                             p У пользователя нет плэйлистов
                 br

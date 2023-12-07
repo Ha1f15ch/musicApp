@@ -7,14 +7,17 @@ block admin_listPlaylists
     div(class="content")
         div(class="row")
             div(class="col")
-                div(class="card")
-                    ul(class="list-group list-group-flush")
+                div(class="row")
                         each valList in dataPlaylists.dataPlaylists
-                            li(class="list-group-item")
-                                h4 плэйлист - 
-                                    a(href=`https://mytestferssite.ru/v1/api/adminCatalog/playlists/${valList._id}`) #{valList.name} 
-                                h5 Пользователь - 
-                                    a(href=`https://mytestferssite.ru/v1/api/adminCatalog/users/${valList.userId._id}`) #{valList.userId.login}
+                            div(class="row")
+                                div(Class="col")
+                                    h5(class="display-6 g-3") плэйлист - 
+                                        a(href=`https://mytestferssite.ru/v1/api/adminCatalog/playlists/${valList._id}`) #{valList.name} 
+                            div(class="row")
+                                div(class="col")
+                                    h5(class="display-6 g-3") Пользователь - 
+                                        a(href=`https://mytestferssite.ru/v1/api/adminCatalog/users/${valList.userId._id}`) #{valList.userId.login}
+                            div(class="ellow_line")
     div(class="fixed-bottom") 
           div(class="footerText")
             p По всем вопросам можно обращаться ко мне на почту - alexy.alexy98@mail.ru

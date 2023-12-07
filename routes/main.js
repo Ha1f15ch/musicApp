@@ -20,9 +20,9 @@ router.get('/music/:id', [CheckUsersProperties.checkReqParameter], music_control
 
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
 
-router.get('/janrs', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.listJanrs_GET)
+router.get('/janrs', [CheckUsersProperties.checkReqParameter], mainPage_controller.listJanrs_GET)
 
-router.get('/janrs/:id', [authMiddlevare, CheckUsersProperties.prop_readDicts], mainPage_controller.info_janr_GET)
+router.get('/janrs/:id', [CheckUsersProperties.checkReqParameter], mainPage_controller.info_janr_GET)
 
 router.get('/users', [authMiddlevare], mainPage_controller.main_listUsers_GET)
 

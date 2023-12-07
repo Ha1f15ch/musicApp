@@ -4,22 +4,20 @@ block pageJanrInfo
 
     h1(class="align-middle" style='display: inline; padding-right:10px;')=title+' - '+dataJanrItem.name
 
-    div(class="content")
+    div(class="border border-2 rounded-4 content g-3")
         div(class="row")
             div(class="col-sm")
-                div(class="card")
-                    div(class="card-body")
-                        h5(class="card-title") Жанр #{dataJanrItem.name}
-                        h6(class="card-subtitle mb-2 text-body-secondary") Описание жанра
-                        p(class="card-text") #{dataJanrItem.descriptions}
                 div(class="row")
-                    div(class="col-sm-2")
+                    div(class="col g-3")
+                        h5(class="card-title") Название жанра #{dataJanrItem.name}
+                div(class="row")
+                    div(class="col g-3")
+                        h6(class="card-subtitle mb-2 text-body-secondary") Описание жанра
+                        p(class="text-center") #{dataJanrItem.descriptions}
+                div(class="row g-3")
+                    div(class="d-grid gap-2 g-4")
                         button(class="btn btn-secondary btn_for_back" type="submit") Назад
-                    div(class="col-sm-3")
-                    div(class="col-sm-2")
                         button(class="btn btn-warning btn_for_edit") Изменить
-                    div(class="col-sm-3")
-                    div(class="col-sm-2")
                         button(class="btn btn-danger btn_for_delete" id=dataJanrItem._id) Удалить
                 div(class='row form_new_data_janr hidden')
                     div(class="col-sm")

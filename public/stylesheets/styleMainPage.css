@@ -5,7 +5,10 @@ body {
   color: #b99e9e;
 }
 
-
+h1, h2, h3, h4, h5, h6, h7 {
+  font: "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #b99e9e;
+}
 
 a {
   text-decoration: none;

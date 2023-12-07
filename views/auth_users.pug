@@ -5,6 +5,7 @@ block auth_users
     div(class="row")
         div(class="d-flex justify-content-center")
             h1=title 
+    div(class="line")
     br
     div(class="content ")
         div(class="row g-3")
@@ -26,7 +27,7 @@ block auth_users
                                 input(class="form-control" type='text' id="pass" placeholder='Password' name='pass' value=(undefined===pass ? '' : user.pass), required='true')
                         div(class="row")
                             div(class="d-flex justify-content-center")
-                                button.btn.btn-primary(type='submit') Зарегистрироваться 
+                                button(class="btn btn-sm btn-outline-secondary" type='submit') Зарегистрироваться 
                         .IN 
                             div(class="hstack gap-3")
                                 div(class="p-2 ms-auto")
