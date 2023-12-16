@@ -15,8 +15,10 @@ router.get('/generalSearch/:value', [CheckUsersProperties.checkReqParameter], ma
 router.get('/fastSearch/:value', [CheckUsersProperties.checkReqParameter], mainPage_controller.mainPage_fastSearch_value_fromReq)
 
 router.get('/music', [CheckUsersProperties.checkReqParameter], music_controller.mainPage_listMusic_GET)
-
+//Нужно дописать отображение оценки у пользователя, если он проставлял ее
 router.get('/music/:id', [CheckUsersProperties.checkReqParameter], music_controller.mainPage_musicDetail_GET)
+
+router.put('music/:id/editScore', [authMiddlevare], music_controller.mainPage_setMusicScore_UPDATE)
 
 router.post('/music/update/:playlistId/:musicID', [authMiddlevare], music_controller.mainPage_addComposition_inPlaylist_POST)// переписываем бэк и клиента
 
@@ -53,7 +55,7 @@ router.post('/myMusic', [authMiddlevare], music_controller.mainPage_createMusic_
 router.get('/myMusic/:id', [authMiddlevare], music_controller.mainPage_MyMusicDetail_GET)
 
 router.get('/myMusic', [authMiddlevare], music_controller.mainPage_myMusic_GET)
-
+//дописать функцию установки оценки для композиции пользователем, учесто то, что пользователь уже еценивал ее
 router.put('/myMusic/:id', [authMiddlevare], music_controller.mainPage_MyMusic_UPDATE)
 
 router.delete('/myMusic/:id', [authMiddlevare], music_controller.mainPage_deleteMyMusic_DELETE)
