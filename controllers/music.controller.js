@@ -870,3 +870,47 @@ exports.adminPage_deleteMyMusic_DELETE = async (req, res, next) => {
         return next()
     }
 }
+
+exports.mainPage_setMusicScore_UPDATE = async (req, res, next) => {
+    console.lof(req.params.id, ' - id пользователя')
+    console.log(req.userIds, ' - id авторизованного пользователя')
+
+    var pakScore = req.body.UsersScore
+    console.log('Что получаем от клиента - ', pakScore)
+
+    async.parallel({
+        infoMusic: function(callback) {
+            Compositions.findById(req.params.id)
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        },
+    }, async (err, results) => {
+        if(err) {
+            console.log('Возникла ошибка при поиске композиции', err)
+            return nextTick(err)
+        }
+
+        var editedMusic = new Compositions({
+            name: results.infoMusic.name,
+            rout: results.infoMusic.rout,
+            janrs: results.infoMusic.janrs,
+            description: results.infoMusic.description,
+            AVGScore: results.infoMusic.AVGScore.push(pakScore),
+            userIdCreated: results.infoMusic.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, editedMusic, {})
+        .then((resUpdate) => {
+            console.log('Успешно обновлено - ', resUpdate)
+        })
+        .catch((errUpdate) => {
+            console.log('Ошибка при обновлении - ', errUpdate)
+            return next(errUpdate)
+        })
+    })
+}
