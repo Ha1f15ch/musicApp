@@ -11,12 +11,15 @@ block detailMusic
             div(class="janrs_string")
                 each val in resData.janrs
                     div(class="janr_item" style='display: inline; padding-right:10px;')
-                    | #{val.name}
+                    | #{val.name}    
             div(class="description_composition mb-3")
                 label(for="description" class="form-label") О композиции:
                 textarea#description.form-control(rows="3" name='description' require='true' readonly=true) #{resData.description}
-            div(class="user_Creator")
-                p Автор композиции: #{resData.userIdCreated.login}
+            div(class="row")    
+                div(class="col user_Creator")
+                    p Автор композиции: #{resData.userIdCreated.login}
+                div(class="col")
+                    p Количество посещений всего: #{countRender}
     div(class="fixed-bottom") 
           div(class="footerText")
             p По всем вопросам можно обращаться ко мне на почту - alexy.alexy98@mail.ru

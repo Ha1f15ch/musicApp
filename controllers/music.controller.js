@@ -306,8 +306,11 @@ exports.adminPage_createMusic_POST = async (req, res, next) => {
         return next(errNewComposition)
     })
 }
+var intCount = 0
 
 exports.mainPage_musicDetail_GET = (req, res, next) => {
+
+    ++intCount
 
     async.parallel({
         compositionDetaled: function(callback) {
@@ -344,7 +347,8 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
         }
         res.render('detailMusic', {
             title: 'Композиция: ',
-            resData: results.compositionDetaled
+            resData: results.compositionDetaled,
+            countRender: intCount
         })
     })
 }
