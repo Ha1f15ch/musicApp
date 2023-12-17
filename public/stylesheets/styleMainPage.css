@@ -1,13 +1,20 @@
+/* :values {
+  --dark-theme-background-color: #0e1416;
+  --dark-theme-color: #b99e9e;
+  --theme-background-color: #d3cfcf;
+  --theme-color: #111e22;
+} */
+
 body {
   padding: 5px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #0e1416;
-  color: #b99e9e;
+  background-color: var(--theme-background-color, #d3cfcf);
+  color: var(--theme-color, #111e22);
 }
 
 h1, h2, h3, h4, h5, h6, h7 {
   font: "Lucida Grande", Helvetica, Arial, sans-serif;
-  color: #b99e9e;
+  color: var(--theme-color, #111e22);
 }
 
 a {
@@ -34,10 +41,6 @@ a:hover {
   text-align: center;
   top: 50%;
   width: 100%;
-}
-
-.page-header{
-  background-color: rgb(179, 222, 236);
 }
 
 p{
@@ -212,12 +215,12 @@ p{
   box-sizing: border-box;
   margin: 5px;
   padding: 2px;
-  background-color: #2B3C5B;
+  background-color: var(--theme-background-color-for-songItem, #adc3ec)
 }
 
 .song_name {
   text-decoration: none;
-  color: #b99e9e;
+  color: var(--theme-color, #111e22);
 }
 
 .song_name:hover {
@@ -231,7 +234,7 @@ p{
 
 .a_link_mus {
   text-decoration: none;
-  color: #b99e9e;
+  color: var(--theme-color, #111e22);
 }
 
 .line {

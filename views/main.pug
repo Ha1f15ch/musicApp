@@ -38,6 +38,10 @@ html
                     a(class="nav-link" aria-current="page" href="/v1/api/main/logOut") Выйти
                   li 
                     a(class="nav-link" aria-current="page" href="/v1/api/adminCatalog") Админпанель
+                  li 
+                    div(class="form-check form-switch")
+                      label(class="form-check-label switchToDark_label" for="switchToDark") Dark theme
+                      input(class="form-check-input switchToDark_input" type="checkbox" role="switch" id="switchToDark")
           div(class="d-flex justify-content-end")
             input(class="form-control me-2 searchData" type="text" name="searchData" placeholder="Поиск" aria-label="Поиск") 
             button(class="btn btn-outline-success btn_global_search" type="submit") Найти

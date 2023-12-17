@@ -1,4 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const btn_for_choose_color = document.querySelector('.switchToDark_input')
+    const root = document.documentElement
+
+    btn_for_choose_color.addEventListener('click', async () => {
+        if(!btn_for_choose_color.hasAttribute('checked')) {
+            //Значит включен темный режим
+            root.style.setProperty('--theme-background-color', '#0e1416')
+            root.style.setProperty('--theme-color', '#b99e9e')
+            root.style.setProperty('--theme-background-color-for-songItem', '#464438')
+            console.log(btn_for_choose_color)
+            btn_for_choose_color.setAttribute('checked', true)
+            localStorage.setItem('theme', 'dark')
+        } else {
+            //Значит включен светлый режим
+            root.style.setProperty('--theme-background-color', '#d3cfcf')
+            root.style.setProperty('--theme-color', '#111e22')
+            root.style.setProperty('--theme-background-color-for-songItem', '#adc3ec')
+            console.log(btn_for_choose_color)
+            btn_for_choose_color.removeAttribute('checked')
+            localStorage.setItem('theme', 'light')
+        }
+    })
+
+    if(localStorage.getItem('theme') == 'dark') {
+        //Значит включен темный режим
+        localStorage.setItem('theme', 'dark')
+        btn_for_choose_color.setAttribute('checked', true)
+        root.style.setProperty('--theme-background-color', '#0e1416')
+        root.style.setProperty('--theme-color', '#b99e9e')
+        root.style.setProperty('--theme-background-color-for-songItem', '#464438')
+    } else {
+        //Значит включен светлый режим
+        localStorage.setItem('theme', 'light')
+        btn_for_choose_color.removeAttribute('checked')
+        root.style.setProperty('--theme-background-color', '#d3cfcf')
+        root.style.setProperty('--theme-color', '#111e22')
+        root.style.setProperty('--theme-background-color-for-songItem', '#adc3ec')
+    }
     
     const prev_href = 'https://mytestferssite.ru/v1/api/adminCatalog'
     const tempVal = 'http://localhost/v1/api/adminCatalog'
@@ -31,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await fetch(prev_href+`/fastSearch/${searchData.value}`) 
             const {show_composition, show_janrs, show_users, errMSSG} = await response.json()
-            console.log(errMSSG, ' 10000')
             const regex = new RegExp(searchData.value, 'gi')
 
             if(show_composition.length == 0) {

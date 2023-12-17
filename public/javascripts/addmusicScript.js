@@ -1,4 +1,43 @@
 window.document.addEventListener('DOMContentLoaded', () => {
+    const btn_for_choose_color = document.querySelector('.switchToDark_input')
+    const root = document.documentElement
+    
+    btn_for_choose_color.addEventListener('click', async () => {
+        if(!btn_for_choose_color.hasAttribute('checked')) {
+            //Значит включен темный режим
+            root.style.setProperty('--theme-background-color', '#0e1416')
+            root.style.setProperty('--theme-color', '#b99e9e')
+            root.style.setProperty('--theme-background-color-for-songItem', '#464438')
+            console.log(btn_for_choose_color)
+            btn_for_choose_color.setAttribute('checked', true)
+            localStorage.setItem('theme', 'dark')
+        } else {
+            //Значит включен светлый режим
+            root.style.setProperty('--theme-background-color', '#d3cfcf')
+            root.style.setProperty('--theme-color', '#111e22')
+            root.style.setProperty('--theme-background-color-for-songItem', '#adc3ec')
+            console.log(btn_for_choose_color)
+            btn_for_choose_color.removeAttribute('checked')
+            localStorage.setItem('theme', 'light')
+        }
+    })
+
+    if(localStorage.getItem('theme') == 'dark') {
+        //Значит включен темный режим
+        localStorage.setItem('theme', 'dark')
+        btn_for_choose_color.setAttribute('checked', true)
+        root.style.setProperty('--theme-background-color', '#0e1416')
+        root.style.setProperty('--theme-color', '#b99e9e')
+        root.style.setProperty('--theme-background-color-for-songItem', '#464438')
+    } else {
+        //Значит включен светлый режим
+        localStorage.setItem('theme', 'light')
+        btn_for_choose_color.removeAttribute('checked')
+        root.style.setProperty('--theme-background-color', '#d3cfcf')
+        root.style.setProperty('--theme-color', '#111e22')
+        root.style.setProperty('--theme-background-color-for-songItem', '#adc3ec')
+    }
+
     try {
         var btn1Addtrack = document.querySelector('.btn1-addtrack')
         var btnCreateMusic = document.querySelector('.btnCreateMusic')
@@ -27,7 +66,6 @@ window.document.addEventListener('DOMContentLoaded', () => {
     var btn_global_search = document.querySelector('.btn_global_search')
     btn_global_search.addEventListener('click', async () => {
         var searchData = document.querySelector('.searchData').value
-        console.log(searchData, ' - ищем - searchData')
         window.location.href = prev_href+`/generalSearch/${searchData}`
     })
 
