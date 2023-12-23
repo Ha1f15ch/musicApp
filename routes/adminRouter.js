@@ -82,6 +82,8 @@ router.get('/myCompositions', [authMiddlevare], music_controller.adminPage_myCom
 
 router.get('/myCompositions/:id', [authMiddlevare], music_controller.adminPage_MyMusicDetail_GET)
 
+router.post('/myCompositions/:id/editScore', [authMiddlevare], music_controller.mainPage_MyMusicDetail_setScore_POST)
+
 router.put('/myCompositions/:id', [authMiddlevare], music_controller.adminPage_MyMusic_UPDATE)
 
 router.delete('/myCompositions', [authMiddlevare], music_controller.adminPage_deleteMyMusic_DELETE)

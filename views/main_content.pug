@@ -26,7 +26,7 @@ block main_content
                                 div(class="botton_song" data_song_id=val._id)
                                     div(class="button_play" data_song_id=val._id src="/img/play.png" href=val.rout val=val.name)
                                 div(class="song_content" data_song_id=val._id)
-                                    a(class="song_name a_link_mus" href=val.getMusicByAdmin) #{val.name}
+                                    a(class="song_name a_link_mus" href=val.getMusic) #{val.name}
                         else 
                             p Треки не найдены!
     div(class="fixed-bottom") 

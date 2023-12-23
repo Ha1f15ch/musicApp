@@ -115,7 +115,7 @@ p{
   box-sizing: border-box;
   margin: 5px;
   padding: 2px;
-  background-color: #adc3ec;
+  background-color: var(--theme-background-color-for-songItem, #adc3ec)
 }
 
 .song_name {

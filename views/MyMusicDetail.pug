@@ -15,8 +15,34 @@ block MyMusicDetail
             div(class="description_composition mb-3")
                 label(for="description" class="form-label") О композиции:
                 textarea#description.form-control(rows="3" name='description' require='true' readonly=true) #{resData.description}
-            div(class="user_Creator mb-3")
-                p Автор композиции: #{resData.userIdCreated.login}
+            div(class="row")
+                div(class="col user_Creator mb-3")
+                    p Автор композиции: #{resData.userIdCreated.login}
+                div(class="col")
+                    p Количество просмотров всего: #{resData.countViews}
+            div(class="row")
+                div(class="col text-center")
+                    h5 Оценка композиции
+            div(class="row g-4")
+                div(class="col text-center")
+                    div(class="row g-3 align-items-center text-center")
+                        div(class="col-4")
+                            label(class="col-form-label" for="setScore") Ваша оценка композиции
+                        div(class="col-4")
+                            input(class="form-control score_value" id="setScore" type="text" value=(undefined===resDataScoreMusic ? '' : resDataScoreMusic.value)) 
+                        div(class="col-4")
+                            span(class="form-text") Оценка по 5 бальной шкале
+            br
+            div(class="row d-grid")
+                div(class="d-grid")
+                    button(class="btn btn-secondary btn-sm sent_score_value" type="button") Оценить
+            br
+            div(class="row")
+                div(class="col")
+                    if(resDataScoreMusicAVG)
+                        p Средняя: #{resDataScoreMusicAVG}
+                    else    
+                        p Средняя: не определена
             div(class="col mb-3")
                 button(class="btn btn-outline-success btn_for_update_music" type="submit") Изменить композицию
         br

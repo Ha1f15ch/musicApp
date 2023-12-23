@@ -5,6 +5,7 @@ const Roles = require('../models/roles.model');
 const Janrs = require('../models/janrs.model');
 const Compositions = require('../models/compositions.model');
 const Playlists = require('../models/playlist.model');
+const СompositionsScoreModel = require('../models/compositions.score.model');
 const { compare } = require('bcryptjs');
 
 exports.mainPage_listMusic_GET = async (req, res, next) => {
@@ -307,7 +308,12 @@ exports.adminPage_createMusic_POST = async (req, res, next) => {
     })
 }
 
-exports.mainPage_musicDetail_GET = (req, res, next) => {
+exports.mainPage_musicDetail_GET = async (req, res, next) => {
+
+    var musId = req.params.id
+
+/*     var music_result = await Compositions.findById(req.params.id)
+    console.log(music_result, ' - кастом') */
 
     async.parallel({
         compositionDetaled: function(callback) {
@@ -323,6 +329,31 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
                 callback(null, errMus)
             })
         },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: req.userIds
+            })
+            .then((resFind) => {
+                console.log('Что нашли (оценки пользователя по композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
+        all_score_values: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+            })
+            .then((resFind) => {
+                console.log('Что нашли (все оценки композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
         janrs: function(callback) {
             Janrs.find({})
             .then((resFinded) => {
@@ -331,8 +362,39 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
             .catch((errFinded) => {
                 callback(null, errFinded)
             })
-        }
-    }, (errors, results) => {
+        },
+        /* list_scores: function(callback) {
+            СompositionsScoreModel.aggregate([
+                {
+                    $match: {
+                        _id: music_result._id
+                    }
+                },
+                {
+                    $addFields: {
+                        avg_score_field: {
+                            $avg: "value"
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: 'm_id',
+                        avg_score: {
+                            $avg: "value"
+                        }
+                    }
+                }
+            ])
+            .then((resAVG) => {
+                console.log('Что посчитали в итоге - ', resAVG)
+                callback(null, resAVG)
+            })
+            .catch((errAVG) => {
+                callback(null, errAVG)
+            })
+        } */
+    }, async (errors, results) => {
         if(errors) {
             console.log('Ошибки при выполнении поиска - ', errors)
             return next(errors)
@@ -342,14 +404,48 @@ exports.mainPage_musicDetail_GET = (req, res, next) => {
                 janr_item.checked = "true";
             }
         }
+
+        var formating_list_with_score = results.all_score_values.map(el => el.value)
+        var AVG_value
+
+        if(formating_list_with_score.length > 0) {
+            AVG_value = formating_list_with_score.reduce((a, b) => (a + b) / formating_list_with_score.length)
+        } else {
+            AVG_value = false
+        }
+
+        var countSelect = results.compositionDetaled.countViews + 1
+
+        var get_count_viev = new Compositions({
+            name: results.compositionDetaled.name,
+            rout: results.compositionDetaled.rout,
+            janrs: results.compositionDetaled.janrs,
+            description: results.compositionDetaled.description,
+            countViews: countSelect,
+            userIdCreated: results.compositionDetaled.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, get_count_viev, {})
+        .then((resSetCount) => {
+            console.log('Успешно обновлено - ', resSetCount)
+        })
+        .catch((errSetCount) => {
+            console.log('Возникла ошибка при обновлении количества - ', errSetCount)
+        })
+
         res.render('detailMusic', {
             title: 'Композиция: ',
-            resData: results.compositionDetaled
+            resData: results.compositionDetaled,
+            resDataScoreMusic: results.score_music[0],
+            resDataScoreMusicAVG: AVG_value
         })
     })
 }
 
 exports.mainPage_MyMusicDetail_GET = (req, res, next) => {
+
+    var musId = req.params.id
 
     async.parallel({
         compositionDetaled: function(callback) {
@@ -365,6 +461,31 @@ exports.mainPage_MyMusicDetail_GET = (req, res, next) => {
                 callback(null, errMus)
             })
         },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: req.userIds
+            })
+            .then((resFind) => {
+                console.log('Что нашли (оценки пользователя по композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
+        all_score_values: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+            })
+            .then((resFind) => {
+                console.log('Что нашли (все оценки композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
         janrs: function(callback) {
             Janrs.find({})
             .then((resFinded) => {
@@ -373,8 +494,33 @@ exports.mainPage_MyMusicDetail_GET = (req, res, next) => {
             .catch((errFinded) => {
                 callback(null, errFinded)
             })
-        }
-    }, (errors, results) => {
+        },
+        /* list_scores: function(callback) {
+            СompositionsScoreModel.aggregate([
+                {
+                    $match: {
+                        m_id: req.params.id
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$m_id",
+                        avg_score: {
+                            $avg: "$value"
+                        }
+                    }
+                }
+            ])
+            .then((resAVG) => {
+                console.log('Что посчитали в итоге - ', resAVG)
+                callback(null, resAVG)
+            })
+            .catch((errAVG) => {
+                console.log('Сообщение об ошибке в подсчете АВГ - ', errAVG)
+                callback(null, errAVG)
+            })
+        } */
+    }, async (errors, results) => {
         if(errors) {
             console.log('Ошибки при выполнении поиска - ', errors)
             return next(errors)
@@ -384,11 +530,124 @@ exports.mainPage_MyMusicDetail_GET = (req, res, next) => {
                 janr_item.checked = true;
             }
         }
+
+        var formating_list_with_score = results.all_score_values.map(el => el.value)
+        var AVG_value
+
+        if(formating_list_with_score.length > 0) {
+            AVG_value = formating_list_with_score.reduce((a, b) => (a + b) / formating_list_with_score.length)
+        } else {
+            AVG_value = false
+        }
+
+        var countSelect = results.compositionDetaled.countViews + 1
+
+        var get_count_viev = new Compositions({
+            name: results.compositionDetaled.name,
+            rout: results.compositionDetaled.rout,
+            janrs: results.compositionDetaled.janrs,
+            description: results.compositionDetaled.description,
+            countViews: countSelect,
+            userIdCreated: results.compositionDetaled.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, get_count_viev, {})
+        .then((resSetCount) => {
+            console.log('Успешно обновлено - ', resSetCount)
+        })
+        .catch((errSetCount) => {
+            console.log('Возникла ошибка при обновлении количества - ', errSetCount)
+        })
+
         res.render('MyMusicDetail', {
             title: 'Композиция: ',
             resData: results.compositionDetaled,
-            janrData: results.janrs
+            janrData: results.janrs,
+            resDataScoreMusic: results.score_music[0],
+            resDataScoreMusicAVG: AVG_value,
         })
+    })
+}
+
+exports.mainPage_MyMusicDetail_setScore_POST = async (req, res, next) => {
+    console.log(req.params.id, ' - id пользователя')
+    console.log(req.userIds, ' - id авторизованного пользователя')
+
+    var user_data = req.userIds
+
+    var pakScore = req.body.UsersScore
+    console.log('Что получаем от клиента - ', pakScore)
+
+    async.parallel({
+        infoMusic: function(callback) {
+            Compositions.findById(req.params.id)
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: user_data
+            })
+            .then((resFind) => {
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        }
+    }, async (err, results) => {
+        if(err) {
+            console.log('Возникла ошибка при поиске композиции', err)
+            return nextTick(err)
+        }
+
+        console.log('Что получаем в результате глобального поиска - ', results.score_music)
+
+        if(results.score_music.length < 1) {
+            var new_score_element = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore
+            })
+
+            console.log(new_score_element, 'Собранный объект')
+
+            await new_score_element.save()
+            .then((resSave) => {
+                console.log('Успешно сохранено - ', resSave)
+                res.sendStatus(200)
+            })
+            .catch((errSave) => {
+                console.log('Ошибка при сохранении - ', errSave)
+                res.sendStatus(500)
+            })
+        } else {
+
+            var update_score_music = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore || results.score_music[0].value,
+                _id: results.score_music[0]._id
+            })
+
+            console.log('Гoтовый патч для записи оценки композиции - ', update_score_music)
+
+            await СompositionsScoreModel.findByIdAndUpdate(results.score_music[0]._id, update_score_music, {})
+            .then((resUpdate) => {
+                console.log('Успешно обновлено - ', resUpdate)
+                res.sendStatus(200)
+            })
+            .catch((errUpdate) => {
+                console.log('Ошибка при обновлении - ', errUpdate)
+                res.sendStatus(500)
+            })
+        }
     })
 }
 
@@ -447,6 +706,31 @@ exports.adminPage_musicDetail_GET = async (req, res, next) => {
                 callback(null, errMus)
             })
         },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: req.userIds
+            })
+            .then((resFind) => {
+                console.log('Что нашли (оценки пользователя по композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
+        all_score_values: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+            })
+            .then((resFind) => {
+                console.log('Что нашли (все оценки композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
         janrs: function(callback) {
             Janrs.find({})
             .then((resFinded) => {
@@ -456,7 +740,7 @@ exports.adminPage_musicDetail_GET = async (req, res, next) => {
                 callback(null, errFinded)
             })
         }
-    }, (errors, results) => {
+    }, async (errors, results) => {
         if(errors) {
             console.log('Ошибки при выполнении поиска - ', errors)
             return next(errors)
@@ -466,12 +750,42 @@ exports.adminPage_musicDetail_GET = async (req, res, next) => {
                 janr_item.checked = "true";
             }
         }
-        console.log('результат сбора данных по композиции - ', results.compositionDetaled)
-        console.log(results.compositionDetaled.janrs, ' - Жанры')
+
+        var formating_list_with_score = results.all_score_values.map(el => el.value)
+        var AVG_value
+
+        if(formating_list_with_score.length > 0) {
+            AVG_value = formating_list_with_score.reduce((a, b) => (a + b) / formating_list_with_score.length)
+        } else {
+            AVG_value = false
+        }
+
+        var countSelect = results.compositionDetaled.countViews + 1
+
+        var get_count_viev = new Compositions({
+            name: results.compositionDetaled.name,
+            rout: results.compositionDetaled.rout,
+            janrs: results.compositionDetaled.janrs,
+            description: results.compositionDetaled.description,
+            countViews: countSelect,
+            userIdCreated: results.compositionDetaled.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, get_count_viev, {})
+        .then((resSetCount) => {
+            console.log('Успешно обновлено - ', resSetCount)
+        })
+        .catch((errSetCount) => {
+            console.log('Возникла ошибка при обновлении количества - ', errSetCount)
+        })
+
         res.render('adminPage_detailMusic', {
             title: 'Композиция: ',
             resData: results.compositionDetaled,
-            janrData: results.janrs
+            janrData: results.janrs,
+            resDataScoreMusic: results.score_music[0],
+            resDataScoreMusicAVG: AVG_value
         })
     })
 }
@@ -768,7 +1082,7 @@ exports.adminPage_myCompositions_GET = async (req, res, next) => {
     })
 }
 
-exports.adminPage_MyMusicDetail_GET = (req, res, next) => {
+exports.adminPage_MyMusicDetail_GET = async (req, res, next) => {
 
     async.parallel({
         compositionDetaled: function(callback) {
@@ -784,6 +1098,31 @@ exports.adminPage_MyMusicDetail_GET = (req, res, next) => {
                 callback(null, errMus)
             })
         },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: req.userIds
+            })
+            .then((resFind) => {
+                console.log('Что нашли (оценки пользователя по композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
+        all_score_values: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+            })
+            .then((resFind) => {
+                console.log('Что нашли (все оценки композиции) - ', resFind)
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        },
         janrs: function(callback) {
             Janrs.find({})
             .then((resFinded) => {
@@ -793,7 +1132,7 @@ exports.adminPage_MyMusicDetail_GET = (req, res, next) => {
                 callback(null, errFinded)
             })
         }
-    }, (errors, results) => {
+    }, async (errors, results) => {
         if(errors) {
             console.log('Ошибки при выполнении поиска - ', errors)
             return next(errors)
@@ -803,11 +1142,125 @@ exports.adminPage_MyMusicDetail_GET = (req, res, next) => {
                 janr_item.checked = true;
             }
         }
+
+        var formating_list_with_score = results.all_score_values.map(el => el.value)
+        var AVG_value
+
+        if(formating_list_with_score.length > 0) {
+            AVG_value = formating_list_with_score.reduce((a, b) => (a + b) / formating_list_with_score.length)
+        } else {
+            AVG_value = false
+        }
+
+        var countSelect = results.compositionDetaled.countViews + 1
+
+        var get_count_viev = new Compositions({
+            name: results.compositionDetaled.name,
+            rout: results.compositionDetaled.rout,
+            janrs: results.compositionDetaled.janrs,
+            description: results.compositionDetaled.description,
+            countViews: countSelect,
+            userIdCreated: results.compositionDetaled.userIdCreated,
+            _id: req.params.id
+        })
+
+        await Compositions.findByIdAndUpdate(req.params.id, get_count_viev, {})
+        .then((resSetCount) => {
+            console.log('Успешно обновлено - ', resSetCount)
+        })
+        .catch((errSetCount) => {
+            console.log('Возникла ошибка при обновлении количества - ', errSetCount)
+        })
+
+
         res.render('adminPage_MyMusicDetail', {
             title: 'Композиция: ',
             resData: results.compositionDetaled,
-            janrData: results.janrs
+            janrData: results.janrs,
+            resDataScoreMusic: results.score_music[0],
+            resDataScoreMusicAVG: AVG_value,
         })
+    })
+}
+
+exports.adminPage_MyMusicDetail_setScore_POST = async (req, res, next) => {
+    console.log(req.params.id, ' - id пользователя')
+    console.log(req.userIds, ' - id авторизованного пользователя')
+
+    var user_data = req.userIds
+
+    var pakScore = req.body.UsersScore
+    console.log('Что получаем от клиента - ', pakScore)
+
+    async.parallel({
+        infoMusic: function(callback) {
+            Compositions.findById(req.params.id)
+            .then((resFinded) => {
+                callback(null, resFinded)
+            })
+            .catch((errFinded) => {
+                callback(null, errFinded)
+            })
+        },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: user_data
+            })
+            .then((resFind) => {
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        }
+    }, async (err, results) => {
+        if(err) {
+            console.log('Возникла ошибка при поиске композиции', err)
+            return nextTick(err)
+        }
+
+        console.log('Что получаем в результате глобального поиска - ', results.score_music)
+
+        if(results.score_music.length < 1) {
+            var new_score_element = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore
+            })
+
+            console.log(new_score_element, 'Собранный объект')
+
+            await new_score_element.save()
+            .then((resSave) => {
+                console.log('Успешно сохранено - ', resSave)
+                res.sendStatus(200)
+            })
+            .catch((errSave) => {
+                console.log('Ошибка при сохранении - ', errSave)
+                res.sendStatus(500)
+            })
+        } else {
+
+            var update_score_music = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore || results.score_music[0].value,
+                _id: results.score_music[0]._id
+            })
+
+            console.log('Гoтовый патч для записи оценки композиции - ', update_score_music)
+
+            await СompositionsScoreModel.findByIdAndUpdate(results.score_music[0]._id, update_score_music, {})
+            .then((resUpdate) => {
+                console.log('Успешно обновлено - ', resUpdate)
+                res.sendStatus(200)
+            })
+            .catch((errUpdate) => {
+                console.log('Ошибка при обновлении - ', errUpdate)
+                res.sendStatus(500)
+            })
+        }
     })
 }
 
@@ -871,9 +1324,11 @@ exports.adminPage_deleteMyMusic_DELETE = async (req, res, next) => {
     }
 }
 
-exports.mainPage_setMusicScore_UPDATE = async (req, res, next) => {
-    console.lof(req.params.id, ' - id пользователя')
+exports.mainPage_setMusicScore_POST = async (req, res, next) => {
+    console.log(req.params.id, ' - id пользователя')
     console.log(req.userIds, ' - id авторизованного пользователя')
+
+    var user_data = req.userIds
 
     var pakScore = req.body.UsersScore
     console.log('Что получаем от клиента - ', pakScore)
@@ -888,29 +1343,64 @@ exports.mainPage_setMusicScore_UPDATE = async (req, res, next) => {
                 callback(null, errFinded)
             })
         },
+        score_music: function(callback) {
+            СompositionsScoreModel.find({
+                m_id: req.params.id,
+                u_id: user_data
+            })
+            .then((resFind) => {
+                callback(null, resFind)
+            })
+            .catch((errFind) => {
+                callback(null, errFind)
+            })
+        }
     }, async (err, results) => {
         if(err) {
             console.log('Возникла ошибка при поиске композиции', err)
             return nextTick(err)
         }
 
-        var editedMusic = new Compositions({
-            name: results.infoMusic.name,
-            rout: results.infoMusic.rout,
-            janrs: results.infoMusic.janrs,
-            description: results.infoMusic.description,
-            AVGScore: results.infoMusic.AVGScore.push(pakScore),
-            userIdCreated: results.infoMusic.userIdCreated,
-            _id: req.params.id
-        })
+        console.log('Что получаем в результате глобального поиска - ', results.score_music)
 
-        await Compositions.findByIdAndUpdate(req.params.id, editedMusic, {})
-        .then((resUpdate) => {
-            console.log('Успешно обновлено - ', resUpdate)
-        })
-        .catch((errUpdate) => {
-            console.log('Ошибка при обновлении - ', errUpdate)
-            return next(errUpdate)
-        })
+        if(results.score_music.length < 1) {
+            var new_score_element = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore
+            })
+
+            console.log(new_score_element, 'Собранный объект')
+
+            await new_score_element.save()
+            .then((resSave) => {
+                console.log('Успешно сохранено - ', resSave)
+                res.sendStatus(200)
+            })
+            .catch((errSave) => {
+                console.log('Ошибка при сохранении - ', errSave)
+                res.sendStatus(500)
+            })
+        } else {
+
+            var update_score_music = new СompositionsScoreModel({
+                m_id: req.params.id,
+                u_id: user_data,
+                value: pakScore || results.score_music[0].value,
+                _id: results.score_music[0]._id
+            })
+
+            console.log('Гoтовый патч для записи оценки композиции - ', update_score_music)
+
+            await СompositionsScoreModel.findByIdAndUpdate(results.score_music[0]._id, update_score_music, {})
+            .then((resUpdate) => {
+                console.log('Успешно обновлено - ', resUpdate)
+                res.sendStatus(200)
+            })
+            .catch((errUpdate) => {
+                console.log('Ошибка при обновлении - ', errUpdate)
+                res.sendStatus(500)
+            })
+        }
     })
 }

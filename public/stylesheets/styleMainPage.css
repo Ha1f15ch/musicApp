@@ -240,3 +240,93 @@ p{
 .line {
   border-bottom: 1px solid #f00;
 }
+/* стили для рейтинга (звездочками) */
+/* .star-rating {
+  font-size: 0;
+}
+
+.star-rating__wrap {
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.star-rating__wrap:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.star-rating__ico{
+  float: right;
+  padding-left: 2px;
+  cursor: pointer;
+  color: #FFB300;
+}
+
+.star-rating__ico:last-child{
+  padding-left: 0;
+}
+
+.star-rating__input{
+  display: none;
+}
+
+.star-rating__ico:hover:before,
+.star-rating__ico:hover ~ .star-rating__ico:before,
+.star-rating__input:checked ~ .star-rating__ico:before {
+  content: "\f005";
+} */
+
+@import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
+:root {
+  --star-size: 14px;
+}
+
+.rating {
+  display: inline-block;
+  width: calc((var(--star-size) * 5) + 20px);
+  height: var(--star-size);
+  margin-right: 10px;
+  transform: rotate(180deg);
+  font-size: 0;
+}
+
+.rating .star {
+  display: inline-block;
+  float: left;
+  width: var(--star-size);
+  height: var(--star-size);
+  cursor: pointer;
+  font-family: "Font Awesome 5 Free";
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-moothing: antialiased;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  font-weight: 900;
+  transform: rotate(180deg);
+  margin-right: 5px;
+}
+
+.rating .star:last-child {
+  margin-right: 0;
+}
+
+.rating .star::before {
+  content: '\f005';
+  display: block;
+  width: var(--star-size);
+  height: var(--star-size);
+  line-height: var(--star-size);
+  text-align: center;
+  font-size: var(--star-size);
+  font-weight: 400;
+}
+
+.rating .star.--selected,
+.rating .star.--selected ~ .star,
+.rating .star:hover,
+.rating .star:hover ~ .star {
+  font-weight: 900;
+  color: red;
+}
