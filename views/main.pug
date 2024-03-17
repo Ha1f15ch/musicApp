@@ -43,6 +43,18 @@ html
                     div(class="form-check form-switch")
                       label(class="form-check-label switchToDark_label" for="switchToDark") Dark theme
                       input(class="form-check-input switchToDark_input" type="checkbox" role="switch" id="switchToDark")
+          div(class="btn-group" role="group" aria-label="меню входа")
+            div(class="btn-group" role="group")
+              button(type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false") Мое меню
+              ul(class="dropdown-menu")
+                li
+                  a(class="dropdown-item" aria-current="page" href="/v1/api/authorization/login") Авторизация
+                li 
+                  a(class="dropdown-item" aria.current="page" href="/v1/api/authorization/signUp") Регистрация
+                li 
+                  a(class="dropdown-item" aria-current="page" href="/v1/api/main/logOut") Выйти
+                li 
+                  a(class="dropdown-item" aria-current="page" href="/v1/api/adminCatalog") Админпанель
           div(class="d-flex justify-content-end")
             input(class="form-control me-2 searchData" type="text" name="searchData" placeholder="Поиск" aria-label="Поиск") 
             button(class="btn btn-outline-success btn_global_search" type="submit") Найти
